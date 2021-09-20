@@ -26,8 +26,8 @@ log:
 test:
 	php artisan test
 
-#test-coverage:
-#	composer phpunit tests -- --coverage-clover build/logs/clover.xml
+test-coverage:
+	composer phpunit tests -- --coverage-clover build/logs/clover.xml
 
 lint:
 	composer phpcs
