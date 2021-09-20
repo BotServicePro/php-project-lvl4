@@ -1,15 +1,15 @@
 start:
 	php artisan serve
 
-#setup:
-#	composer install
-#	cp -n .env.example .env || true
-#	php artisan key:gen --ansi
-#	touch database/database.sqlite
-#	php artisan migrate
-#	php artisan db:seed
-#	npm install
-#	npm run dev
+setup:
+	composer install
+	cp -n .env.example .env || true
+	php artisan key:gen --ansi
+	touch database/database.sqlite
+	php artisan migrate
+	php artisan db:seed
+	npm install
+	npm run dev
 
 migrate:
 	php artisan migrate
