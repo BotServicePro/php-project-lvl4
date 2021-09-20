@@ -1,7 +1,7 @@
 {
     "name": "hexlet/code",
     "type": "project",
-    "description": "Fourth project from Hexlet - web application \"Task Manager\" by Alexander Karakin",
+    "description": "Fourth project from Hexlet - Laravel web application 'Task Manager' by Alexander Karakin",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
@@ -10,7 +10,8 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "rollbar/rollbar-laravel": "^7.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
