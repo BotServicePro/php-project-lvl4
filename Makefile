@@ -29,8 +29,14 @@ test:
 test-coverage:
 	composer phpunit tests -- --coverage-clover build/logs/clover.xml
 
+#lint:
+#	composer phpcs
+
+#lint-fix:
+#	composer phpcbf
+
 lint:
-	composer phpcs
+	composer run-script phpcs -- --standard=PSR12 app database resources routes tests
 
 lint-fix:
-	composer phpcbf
+	composer run-script phpcbf -- --standard=PSR12 app database resources routes tests
