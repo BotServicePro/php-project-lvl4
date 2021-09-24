@@ -78,7 +78,7 @@
 <footer class="border-top py-3 mt-5 flex-shrink-0">
     <div class="container-lg">
         <div class="text-center">
-            <a href="https://ru.hexlet.io/u/karakinalex" target="_blank">AKarakin</a>
+            <a href="https://ru.hexlet.io/u/karakinalex" target="_blank">{{ 'AKarakin - ' . date('Y') }}</a>
         </div>
     </div>
 </footer>
