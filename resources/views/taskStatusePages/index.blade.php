@@ -38,7 +38,13 @@
                     <td>{{ $status->name }}</td>
                     <td>{{ $status->created_at }}</td>
                     @if(Auth::check())
-                        <td><a href="">Удалить</a> | <a href="/task_statuses/{{ $status->id }}/edit">Изменить</a></td>
+                        <td>
+                            <form action="{{ route('task_statuses.destroy', $status->id) }}" method="POST" data-confirm="Точно удалить?" rel="nofollow">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">Delete</button>
+                            </form>
+                            | <a href="/task_statuses/{{ $status->id }}/edit">Изменить</a></td>
                     @endif
                 </tr>
             @endforeach
