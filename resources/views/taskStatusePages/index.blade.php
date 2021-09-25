@@ -38,7 +38,7 @@
                     <td>{{ $status->name }}</td>
                     <td>{{ $status->created_at }}</td>
                     @if(Auth::check())
-                        <td><a href="">Удалить</a> | <a href="">Изменить</a></td>
+                        <td><a href="">Удалить</a> | <a href="/task_statuses/{{ $status->id }}/edit">Изменить</a></td>
                     @endif
                 </tr>
             @endforeach
