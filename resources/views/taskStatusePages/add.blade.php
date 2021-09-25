@@ -17,6 +17,7 @@
 @section('content')
     <main class="container py-4">
         <h2>Создать статус</h2>
+        {{ Form::token() }}
         {{ Form::model($taskStatus, ['url' => route('task_statuses.store'), 'method' => 'POST']) }}
         {{ Form::label('name', 'Имя') }}<br>
         {{ Form::text('name') }}<br><br>
