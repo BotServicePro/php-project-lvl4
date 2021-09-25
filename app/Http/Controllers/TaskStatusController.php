@@ -28,11 +28,6 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
-        if (!Auth::check()) {
-            // flash('Необходимо авторизация!')->error();
-            // return redirect(route('index'));
-            abort(403);
-        }
         $taskStatus = new TaskStatus;
         return view('taskStatusePages.add', compact('taskStatus'));
     }
@@ -45,10 +40,6 @@ class TaskStatusController extends Controller
      */
     public function store(Request $request)
     {
-        if (!Auth::check()) {
-            abort(403);
-        }
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:task_statuses'
         ]);
@@ -74,9 +65,7 @@ class TaskStatusController extends Controller
      */
     public function show(TaskStatus $taskStatus)
     {
-        if (!Auth::check()) {
-            abort(403);
-        }
+        //
     }
 
     /**
@@ -87,9 +76,8 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-        if (!Auth::check()) {
-            abort(403);
-        }
+        $taskStatus = TaskStatus::findOrFail($taskStatus->id);
+        return view('taskStatusePages.edit', compact('taskStatus'));
     }
 
     /**
@@ -101,9 +89,20 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
-        if (!Auth::check()) {
-            abort(403);
+        $newStatus = TaskStatus::findOrFail($taskStatus->id);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:task_statuses'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect(route('task_statuses.create'))
+                ->withErrors($validator)
+                ->withInput();
         }
+        $newStatus->name = $request->name;
+        $newStatus->save();
+        flash('Статус успешно изменён')->success();
+        return redirect(route('task_statuses.index'));
     }
 
     /**
@@ -114,8 +113,6 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        if (!Auth::check()) {
-            abort(403);
-        }
+
     }
 }
