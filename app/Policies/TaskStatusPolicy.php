@@ -35,9 +35,8 @@ class TaskStatusPolicy
      */
     public function view(User $user, TaskStatus $taskStatus)
     {
-        if (Auth::check()) {
-            return true;
-        }
+        // запрещаем просмотр конкретного статуса ВСЕМ
+        return false;
     }
 
     /**
