@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Validator;
 class TaskStatusController extends Controller
 {
     /**
+     * Создать экземпляр контроллера.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(TaskStatus::class, 'task_status');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -28,6 +38,7 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
+        //$this->authorize('create', TaskStatus::class);
         $taskStatus = new TaskStatus;
         return view('taskStatusePages.add', compact('taskStatus'));
     }
@@ -40,6 +51,7 @@ class TaskStatusController extends Controller
      */
     public function store(Request $request)
     {
+        //$this->authorize('store', TaskStatus::class);
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:task_statuses'
         ]);
@@ -66,6 +78,9 @@ class TaskStatusController extends Controller
     public function show(TaskStatus $taskStatus)
     {
         //
+        //TaskStatus::findOrFail($taskStatus->id);
+        //dump($taskStatus);
+        exit;
     }
 
     /**
@@ -76,6 +91,7 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
+        //$this->authorize('edit', TaskStatus::class);
         $taskStatus = TaskStatus::findOrFail($taskStatus->id);
         return view('taskStatusePages.edit', compact('taskStatus'));
     }
@@ -89,6 +105,8 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
+        //$this->authorize('update', $taskStatus);
+
         $newStatus = TaskStatus::findOrFail($taskStatus->id);
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:task_statuses'
