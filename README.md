@@ -5,4 +5,5 @@
 
 make start<br>
 make migration<br>
+php artisan db:seed TaskStatuseSeeder<br>
 php artisan make:controller TaskStatusController --resource --model TaskStatus
