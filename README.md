@@ -6,6 +6,10 @@
 make start<br>
 make migration<br>
 php artisan db:seed TaskStatuseSeeder<br>
-php artisan make:controller TaskStatusController --resource --model TaskStatus<br>
-php artisan make:policy TaskStatusPolicy --model=TaskStatus
+
+Создаём ресурсный роутинг - <br>
+<code>php artisan make:controller TaskStatusController --resource --model TaskStatus</code><br>
+Создаём политики - <br>
+<code>php artisan make:policy TaskStatusPolicy --model=TaskStatus</code>
+
 
