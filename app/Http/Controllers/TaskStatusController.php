@@ -28,6 +28,7 @@ class TaskStatusController extends Controller
     public function index()
     {
         $taskStatus = TaskStatus::paginate(5);
+        // возможно добавить сортировку надо
         return view('taskStatusePages.index', compact('taskStatus'));
     }
 
