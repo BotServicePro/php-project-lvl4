@@ -20,6 +20,9 @@ migrate-reset:
 console:
 	php artisan tinker
 
+route-list:
+	php artisan route:list
+
 log:
 	tail -f storage/logs/laravel.log
 
