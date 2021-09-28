@@ -25,7 +25,10 @@ class TaskStatuseCRUDTest extends TestCase
             $status->save();
         }
 
-        $this->id = TaskStatus::where('id', '=', 1)->get();
+        //$this->id = TaskStatus::where('id', '=', 1)->get();
+        foreach(TaskStatus::where('id', '=', 1)->get() as $item) {
+            $this->id = $item->id;
+        }
     }
 
 
@@ -53,7 +56,6 @@ class TaskStatuseCRUDTest extends TestCase
         $response = $this->get('/task_statuses/create'); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
 
-
         $this->signIn();
         $response = $this->get('/task_statuses/create'); // вход на страницу авторизованным юзером
         $response->assertStatus(200);
@@ -71,19 +73,15 @@ class TaskStatuseCRUDTest extends TestCase
         // проверяем в базе наличие нового статуса
         $this->assertDatabaseHas('task_statuses', $taskData);
     }
+
     public function testTaskStatuseEdit()
     {
-        foreach ($this->id as $item) {
-            $id = $item->id;
-        }
-
-        $response = $this->get("/task_statuses/{$id}/edit"); // вход на страницу авторизованным юзером
+        $response = $this->get("/task_statuses/{$this->id}/edit"); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
-
 
         $this->signIn();
 
-        $response = $this->get("/task_statuses/{$id}/edit"); // вход на страницу авторизованным юзером
+        $response = $this->get("/task_statuses/{$this->id}/edit"); // вход на страницу авторизованным юзером
         $response->assertStatus(200);
 
         // формируем даные для записи
@@ -93,34 +91,28 @@ class TaskStatuseCRUDTest extends TestCase
 
         // формируем запрос
         //$response = $this->patch(route('task_statuses.update'), $taskData);
-        $response = $this->patch("task_statuses/{$id}", $taskData);
+        $response = $this->patch("task_statuses/{$this->id}", $taskData);
         $response->assertSessionHasNoErrors();
 
         foreach(TaskStatus::where('id', '=', 1)->get() as $item) {
-            $result = $item;
+            $updatedTask = $item;
         }
 
-        $this->assertEquals($taskData['name'], $result->name);
-        $this->assertEquals(1, $result->id);
+        $this->assertEquals($taskData['name'], $updatedTask->name);
+        $this->assertEquals(1, $updatedTask->id);
     }
 
     public function testTaskStatuseDelete()
     {
-        foreach ($this->id as $item) {
-            $id = $item->id;
-        }
-
-        $response = $this->delete("task_statuses/{$id}");
+        $response = $this->delete("task_statuses/{$this->id}");
         $response->assertStatus(403);
 
         $this->signIn();
-        $response = $this->delete("task_statuses/{$id}");
+        $response = $this->delete("task_statuses/{$this->id}");
         $response->assertStatus(302);
         $response->assertRedirect(route('task_statuses.index'));
 
-
         $deletedTask = TaskStatus::where('id', '=', 1)->get()->toArray();
         $this->assertEquals([], $deletedTask);
-
     }
 }
