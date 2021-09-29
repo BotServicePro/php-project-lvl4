@@ -71,7 +71,7 @@
     </nav>
 </header>
 
-@include('flash::message')
+{{--@include('flash::message')--}}
 
 @yield('content')
 

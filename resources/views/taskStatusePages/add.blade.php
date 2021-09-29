@@ -2,7 +2,7 @@
 
 @section('title', 'Создать статус')
 
-@include('flash::message')
+{{--@include('flash::message')--}}
 
 @if ($errors->any())
     <div class="alert alert-danger">
