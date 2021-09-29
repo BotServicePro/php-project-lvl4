@@ -14,6 +14,10 @@ return [
     'statusSuccessUpdated' => 'Status has been updated',
     'statusSuccessDeleted' => 'Status has been deleted',
 
+    'taskSuccessAdded' => 'Task has been added',
+    'taskSuccessUpdated' => 'Task has been edited',
+    'taskSuccessDeleted' => 'Task has been deleted',
+
 
     /*
     |--------------------------------------------------------------------------
