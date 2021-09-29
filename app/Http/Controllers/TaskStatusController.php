@@ -11,12 +11,13 @@ use Illuminate\Support\Facades\Validator;
 class TaskStatusController extends Controller
 {
     /**
-     * Создать экземпляр контроллера.
      *
      * @return void
      */
     public function __construct()
     {
+        // Метод authorizeResource принимает имя класса модели в качестве своего первого аргумента и
+        // имя параметра маршрута / запроса, который будет содержать идентификатор модели, в качестве второго аргумента
         $this->authorizeResource(TaskStatus::class, 'task_status');
     }
 
