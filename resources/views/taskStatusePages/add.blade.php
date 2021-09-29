@@ -19,7 +19,7 @@
         <h2>Создать статус</h2>
         {{ Form::token() }}
         {{ Form::model($taskStatus, ['url' => route('task_statuses.store'), 'method' => 'POST']) }}
-        {{ Form::label('name', 'Имя') }}<br>
+        {{ Form::label('name', 'Имя') }}<font style="color: #e3342f">*</font><br>
         {{ Form::text('name') }}<br><br>
         {{ Form::submit('Создать') }}<br>
     </main>
