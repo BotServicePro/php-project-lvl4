@@ -64,7 +64,7 @@ class TaskStatusController extends Controller
         $newTaskStatus = new TaskStatus();
         $newTaskStatus->name = $request->name;
         $newTaskStatus->save();
-        flash('Статус успешно создан')->success();
+        flash(__('messages.statusSuccessAdded'))->success();
         return redirect(route('task_statuses.index'));
     }
 
@@ -112,7 +112,7 @@ class TaskStatusController extends Controller
         }
         $newStatus->name = $request->name;
         $newStatus->save();
-        flash('Статус успешно изменён')->success();
+        flash(__('messages.statusSuccessUpdated'))->success();
         return redirect(route('task_statuses.index'));
     }
 
@@ -129,7 +129,7 @@ class TaskStatusController extends Controller
 
 
         $taskStatus->delete();
-        flash('Статус успешно удалён')->success();
+        flash(__('messages.statusSuccessDeleted'))->success();
         return redirect()->route('task_statuses.index');
     }
 }
