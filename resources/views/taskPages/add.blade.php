@@ -23,17 +23,16 @@
         {{ Form::text('name') }}<br><br>
 
         {{ Form::label('description', 'Описание') }}<br>
-        {{ Form::textarea('description') }}<br><br>
+        {{ Form::textarea('description') }}<br>
 
         {{ Form::label('status_id', 'Статус') }}<font style="color: #e3342f">*</font><br>
-        {{  Form::select('status_id', ['' => '-----', '2' => 'статус2', '3' => 'статус3']) }}<br><br>
+        {{  Form::select('status_id', $taskStatusesList, null, ['placeholder' => '---']) }}<br><br>
 
         {{ Form::label('assigned_to_id', 'Исполнитель') }}<br>
-        {{  Form::select('assigned_to_id', ['' => '-----', '1' => 'Юзерпервый', '2' => 'Юзервторой']) }}<br><br>
+        {{ Form::select('assigned_to_id', $usersList, null, ['placeholder' => '---']) }}<br><br>
 
 {{--        {{ Form::label('labels', 'Метки') }}<br>--}}
 {{--        {{  Form::select('labels', ['label1' => 'метка1', 'label2' => 'метка2']) }}<br><br>--}}
-
 
         {{ Form::submit('Создать') }}<br>
     </main>
