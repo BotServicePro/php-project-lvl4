@@ -59,19 +59,25 @@ class TaskCRUDTest extends TestCase
         $this->signIn();
         $response = $this->get('/tasks/create'); // вход на страницу авторизованным юзером
         $response->assertStatus(200);
-//
-//        // формируем даные для записи
-//        $taskData = ['name' => 'Тестовый статус'];
-//
-//        // формируем запрос
-//        $response = $this->post(route('task_statuses.store'), $taskData);
-//        $response->assertSessionHasNoErrors();
-//
-//        // проверяем редирект после успешного добавления нового статуса
-//        $response->assertRedirect(route('task_statuses.index'));
-//
-//        // проверяем в базе наличие нового статуса
-//        $this->assertDatabaseHas('task_statuses', $taskData);
+
+        // формируем даные для записи
+        $taskData = [
+            'name' => 'Новая задача',
+            'description' => 'Очень важное описание',
+            'assigned_to_id' => 1,
+            'created_by_id' => 1,
+            'status_id' => 1
+        ];
+
+        // формируем запрос
+        $response = $this->post(route('tasks.store'), $taskData);
+        $response->assertSessionHasNoErrors();
+
+        // проверяем редирект после успешного добавления нового статуса
+        $response->assertRedirect(route('tasks.index'));
+
+        // проверяем в базе наличие нового статуса
+        $this->assertDatabaseHas('tasks', $taskData);
     }
 
 //    public function testTaskStatuseEdit()
