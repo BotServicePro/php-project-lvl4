@@ -18,6 +18,7 @@ class Tasks extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->integer('status_id')->nullable();
+            $table->integer('created_by_id')->nullable();
             $table->integer('assigned_to_id')->nullable();
             $table->timestamps();
         });
