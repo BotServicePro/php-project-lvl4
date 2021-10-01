@@ -7,8 +7,10 @@
 
 make start<br>
 make migration<br>
-php artisan db:seed TaskStatuseSeeder<br>
 php artisan db:seed UserSeeder<br>
+php artisan db:seed TaskStatuseSeeder<br>
+php artisan db:seed TaskSeeder<br>
+
 
 Создаём ресурсный роутинг - <br>
 <code>php artisan make:controller TaskStatusController --resource --model TaskStatus</code><br>
