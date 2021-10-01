@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\TaskStatus;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
@@ -40,7 +43,15 @@ class TaskController extends Controller
     public function create()
     {
         $task = new Task;
-        return view('taskPages.add', compact('task'));
+        $usersList = [];
+        foreach (User::select('id', 'name')->get()->toArray() as $user) {
+            $usersList[$user['id']] = $user['name'];
+        }
+        $taskStatusesList = [];
+        foreach (TaskStatus::select('id', 'name')->get()->toArray() as $status) {
+            $taskStatusesList[$status['id']] = $status['name'];
+        }
+        return view('taskPages.add', compact('task', 'usersList', 'taskStatusesList'));
     }
 
     /**
@@ -53,7 +64,7 @@ class TaskController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:tasks',
-            'status_id' => 'required'
+            'status_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -67,6 +78,7 @@ class TaskController extends Controller
         $newTask->description = $request->description;
         $newTask->status_id = $request->status_id;
         $newTask->assigned_to_id = $request->assigned_to_id;
+        $newTask->created_by_id = Auth::user()->id;
 //        dump($newTask);
 //        exit;
         $newTask->save();
