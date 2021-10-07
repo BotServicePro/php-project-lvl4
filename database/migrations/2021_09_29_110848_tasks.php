@@ -14,7 +14,7 @@ class Tasks extends Migration
     public function up()
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('name');
             $table->string('description')->nullable();
             $table->foreignId('status_id')->references('id')->on('task_statuses');
