@@ -3,11 +3,13 @@
 namespace Tests\Feature;
 
 use App\Models\Task;
+
+use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
+
 
 class TaskCRUDTest extends TestCase
 {
@@ -17,18 +19,16 @@ class TaskCRUDTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // создаем нового юзера
+        User::factory()->create();
 
-//        $statuseNames = ['новый', 'в работе', 'на тестировании', 'завершен'];
-//        foreach ($statuseNames as $name) {
-//            $status = new TaskStatus();
-//            $status->name = $name;
-//            $status->save();
-//        }
-//
-//        //$this->id = TaskStatus::where('id', '=', 1)->get();
-//        foreach(TaskStatus::where('id', '=', 1)->get() as $item) {
-//            $this->id = $item->id;
-//        }
+        $statusData = new TaskStatus();
+        $statusData->name = 'тестовый статус';
+        $statusData->save();
+
+        foreach (Task::where('id', '=', 1)->get() as $item) {
+            $this->id = $item->id;
+        }
     }
 
 
@@ -46,8 +46,7 @@ class TaskCRUDTest extends TestCase
     // авторизация
     protected function signIn($user = null)
     {
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs(User::find(1));
         return $this;
     }
 
@@ -62,12 +61,12 @@ class TaskCRUDTest extends TestCase
 
         // формируем даные для записи
         $taskData = [
-            'name' => 'Новая задача',
-            'description' => 'Очень важное описание',
-            'assigned_to_id' => 1,
+            'name' => 'Тестовая задача',
+            'description' => 'Описание тестовой задачи',
+            'status_id' => 1,
             'created_by_id' => 1,
-            'status_id' => 1
-        ];
+            'assigned_to_id' => 1,
+            ];
 
         // формируем запрос
         $response = $this->post(route('tasks.store'), $taskData);
@@ -75,19 +74,17 @@ class TaskCRUDTest extends TestCase
 
         // проверяем редирект после успешного добавления нового статуса
         $response->assertRedirect(route('tasks.index'));
-
-        // проверяем в базе наличие нового статуса
         $this->assertDatabaseHas('tasks', $taskData);
     }
 
 //    public function testTaskStatuseEdit()
 //    {
-//        $response = $this->get("/task_statuses/{$this->id}/edit"); // вход на страницу авторизованным юзером
+//        $response = $this->get("/tasks/{$this->id}/edit"); // вход на страницу авторизованным юзером
 //        $response->assertStatus(403); // в случае если НЕ авторизованы
 //
 //        $this->signIn();
 //
-//        $response = $this->get("/task_statuses/{$this->id}/edit"); // вход на страницу авторизованным юзером
+//        $response = $this->get("/tasks/{$this->id}/edit"); // вход на страницу авторизованным юзером
 //        $response->assertStatus(200);
 //
 //        // формируем даные для записи

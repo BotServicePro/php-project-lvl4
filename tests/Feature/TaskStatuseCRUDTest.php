@@ -25,7 +25,6 @@ class TaskStatuseCRUDTest extends TestCase
             $status->save();
         }
 
-        //$this->id = TaskStatus::where('id', '=', 1)->get();
         foreach(TaskStatus::where('id', '=', 1)->get() as $item) {
             $this->id = $item->id;
         }
