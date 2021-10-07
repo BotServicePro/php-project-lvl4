@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -125,10 +126,13 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        // написать проверку, не привязан ли этот статус к каким либо задачам, если не привязан то удаляем
-
-        $taskStatus->delete();
-        flash(__('messages.statusSuccessDeleted'))->success();
+        $allTaskStatusesInUsage = Task::where('status_id', $taskStatus->id)->get()->toArray();
+        if ($allTaskStatusesInUsage === []) {
+            $taskStatus->delete();
+            flash(__('messages.statusSuccessDeleted'))->success();
+            return redirect()->route('task_statuses.index');
+        }
+        flash(__('messages.statusUnSuccessDeleted'))->error();
         return redirect()->route('task_statuses.index');
     }
 }
