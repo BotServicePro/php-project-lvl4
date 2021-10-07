@@ -7,6 +7,7 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
@@ -26,13 +27,19 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::paginate(5);
+        $result = [];
+        $tasks = Task::paginate(55);
 
-        //dump($tasks);
-        //exit;
-        // возможно добавить сортировку надо
-        // добавить ДЖОИН с других таблиц!!!!!
-        return view('taskPages.index', compact('tasks'));
+        foreach ($tasks as $task) {
+            //dump($task->getStatusData->name);
+            $result[] = array_merge($task->toArray(), [
+                'task_author_name' => $task->getAuthorData->name,
+                'status_name' => $task->getStatusData ? $task->getStatusData->name : null,
+                'executor_name' => $task->getExecutorData ? $task->getExecutorData->name : null
+            ]);
+        }
+
+        return view('taskPages.index', compact('result'));
     }
 
     /**
@@ -105,7 +112,8 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        $task = Task::findOrFail($task->id);
+        return view('taskPages.edit', compact('task'));
     }
 
     /**
