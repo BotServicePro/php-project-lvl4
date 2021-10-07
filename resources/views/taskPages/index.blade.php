@@ -45,12 +45,14 @@
                     <td>{{ $task['created_at'] }}</td>
                     @if(Auth::check())
                         <td>
+                            @if($task['created_by_id'] === Auth::user()->id)
                             <form action="{{ route('tasks.destroy', $task['id']) }}" method="POST" data-confirm="Точно удалить?" rel="nofollow">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">Delete</button>
-                            </form>
-                            | <a href="/tasks/{{ $task['id'] }}/edit">Изменить</a></td>
+                            </form> |
+                            @endif
+                                <a href="/tasks/{{ $task['id'] }}/edit">Изменить</a></td>
                     @endif
                 </tr>
             @endforeach
