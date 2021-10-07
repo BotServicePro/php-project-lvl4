@@ -35,24 +35,27 @@
             </thead>
 
             <tbody>
-{{--            @foreach ($tasks as $tasks)--}}
-{{--                <tr>--}}
-{{--                    <td>{{ $tasks->id }}</td>--}}
-{{--                    <td>{{ $tasks->name }}</td>--}}
-{{--                    <td>{{ $tasks->created_at }}</td>--}}
-{{--                    @if(Auth::check())--}}
-{{--                        <td>--}}
-{{--                            <form action="{{ route('task_statuses.destroy', $tasks->id) }}" method="POST" data-confirm="Точно удалить?" rel="nofollow">--}}
-{{--                                @csrf--}}
-{{--                                @method('delete')--}}
-{{--                                <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">Delete</button>--}}
-{{--                            </form>--}}
-{{--                            | <a href="/task_statuses/{{ $tasks->id }}/edit">Изменить</a></td>--}}
-{{--                    @endif--}}
-{{--                </tr>--}}
-{{--            @endforeach--}}
+            @foreach ($result as $task)
+                <tr>
+                    <td>{{ $task['id'] }}</td>
+                    <td>{{ $task['status_name'] }}</td>
+                    <td><a href="/tasks/{{$task['id'] }}">{{ $task['name'] }}</a></td>
+                    <td>{{ $task['task_author_name'] }}</td>
+                    <td>{{ $task['executor_name'] }}</td>
+                    <td>{{ $task['created_at'] }}</td>
+                    @if(Auth::check())
+                        <td>
+                            <form action="{{ route('tasks.destroy', $task['id']) }}" method="POST" data-confirm="Точно удалить?" rel="nofollow">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">Delete</button>
+                            </form>
+                            | <a href="/tasks/{{ $task['id'] }}/edit">Изменить</a></td>
+                    @endif
+                </tr>
+            @endforeach
             </tbody>
         </table>
-{{--        {{ $taskStatus->links() }}--}}
+{{--        {{ $result->links() }}--}}
     </main>
 @endsection
