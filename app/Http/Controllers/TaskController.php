@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
@@ -18,7 +18,6 @@ class TaskController extends Controller
         // имя параметра маршрута / запроса, который будет содержать идентификатор модели, в качестве второго аргумента
         $this->authorizeResource(Task::class, 'task');
     }
-
 
     /**
      * Display a listing of the resource.
@@ -31,8 +30,8 @@ class TaskController extends Controller
         $tasks = Task::paginate(55);
 
         foreach ($tasks as $task) {
-            //dump($task->getStatusData->name);
             $result[] = array_merge($task->toArray(), [
+                'created_by_id' => $task->created_by_id,
                 'task_author_name' => $task->getAuthorData->name,
                 'status_name' => $task->getStatusData ? $task->getStatusData->name : null,
                 'executor_name' => $task->getExecutorData ? $task->getExecutorData->name : null
@@ -86,8 +85,6 @@ class TaskController extends Controller
         $newTask->status_id = $request->status_id;
         $newTask->assigned_to_id = $request->assigned_to_id;
         $newTask->created_by_id = Auth::user()->id;
-//        dump($newTask);
-//        exit;
         $newTask->save();
         flash(__('messages.taskSuccessAdded'))->success();
         return redirect(route('tasks.index'));
@@ -101,7 +98,10 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        $taskData = Task::find($task->id);
+        $statusData = $task->getStatusData;
+        // добавить потом получение инфы о лейблах
+        return view('taskPages.show', compact('taskData', 'statusData'));
     }
 
     /**
@@ -113,7 +113,15 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         $task = Task::findOrFail($task->id);
-        return view('taskPages.edit', compact('task'));
+        //$usersList = [];
+        foreach (User::select('id', 'name')->get()->toArray() as $user) {
+            $usersList[$user['id']] = $user['name'];
+        }
+        //$taskStatusesList = [];
+        foreach (TaskStatus::select('id', 'name')->get()->toArray() as $status) {
+            $taskStatusesList[$status['id']] = $status['name'];
+        }
+        return view('taskPages.edit', compact('task', 'usersList', 'taskStatusesList'));
     }
 
     /**
@@ -125,7 +133,29 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $newTask = Task::findOrFail($task->id);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'description' => '',
+            'status_id' => 'required',
+            'updated_at' => Carbon::now(),
+            'assigned_to_id' => '',
+            'created_by_id' => '',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect(route('tasks.create'))
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $newTask->name = $request->name;
+        $newTask->description = $request->description;
+        $newTask->created_by_id = $request->created_by_id;
+        $newTask->assigned_to_id = $request->assigned_to_id;
+        $newTask->status_id = $request->status_id;
+        $newTask->save();
+        flash(__('messages.statusSuccessUpdated'))->success();
+        return redirect(route('tasks.index'));
     }
 
     /**
@@ -136,6 +166,15 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $taskAuthorId = (int) $task->created_by_id;
+        $authorizedUserId = (int) Auth::user()->id;
+        if ($taskAuthorId !== $authorizedUserId) {
+            flash(__('messages.taskUnsuccessDelete'))->error();
+            return redirect()->route('tasks.index');
+        }
+
+        flash(__('messages.statusSuccessDeleted'))->success();
+        $task->delete();
+        return redirect()->route('tasks.index');
     }
 }

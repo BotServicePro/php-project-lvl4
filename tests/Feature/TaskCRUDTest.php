@@ -8,6 +8,7 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 
@@ -19,16 +20,29 @@ class TaskCRUDTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // создаем нового юзера
+
+        // ПЕРВОЕ создаем нового юзера
         User::factory()->create();
 
+        // ВТОРОЕ создаем статус
         $statusData = new TaskStatus();
-        $statusData->name = 'тестовый статус';
+        $statusData->name = 'статус в разработке';
         $statusData->save();
 
-        foreach (Task::where('id', '=', 1)->get() as $item) {
-            $this->id = $item->id;
-        }
+        $statusData = new TaskStatus();
+        $statusData->name = 'статус завершен';
+        $statusData->save();
+
+        // ТРЕТЬЕ создаем задачу
+        $taskData = new Task();
+        $taskData->name = 'задача';
+        $taskData->description = 'описание';
+        $taskData->created_by_id = 1;
+        $taskData->assigned_to_id = 1;
+        $taskData->status_id = 1;
+        $taskData->save();
+
+        (int) $this->id = Task::find(1)->id;
     }
 
 
@@ -77,45 +91,57 @@ class TaskCRUDTest extends TestCase
         $this->assertDatabaseHas('tasks', $taskData);
     }
 
-//    public function testTaskStatuseEdit()
-//    {
-//        $response = $this->get("/tasks/{$this->id}/edit"); // вход на страницу авторизованным юзером
-//        $response->assertStatus(403); // в случае если НЕ авторизованы
-//
-//        $this->signIn();
-//
-//        $response = $this->get("/tasks/{$this->id}/edit"); // вход на страницу авторизованным юзером
-//        $response->assertStatus(200);
-//
-//        // формируем даные для записи
-//        $taskData = [
-//            'name' => 'ОБНОВЛЁННЫЙ статус',
-//        ];
-//
-//        // формируем запрос
-//        //$response = $this->patch(route('task_statuses.update'), $taskData);
-//        $response = $this->patch("task_statuses/{$this->id}", $taskData);
-//        $response->assertSessionHasNoErrors();
-//
-//        foreach(TaskStatus::where('id', '=', 1)->get() as $item) {
-//            $updatedTask = $item;
-//        }
-//
-//        $this->assertEquals($taskData['name'], $updatedTask->name);
-//        $this->assertEquals(1, $updatedTask->id);
-//    }
-//
-//    public function testTaskStatuseDelete()
-//    {
-//        $response = $this->delete("task_statuses/{$this->id}");
-//        $response->assertStatus(403);
-//
-//        $this->signIn();
-//        $response = $this->delete("task_statuses/{$this->id}");
-//        $response->assertStatus(302);
-//        $response->assertRedirect(route('task_statuses.index'));
-//
-//        $deletedTask = TaskStatus::where('id', '=', 1)->get()->toArray();
-//        $this->assertEquals([], $deletedTask);
-//    }
+    public function testTaskEdit()
+    {
+        $response = $this->get("/tasks/{$this->id}/edit"); // вход на страницу авторизованным юзером
+        $response->assertStatus(403); // в случае если НЕ авторизованы
+
+        $this->signIn();
+
+        $response = $this->get("/tasks/{$this->id}/edit"); // вход на страницу авторизованным юзером
+        $response->assertStatus(200);
+
+        // формируем даные для записи
+        $taskData = [
+            'name' => 'ОБНОВЛЁННое название задачи',
+            'description' => 'новое описание',
+            'status_id' => 2,
+            'created_by_id' => 1,
+            'assigned_to_id' => 2,
+        ];
+
+        // формируем запрос
+        $response = $this->patch("tasks/{$this->id}", $taskData);
+        $response->assertSessionHasNoErrors();
+
+        $updatedTask = Task::find(1);
+
+        $this->assertEquals($taskData['name'], $updatedTask->name);
+        $this->assertEquals($taskData['description'], $updatedTask->description);
+        $this->assertEquals($taskData['status_id'], $updatedTask->status_id);
+        $this->assertEquals($this->id, $updatedTask->id);
+        $this->assertEquals($taskData['assigned_to_id'], $updatedTask->assigned_to_id);
+    }
+
+    public function testTaskDelete()
+    {
+        $response = $this->delete("tasks/{$this->id}");
+        $response->assertStatus(403);
+
+        $this->signIn();
+
+        $response = $this->delete("tasks/{$this->id}");
+        $response->assertStatus(302);
+        $response->assertRedirect(route('tasks.index'));
+
+        $deletedTask = Task::where('id', '=', 1)->get()->toArray();
+        $this->assertEquals([], $deletedTask);
+    }
+
+    public function testTaskShow()
+    {
+        // возможно придеться дописать тест с использованием фикстур и фейковой страницы
+        $response = $this->get("/tasks/{$this->id}");
+        $response->assertStatus(200);
+    }
 }
