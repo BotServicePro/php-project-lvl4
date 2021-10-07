@@ -14,11 +14,11 @@ class Tasks extends Migration
     public function up()
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->integer('status_id')->nullable();
-            $table->integer('created_by_id')->nullable();
+            $table->foreignId('status_id')->references('id')->on('task_statuses');
+            $table->foreignId('created_by_id')->references('id')->on('users');
             $table->integer('assigned_to_id')->nullable();
             $table->timestamps();
         });
