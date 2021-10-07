@@ -127,8 +127,6 @@ class TaskStatusController extends Controller
     {
         // написать проверку, не привязан ли этот статус к каким либо задачам, если не привязан то удаляем
 
-
-
         $taskStatus->delete();
         flash(__('messages.statusSuccessDeleted'))->success();
         return redirect()->route('task_statuses.index');

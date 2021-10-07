@@ -19,15 +19,14 @@ class TaskStatuseCRUDTest extends TestCase
         parent::setUp();
 
         $statuseNames = ['новый', 'в работе', 'на тестировании', 'завершен'];
+
         foreach ($statuseNames as $name) {
             $status = new TaskStatus();
             $status->name = $name;
             $status->save();
         }
 
-        foreach(TaskStatus::where('id', '=', 1)->get() as $item) {
-            $this->id = $item->id;
-        }
+        $this->id = TaskStatus::find(1)->id;
     }
 
 
@@ -89,16 +88,13 @@ class TaskStatuseCRUDTest extends TestCase
         ];
 
         // формируем запрос
-        //$response = $this->patch(route('task_statuses.update'), $taskData);
         $response = $this->patch("task_statuses/{$this->id}", $taskData);
         $response->assertSessionHasNoErrors();
 
-        foreach(TaskStatus::where('id', '=', 1)->get() as $item) {
-            $updatedTask = $item;
-        }
+        $updatedTaskStatus = TaskStatus::find(1);
 
-        $this->assertEquals($taskData['name'], $updatedTask->name);
-        $this->assertEquals(1, $updatedTask->id);
+        $this->assertEquals($taskData['name'], $updatedTaskStatus->name);
+        $this->assertEquals(1, $updatedTaskStatus->id);
     }
 
     public function testTaskStatuseDelete()
