@@ -18,7 +18,7 @@ return [
     'taskSuccessUpdated' => 'Task has been edited',
     'taskSuccessDeleted' => 'Task has been deleted',
 
-
+    'taskUnsuccessDelete' => 'Impossible to delete task created by someone else',
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
