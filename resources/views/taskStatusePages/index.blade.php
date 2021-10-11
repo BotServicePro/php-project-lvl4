@@ -16,6 +16,7 @@
 @section('content')
     <main class="container py-4">
         <h2>Статусы</h2>
+        <br>
         @if(Auth::check())
             <a href="{{ route('task_statuses.create') }}" class="btn btn-primary">Создать статус</a>
         @endif
