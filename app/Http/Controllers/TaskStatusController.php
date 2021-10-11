@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\TaskStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -65,6 +65,7 @@ class TaskStatusController extends Controller
 
         $newTaskStatus = new TaskStatus();
         $newTaskStatus->name = $request->name;
+        $newTaskStatus->timestamps = Carbon::now();
         $newTaskStatus->save();
         flash(__('messages.statusSuccessAdded'))->success();
         return redirect(route('task_statuses.index'));
@@ -113,6 +114,7 @@ class TaskStatusController extends Controller
                 ->withInput();
         }
         $newStatus->name = $request->name;
+        $newStatus->updated_at = Carbon::now();
         $newStatus->save();
         flash(__('messages.statusSuccessUpdated'))->success();
         return redirect(route('task_statuses.index'));
