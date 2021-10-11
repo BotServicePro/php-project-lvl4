@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Task;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Auth;
 
 class TaskSeeder extends Seeder
 {
@@ -23,6 +23,7 @@ class TaskSeeder extends Seeder
         $newTask->status_id = 1;
         $newTask->assigned_to_id = 1;
         $newTask->created_by_id = 1;
+        $newTask->timestamps = Carbon::now();
         $newTask->save();
 
         $newTask = new Task();
@@ -31,6 +32,7 @@ class TaskSeeder extends Seeder
         $newTask->status_id = 2;
         $newTask->assigned_to_id = 2;
         $newTask->created_by_id = 2;
+        $newTask->timestamps = Carbon::now();
         $newTask->save();
     }
 }
