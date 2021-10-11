@@ -33,9 +33,17 @@
         {{ Form::label('assigned_to_id', 'Исполнитель') }}<br>
         {{  Form::select('assigned_to_id', $usersList, null, ['placeholder' => '---']) }}<br><br>
 
-{{--        {{ Form::label('assigned_to_id', 'Метки') }}<font style="color: #e3342f">*</font><br>--}}
-{{--        {{  Form::select('assigned_to_id', $task, null, ['placeholder' => '---']) }}<br><br>--}}
-
+        <script>
+            $(document).ready(function() {
+                $('.js-example-basic-multiple').select2();
+            });
+        </script>
+        <select class="js-example-basic-multiple" name="labels[]" multiple="multiple">
+            @foreach ($labels as $label)
+                <option value="{{ $label->id }}">{{ $label->name }}</option>
+            @endforeach
+        </select>
+        <br><br>
         {{ Form::submit('Обновить') }}<br>
     </main>
 @endsection
