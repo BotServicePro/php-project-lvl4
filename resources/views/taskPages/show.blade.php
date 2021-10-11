@@ -36,6 +36,11 @@
         <br>
         <div>
             Метки:
+            <ul>
+            @foreach($labelsData as $label)
+                <li>{{ $label->getLabelName->name }}</li>
+            @endforeach
+            </ul>
         </div>
     </main>
 @endsection
