@@ -10,7 +10,12 @@ make migration<br>
 php artisan db:seed UserSeeder<br>
 php artisan db:seed TaskStatuseSeeder<br>
 php artisan db:seed TaskSeeder<br>
+php artisan db:seed LabelSeeder<br>
 
+
+
+Создаем миграцию + модель + контроллер<br>
+<code>php artisan make:model Label --migration --controller</code>
 
 Создаём ресурсный роутинг - <br>
 <code>php artisan make:controller TaskStatusController --resource --model TaskStatus</code><br>
