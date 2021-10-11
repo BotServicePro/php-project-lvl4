@@ -65,7 +65,6 @@ class LabelCRUDTest extends TestCase
         return $this;
     }
 
-
     /**
      * A basic feature test example.
      *
@@ -79,7 +78,7 @@ class LabelCRUDTest extends TestCase
 
     public function testLabelAdd()
     {
-        $response = $this->get('/labels/create'); // вход на страницу авторизованным юзером
+        $response = $this->get(route('labels.create')); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
 
         $this->signIn();
@@ -104,12 +103,12 @@ class LabelCRUDTest extends TestCase
 
     public function testLabelEdit()
     {
-        $response = $this->get("/labels/{$this->id}/edit"); // вход на страницу авторизованным юзером
+        $response = $this->get(route('labels.edit', ['label' => $this->id])); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
 
         $this->signIn();
 
-        $response = $this->get("/labels/{$this->id}/edit"); // вход на страницу авторизованным юзером
+        $response = $this->get(route('labels.edit', ['label' => $this->id])); // вход на страницу авторизованным юзером
         $response->assertStatus(200);
 
         // формируем даные для записи
@@ -119,7 +118,7 @@ class LabelCRUDTest extends TestCase
         ];
 
         // формируем запрос
-        $response = $this->patch("/labels/{$this->id}", $labelData);
+        $response = $this->patch(route('labels.update', ['label' => $this->id]), $labelData);
         $response->assertSessionHasNoErrors();
 
         $updatedLabel = Label::find(1);
@@ -131,31 +130,31 @@ class LabelCRUDTest extends TestCase
 
     public function testLabelDelete()
     {
-        $response = $this->delete("/labels/{$this->id}");
+        $response = $this->delete(route('labels.destroy', ['label' => $this->id]));
         $response->assertStatus(403);
 
         $this->signIn();
 
-        $response = $this->delete("/labels/3");
+        $response = $this->delete(route('labels.destroy', ['label' => 3]));
         $response->assertStatus(302);
         $response->assertRedirect(route('labels.index'));
 
         // проверяем что метка не удалилась так как она есть у задачи
-        $deletedLabel = Label::where('id', '=', 3)->get()->toArray();
-        $this->assertEquals('третья метка', $deletedLabel[0]['name']);
+        $thirdLabel = Label::where('id', 3)->first();
+        $this->assertEquals('третья метка', $thirdLabel->name);
 
         // удаляем метку которая нигде не использовалась
-        $response = $this->delete("/labels/1");
+        $response = $this->delete(route('labels.destroy', ['label' => 1]));
         $response->assertStatus(302);
         $response->assertRedirect(route('labels.index'));
 
-        $deletedLabel = Label::where('id', '=', 1)->get()->toArray();
-        $this->assertEquals([], $deletedLabel);
+        $firstLabel = Label::where('id', '=', 1)->first();
+        $this->assertNull($firstLabel);
     }
 
     public function testLabelShow()
     {
-        $response = $this->get("labels/{$this->id}");
+        $response = $this->get(route('labels.show', ['label' => 1]));
         $response->assertStatus(403);
     }
 }

@@ -51,11 +51,11 @@ class TaskStatuseCRUDTest extends TestCase
 
     public function testTaskStatuseAdd()
     {
-        $response = $this->get('/task_statuses/create'); // вход на страницу авторизованным юзером
+        $response = $this->get(route('task_statuses.create')); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
 
         $this->signIn();
-        $response = $this->get('/task_statuses/create'); // вход на страницу авторизованным юзером
+        $response = $this->get(route('task_statuses.create')); // вход на страницу авторизованным юзером
         $response->assertStatus(200);
 
         // формируем даные для записи
@@ -74,12 +74,12 @@ class TaskStatuseCRUDTest extends TestCase
 
     public function testTaskStatuseEdit()
     {
-        $response = $this->get("/task_statuses/{$this->id}/edit"); // вход на страницу авторизованным юзером
-        $response->assertStatus(403); // в случае если НЕ авторизованы
+        $response = $this->get(route('task_statuses.edit', ['task_status' => $this->id]));
+        $response->assertStatus(403);
 
         $this->signIn();
 
-        $response = $this->get("/task_statuses/{$this->id}/edit"); // вход на страницу авторизованным юзером
+        $response = $this->get(route('task_statuses.edit', ['task_status' => $this->id]));
         $response->assertStatus(200);
 
         // формируем даные для записи
@@ -88,7 +88,7 @@ class TaskStatuseCRUDTest extends TestCase
         ];
 
         // формируем запрос
-        $response = $this->patch("task_statuses/{$this->id}", $taskData);
+        $response = $this->patch(route('task_statuses.update', ['task_status' => $this->id]), $taskData);
         $response->assertSessionHasNoErrors();
 
         $updatedTaskStatus = TaskStatus::find(1);
@@ -99,15 +99,15 @@ class TaskStatuseCRUDTest extends TestCase
 
     public function testTaskStatuseDelete()
     {
-        $response = $this->delete("task_statuses/{$this->id}");
+        $response = $this->delete(route('task_statuses.destroy', ['task_status' => $this->id]));
         $response->assertStatus(403);
 
         $this->signIn();
-        $response = $this->delete("task_statuses/{$this->id}");
+        $response = $this->delete(route('task_statuses.destroy', ['task_status' => $this->id]));
         $response->assertStatus(302);
         $response->assertRedirect(route('task_statuses.index'));
 
-        $deletedTask = TaskStatus::where('id', '=', 1)->get()->toArray();
-        $this->assertEquals([], $deletedTask);
+        $deletedTask = TaskStatus::where('id', '=', 1)->first();
+        $this->assertNull($deletedTask);
     }
 }

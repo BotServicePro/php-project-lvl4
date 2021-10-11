@@ -66,11 +66,11 @@ class TaskCRUDTest extends TestCase
 
     public function testTaskAdd()
     {
-        $response = $this->get('/tasks/create'); // вход на страницу авторизованным юзером
+        $response = $this->get(route('tasks.create')); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
 
         $this->signIn();
-        $response = $this->get('/tasks/create'); // вход на страницу авторизованным юзером
+        $response = $this->get(route('tasks.create')); // вход на страницу авторизованным юзером
         $response->assertStatus(200);
 
         // формируем даные для записи
@@ -93,12 +93,12 @@ class TaskCRUDTest extends TestCase
 
     public function testTaskEdit()
     {
-        $response = $this->get("/tasks/{$this->id}/edit"); // вход на страницу авторизованным юзером
+        $response = $this->get(route('tasks.edit', ['task' => $this->id])); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
 
         $this->signIn();
 
-        $response = $this->get("/tasks/{$this->id}/edit"); // вход на страницу авторизованным юзером
+        $response = $this->get(route('tasks.edit', ['task' => $this->id])); // вход на страницу авторизованным юзером
         $response->assertStatus(200);
 
         // формируем даные для записи
@@ -111,7 +111,7 @@ class TaskCRUDTest extends TestCase
         ];
 
         // формируем запрос
-        $response = $this->patch("tasks/{$this->id}", $taskData);
+        $response = $this->patch(route('tasks.update', ['task' => $this->id]), $taskData);
         $response->assertSessionHasNoErrors();
 
         $updatedTask = Task::find(1);
@@ -125,23 +125,23 @@ class TaskCRUDTest extends TestCase
 
     public function testTaskDelete()
     {
-        $response = $this->delete("tasks/{$this->id}");
+        $response = $this->delete(route('tasks.destroy', ['task' => $this->id]));
         $response->assertStatus(403);
 
         $this->signIn();
 
-        $response = $this->delete("tasks/{$this->id}");
+        $response = $this->delete(route('tasks.destroy', ['task' => $this->id]));
         $response->assertStatus(302);
         $response->assertRedirect(route('tasks.index'));
 
-        $deletedTask = Task::where('id', '=', 1)->get()->toArray();
-        $this->assertEquals([], $deletedTask);
+        $deletedTask = Task::where('id', 1)->first();
+        $this->assertNull($deletedTask);
     }
 
     public function testTaskShow()
     {
         // возможно придеться дописать тест с использованием фикстур и фейковой страницы
-        $response = $this->get("/tasks/{$this->id}");
+        $response = $this->get(route('tasks.show', ['task' => $this->id]));
         $response->assertStatus(200);
     }
 }
