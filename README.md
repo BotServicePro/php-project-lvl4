@@ -23,3 +23,5 @@ php artisan db:seed LabelSeeder<br>
 <code>php artisan make:policy TaskStatusPolicy --model=TaskStatus</code>
 
 
+USAGES<br>
+laravel-query-builder
