@@ -3,11 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Label;
+use App\Models\LabelTask;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class LabelCRUDTest extends TestCase
@@ -38,7 +37,25 @@ class LabelCRUDTest extends TestCase
         $labelData->description = 'описание третей метки';
         $labelData->save();
 
-         (int) $this->id = Label::find(1)->id;
+        // создаем задачу привязанную к меткам и статусу
+        $taskStatusData = new TaskStatus();
+        $taskStatusData->name = 'Тестовый статус';
+        $taskStatusData->save();
+
+        $taskData = new Task();
+        $taskData->name = 'Новая задача';
+        $taskData->description = 'описание';
+        $taskData->created_by_id = 1;
+        $taskData->assigned_to_id = 1;
+        $taskData->status_id = 1;
+        $taskData->save();
+
+        $taskLabelData = new LabelTask();
+        $taskLabelData->task_id = $taskData->id;
+        $taskLabelData->label_id = 3;
+        $taskLabelData->save();
+
+        (int) $this->id = Label::find(1)->id;
     }
 
     // авторизация
@@ -119,7 +136,16 @@ class LabelCRUDTest extends TestCase
 
         $this->signIn();
 
-        $response = $this->delete("/labels/{$this->id}");
+        $response = $this->delete("/labels/3");
+        $response->assertStatus(302);
+        $response->assertRedirect(route('labels.index'));
+
+        // проверяем что метка не удалилась так как она есть у задачи
+        $deletedLabel = Label::where('id', '=', 3)->get()->toArray();
+        $this->assertEquals('третья метка', $deletedLabel[0]['name']);
+
+        // удаляем метку которая нигде не использовалась
+        $response = $this->delete("/labels/1");
         $response->assertStatus(302);
         $response->assertRedirect(route('labels.index'));
 
