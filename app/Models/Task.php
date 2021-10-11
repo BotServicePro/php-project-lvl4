@@ -15,15 +15,19 @@ class Task extends Model
         'status_id',
         'created_by_id',
         'assigned_to_id',
+        'labels',
     ];
 
-    public function getAuthorData() {
+    public function getAuthorData()
+    {
         return $this->belongsTo(User::class, 'created_by_id');
     }
-    public function getStatusData() {
+    public function getStatusData()
+    {
         return $this->belongsTo(TaskStatus::class, 'status_id');
     }
-    public function getExecutorData() {
+    public function getExecutorData()
+    {
         return $this->belongsTo(User::class, 'assigned_to_id');
     }
 }
