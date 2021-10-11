@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Label;
+use App\Models\LabelTask;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
@@ -26,19 +29,16 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $result = [];
-        $tasks = Task::paginate(55);
+        $data =  Task::addSelect([
+                'task_author_name' => User::select('name')
+                    ->whereColumn('id', 'tasks.created_by_id'),
+                'status_name' => TaskStatus::select('name')
+                    ->whereColumn('id', 'tasks.status_id'),
+                'executor_name' => User::select('name')
+                    ->whereColumn('id', 'tasks.assigned_to_id')
+            ])->paginate(5);
 
-        foreach ($tasks as $task) {
-            $result[] = array_merge($task->toArray(), [
-                'created_by_id' => $task->created_by_id,
-                'task_author_name' => $task->getAuthorData->name,
-                'status_name' => $task->getStatusData ? $task->getStatusData->name : null,
-                'executor_name' => $task->getExecutorData ? $task->getExecutorData->name : null
-            ]);
-        }
-
-        return view('taskPages.index', compact('result'));
+        return view('taskPages.index', compact('data'));
     }
 
     /**
@@ -50,6 +50,7 @@ class TaskController extends Controller
     {
         $task = new Task;
         $usersList = [];
+        $labels = Label::all();
         foreach (User::select('id', 'name')->get()->toArray() as $user) {
             $usersList[$user['id']] = $user['name'];
         }
@@ -57,7 +58,8 @@ class TaskController extends Controller
         foreach (TaskStatus::select('id', 'name')->get()->toArray() as $status) {
             $taskStatusesList[$status['id']] = $status['name'];
         }
-        return view('taskPages.add', compact('task', 'usersList', 'taskStatusesList'));
+
+        return view('taskPages.add', compact('task', 'usersList', 'taskStatusesList', 'labels'));
     }
 
     /**
@@ -70,7 +72,11 @@ class TaskController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:tasks',
+            'description' => '',
             'status_id' => 'required',
+            'created_by_id' => '',
+            'assigned_to_id' => '',
+            'labels' => '',
         ]);
 
         if ($validator->fails()) {
@@ -79,15 +85,39 @@ class TaskController extends Controller
                 ->withInput();
         }
 
-        $newTask = new Task();
-        $newTask->name = $request->name;
-        $newTask->description = $request->description;
-        $newTask->status_id = $request->status_id;
-        $newTask->assigned_to_id = $request->assigned_to_id;
-        $newTask->created_by_id = Auth::user()->id;
-        $newTask->save();
-        flash(__('messages.taskSuccessAdded'))->success();
-        return redirect(route('tasks.index'));
+        try {
+            DB::beginTransaction();
+            $newTask = new Task();
+            $newTask->name = $request->name;
+            $newTask->description = $request->description;
+            $newTask->status_id = $request->status_id;
+            $newTask->assigned_to_id = $request->assigned_to_id;
+            $newTask->created_by_id = Auth::user()->id;
+            $newTask->timestamps = Carbon::now();
+            $newTask->save();
+
+            // были ли добавлены метки
+            if ($request->labels !== null) {
+                foreach ($request->labels as $labelId) {
+                    $newTaskLabel = new LabelTask();
+                    $newTaskLabel->task_id = $newTask->id;
+                    $newTaskLabel->label_id = $labelId;
+                    $newTaskLabel->timestamps = Carbon::now();
+                    $newTaskLabel->save();
+                }
+            }
+
+
+            DB::commit();
+            /* Transaction successful. */
+            flash(__('messages.taskSuccessAdded'))->success();
+            return redirect(route('tasks.index'));
+        } catch (\Exception $e) {
+            DB::rollback();
+            /* Transaction failed. */
+            flash('Something went wrong')->error();
+            return redirect(route('tasks.create'));
+        }
     }
 
     /**
@@ -100,8 +130,8 @@ class TaskController extends Controller
     {
         $taskData = Task::find($task->id);
         $statusData = $task->getStatusData;
-        // добавить потом получение инфы о лейблах
-        return view('taskPages.show', compact('taskData', 'statusData'));
+        $labelsData = LabelTask::where('task_id', '=', $task->id)->get();
+        return view('taskPages.show', compact('taskData', 'statusData', 'labelsData'));
     }
 
     /**
@@ -112,16 +142,15 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
+        $labels = Label::all();
         $task = Task::findOrFail($task->id);
-        //$usersList = [];
         foreach (User::select('id', 'name')->get()->toArray() as $user) {
             $usersList[$user['id']] = $user['name'];
         }
-        //$taskStatusesList = [];
         foreach (TaskStatus::select('id', 'name')->get()->toArray() as $status) {
             $taskStatusesList[$status['id']] = $status['name'];
         }
-        return view('taskPages.edit', compact('task', 'usersList', 'taskStatusesList'));
+        return view('taskPages.edit', compact('task', 'usersList', 'taskStatusesList', 'labels'));
     }
 
     /**
@@ -141,6 +170,7 @@ class TaskController extends Controller
             'updated_at' => Carbon::now(),
             'assigned_to_id' => '',
             'created_by_id' => '',
+            'labels' => ''
         ]);
 
         if ($validator->fails()) {
@@ -148,14 +178,43 @@ class TaskController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $newTask->name = $request->name;
-        $newTask->description = $request->description;
-        $newTask->created_by_id = $request->created_by_id;
-        $newTask->assigned_to_id = $request->assigned_to_id;
-        $newTask->status_id = $request->status_id;
-        $newTask->save();
-        flash(__('messages.statusSuccessUpdated'))->success();
-        return redirect(route('tasks.index'));
+
+        try {
+            DB::beginTransaction();
+
+            // удаляем старые метки
+            LabelTask::where('task_id', '=', $task->id)->delete();
+
+            // если есть метки то добавляем их
+            if ($request->labels !== null) {
+                // добавляем новые метки
+                foreach ($request->labels as $labelId) {
+                    $newLabel = new LabelTask;
+                    $newLabel->task_id = $task->id;
+                    $newLabel->label_id = $labelId;
+                    $newLabel->save();
+                }
+            }
+
+            // обновляем задачу
+            $newTask->name = $request->name;
+            $newTask->description = $request->description;
+            $newTask->created_by_id = $request->created_by_id;
+            $newTask->assigned_to_id = $request->assigned_to_id;
+            $newTask->status_id = $request->status_id;
+            $newTask->updated_at = Carbon::now();
+            $newTask->save();
+
+            DB::commit();
+            /* Transaction successful. */
+            flash(__('messages.taskSuccessUpdated'))->success();
+            return redirect(route('tasks.index'));
+        } catch (\Exception $e) {
+            DB::rollback();
+            /* Transaction failed. */
+            flash('Something went wrong - ' . $e)->error();
+            return redirect(route('tasks.index'));
+        }
     }
 
     /**
@@ -171,6 +230,11 @@ class TaskController extends Controller
         if ($taskAuthorId !== $authorizedUserId) {
             flash(__('messages.taskUnsuccessDelete'))->error();
             return redirect()->route('tasks.index');
+        }
+
+        // проверяем есть ли у задачи метки -
+        if (count(LabelTask::where('task_id', '=', $task->id)->get()) > 0) { // если меток больше чем 0
+            LabelTask::where('task_id', '=', $task->id)->delete();
         }
 
         flash(__('messages.statusSuccessDeleted'))->success();
