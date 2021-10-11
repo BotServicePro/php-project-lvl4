@@ -14,12 +14,17 @@ return [
     'statusSuccessUpdated' => 'Статус успешно изменён',
     'statusSuccessDeleted' => 'Статус успешно удалён',
 
+    'labelSuccesAdded' => 'Метка успешно создана',
+    'labelSuccesUpdated' => 'Метка успешно изменена',
+    'labelSuccesDeleted' => 'Метка успешно удалена',
+
     'taskSuccessAdded' => 'Задача успешно создана',
     'taskSuccessUpdated' => 'Задача успешно изменена',
     'taskSuccessDeleted' => 'Задача успешно удалена',
 
     'taskUnsuccessDelete' => 'Невозможно удалить созданную другим пользователем',
     'statusUnSuccessDeleted' => 'Не удалось удалить статус',
+    'labelUnsuccessDeleted' => 'Не удалось удалить метку',
 
     /*
     |--------------------------------------------------------------------------

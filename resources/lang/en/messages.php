@@ -14,12 +14,17 @@ return [
     'statusSuccessUpdated' => 'Status has been updated',
     'statusSuccessDeleted' => 'Status has been deleted',
 
+    'labelSuccesAdded' => 'Label has been added',
+    'labelSuccesUpdated' => 'Label has been updated',
+    'labelSuccesDeleted' => 'Label has been deleted',
+
     'taskSuccessAdded' => 'Task has been added',
     'taskSuccessUpdated' => 'Task has been edited',
     'taskSuccessDeleted' => 'Task has been deleted',
 
     'taskUnsuccessDelete' => 'Impossible to delete task created by someone else',
     'statusUnSuccessDeleted' => 'Status has not been deleted',
+    'labelUnsuccessDeleted' => 'Label has not been deleted',
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
