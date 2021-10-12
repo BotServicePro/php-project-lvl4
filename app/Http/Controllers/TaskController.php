@@ -130,7 +130,15 @@ class TaskController extends Controller
     {
         $taskData = Task::find($task->id);
         $statusData = $task->getStatusData;
-        $labelsData = LabelTask::where('task_id', '=', $task->id)->get();
+
+        // дополнительные данные типа label_name можно прикрепить комбинированным сложным запросом,
+        // либо во view в цикле через метод getLabelName определенный в модели LabelTask
+        $labelsData =  LabelTask::where('task_id', '=', $task->id)->addSelect([
+            'label_name' => Label::select('name')
+                ->whereColumn('id', 'label_tasks.label_id')
+        ])->get();
+
+        //$labelsData = LabelTask::where('task_id', '=', $task->id)->get();
         return view('taskPages.show', compact('taskData', 'statusData', 'labelsData'));
     }
 
@@ -232,8 +240,8 @@ class TaskController extends Controller
             return redirect()->route('tasks.index');
         }
 
-        // проверяем есть ли у задачи метки -
-        if (count(LabelTask::where('task_id', '=', $task->id)->get()) > 0) { // если меток больше чем 0
+        // проверяем есть ли у задачи метки
+        if (LabelTask::where('task_id', '=', $task->id)->count() > 0) { // если меток больше чем 0
             LabelTask::where('task_id', '=', $task->id)->delete();
         }
 

@@ -85,6 +85,7 @@ class LabelController extends Controller
      */
     public function edit(Label $label)
     {
+        $label = Label::findOrFail($label->id);
         return view('labelPages.edit', compact('label'));
     }
 
@@ -124,10 +125,12 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        if (count(LabelTask::where('label_id', '=', $label->id)->get()) > 0) {
+
+        if (LabelTask::where('label_id', '=', $label->id)->count() > 0) {
             flash(__('messages.labelUnsuccessDeleted'))->error();
             return redirect(route('labels.index'));
         }
+
         $label->delete();
         flash(__('messages.labelSuccesDeleted'))->success();
         return redirect(route('labels.index'));

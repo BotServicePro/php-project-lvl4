@@ -37,9 +37,12 @@
         <div>
             Метки:
             <ul>
-            @foreach($labelsData as $label)
-                <li>{{ $label->getLabelName->name }}</li>
-            @endforeach
+                @foreach($labelsData as $label)
+                    <li>{{ $label->label_name }}</li>
+                @endforeach
+{{--            @foreach($labelsData as $label)--}}
+{{--                <li>{{ dump($label->getLabelName) }}</li>--}}
+{{--            @endforeach--}}
             </ul>
         </div>
     </main>

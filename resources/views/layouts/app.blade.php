@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Менеджер задая - @yield('title')</title>
+    <title>Менеджер задач - @yield('title')</title>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -31,13 +31,13 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link " href="/tasks">Задачи</a>
+                        <a class="nav-link " href="{{ route('tasks.index') }}">Задачи</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="/task_statuses">Статусы</a>
+                        <a class="nav-link " href="{{ route('task_statuses.index') }}">Статусы</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="/labels">Метки</a>
+                        <a class="nav-link " href="{{ route('labels.index') }}">Метки</a>
                     </li>
                 </ul>
 
