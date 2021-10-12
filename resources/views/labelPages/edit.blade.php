@@ -24,6 +24,6 @@
 
         {{ Form::label('description', 'Описание') }}<br>
         {{ Form::textarea('description', $label['description']) }}<br><br>
-        {{ Form::submit('Обновить') }}<br>
+        {{ Form::submit('Обновить', ['class' => 'btn btn-outline-primary mr-2']) }}<br>
     </main>
 @endsection

@@ -21,6 +21,7 @@
         {{ Form::model($taskStatus, ['url' => route('task_statuses.store'), 'method' => 'POST']) }}
         {{ Form::label('name', 'Имя') }}<font style="color: #e3342f">*</font><br>
         {{ Form::text('name') }}<br><br>
-        {{ Form::submit('Создать') }}<br>
+        {{ Form::submit('Создать', ['class' => 'btn btn-outline-primary mr-2']) }}<br>
     </main>
 @endsection
+

@@ -21,6 +21,6 @@
         {{ Form::model($taskStatus, ['url' => "task_statuses/{$taskStatus['id']}", 'method' => 'PATCH']) }}
         {{ Form::label('name', 'Имя') }}<font style="color: #e3342f">*</font><br>
         {{ Form::text('name', $taskStatus['name']) }}<br><br>
-        {{ Form::submit('Обновить') }}<br>
+        {{ Form::submit('Обновить', ['class' => 'btn btn-outline-primary mr-2']) }}<br>
     </main>
 @endsection

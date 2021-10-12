@@ -44,6 +44,6 @@
         </select>
         <br><br>
 
-        {{ Form::submit('Создать') }}<br>
+        {{ Form::submit('Создать', ['class' => 'btn btn-outline-primary mr-2']) }}<br>
     </main>
 @endsection
