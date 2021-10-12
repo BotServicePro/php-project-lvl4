@@ -20,6 +20,40 @@
         @if(Auth::check())
             <a href="{{ route('tasks.create') }}" class="btn btn-primary">Создать задачу</a>
         @endif
+
+
+
+{{--        <div class="d-flex">--}}
+{{--            <div>--}}
+{{--                <form method="GET" action="https://php-l4-task-manager.herokuapp.com/tasks" accept-charset="UTF-8">--}}
+{{--                    <select class="form-control mr-2" name="filter[status_id]">--}}
+{{--                        <option value="">Статус</option>--}}
+{{--                        <option value="10">kookok</option>--}}
+{{--                        <option value="126">status777</option>--}}
+{{--                    </select>--}}
+{{--                    <select class="form-control mr-2" name="filter[created_by_id]">--}}
+{{--                        <option value="">Автор</option>--}}
+
+{{--                        <option value="1">Alex</option><option value="2">feycot</option>--}}
+{{--                        <option value="133">Виталий Кудрявцев</option>--}}
+{{--                        <option value="135">Иван Князев</option>--}}
+{{--                        <option value="134">Виталий Кудрявцев</option>--}}
+{{--                    </select>--}}
+{{--                    <select class="form-control mr-2" name="filter[assigned_to_id]">--}}
+{{--                        <option selected="selected" value="">Исполнитель</option>--}}
+
+{{--                        <option value="1">Alex</option><option value="2">feycot</option>--}}
+{{--                        <option value="152">ddf</option><option value="151">Sem</option>--}}
+{{--                        <option value="150">testerSuper</option>--}}
+{{--                    </select>--}}
+{{--                    <input class="btn btn-outline-primary mr-2" type="submit" value="Применить">--}}
+{{--                </form>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+
+
+
         <table class="table mt-2">
             <thead>
             <tr>
