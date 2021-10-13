@@ -24,4 +24,5 @@ php artisan db:seed LabelSeeder<br>
 
 
 USAGES<br>
-laravel-query-builder
+laravel-query-builder<br>
+rollbar-laravel<br>
