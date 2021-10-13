@@ -30,6 +30,7 @@
         {{ Form::label('status_id', 'Статус') }}<font style="color: #e3342f">*</font><br>
         {{  Form::select('status_id', $taskStatusesList, null, ['placeholder' => '---']) }}<br><br>
 
+
         {{ Form::label('assigned_to_id', 'Исполнитель') }}<br>
         {{  Form::select('assigned_to_id', $usersList, null, ['placeholder' => '---']) }}<br><br>
 
