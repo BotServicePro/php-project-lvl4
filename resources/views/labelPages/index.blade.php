@@ -16,11 +16,12 @@
 @section('content')
     <main class="container py-4">
         <h2>{{ __('interface.labels') }}</h2>
-        <br>
         @if(Auth::check())
             <a href="{{ route('labels.create') }}" class="btn btn-primary">{{ __('interface.createLabel') }}</a>
+            <br>
         @endif
-        <table class="table mt-2">
+        <br>
+        <table class="table table-bordered">
             <thead>
             <tr>
                 <th>ID</th>

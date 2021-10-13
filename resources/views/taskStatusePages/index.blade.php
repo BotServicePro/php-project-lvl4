@@ -16,11 +16,12 @@
 @section('content')
     <main class="container py-4">
         <h2>{{ __('interface.statuses') }}</h2>
-        <br>
         @if(Auth::check())
             <a href="{{ route('task_statuses.create') }}" class="btn btn-primary">{{ __('interface.createStatus') }}</a>
+            <br>
         @endif
-        <table class="table mt-2">
+        <br>
+        <table class="table table-bordered">
             <thead>
             <tr>
                 <th>ID</th>
@@ -35,15 +36,15 @@
             <tbody>
             @foreach ($taskStatus as $status)
                 <tr>
-                    <td>{{ $status->id }}</td>
+                    <td><b>{{ $status->id }}</b></td>
                     <td>{{ $status->name }}</td>
                     <td>{{ $status->created_at }}</td>
                     @if(Auth::check())
                         <td>
-                            <form action="{{ route('task_statuses.destroy', $status->id) }}" method="POST" data-confirm="Точно удалить?" rel="nofollow">
+                            <form action="{{ route('task_statuses.destroy', $status->id) }}" method="POST" data-confirm="{{ __('interface.checkDelete') }}" rel="nofollow" style="display: inline;">
                                 @csrf
                                 @method('delete')
-                                <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">{{ __('interface.delete') }}</button>
+                                <button type="submit" class="text-danger" rel="nofollow">{{ __('interface.delete') }}</button>
                             </form>
                             | <a href="{{ route('task_statuses.edit', ['task_status' => $status->id]) }}">{{ __('interface.edit') }}</a></td>
                     @endif
