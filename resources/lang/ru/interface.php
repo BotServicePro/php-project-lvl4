@@ -23,7 +23,7 @@ return [
     'createDate' => 'Дата создания',
     'updateDate' => 'Дата обновления',
     'settings' => 'Действия',
-    'delete' => 'Уадить',
+    'delete' => 'Удалить',
     'update' => 'Обновить',
 
     'create' => 'Создать',
