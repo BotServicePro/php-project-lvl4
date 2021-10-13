@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
@@ -27,8 +29,43 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $usersList = User::All();
+        $taskStatusesList = TaskStatus::All();
+
+        // проверяем, если что-то в запросе из фильтра
+        if ($request->filter !== null) {
+            $validator = Validator::make($request->filter, [
+                'status_id' => 'nullable|int',
+                'created_by_id' => 'nullable|int',
+                'assigned_to_id' => 'nullable|int',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect(route('tasks.index'))
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            // используем библиотеку laravel-query-builder с дополнительной выборкой
+            $data = QueryBuilder::for(Task::class)
+                ->addSelect([
+                    'task_author_name' => User::select('name')
+                        ->whereColumn('id', 'tasks.created_by_id'),
+                    'status_name' => TaskStatus::select('name')
+                        ->whereColumn('id', 'tasks.status_id'),
+                    'executor_name' => User::select('name')
+                        ->whereColumn('id', 'tasks.assigned_to_id')
+                ])
+                ->allowedFilters([
+                    AllowedFilter::exact('status_id'),
+                    AllowedFilter::exact('created_by_id'),
+                    AllowedFilter::exact('assigned_to_id')])
+                ->paginate(5);
+            return view('taskPages.index', compact('data', 'taskStatusesList', 'usersList'));
+        }
+
         $data =  Task::addSelect([
                 'task_author_name' => User::select('name')
                     ->whereColumn('id', 'tasks.created_by_id'),
@@ -38,7 +75,7 @@ class TaskController extends Controller
                     ->whereColumn('id', 'tasks.assigned_to_id')
             ])->paginate(5);
 
-        return view('taskPages.index', compact('data'));
+        return view('taskPages.index', compact('data', 'taskStatusesList', 'usersList'));
     }
 
     /**
@@ -152,13 +189,25 @@ class TaskController extends Controller
     {
         $labels = Label::all();
         $task = Task::findOrFail($task->id);
+        $selectedLabels = LabelTask::where('task_id', $task->id)->get();
         foreach (User::select('id', 'name')->get()->toArray() as $user) {
             $usersList[$user['id']] = $user['name'];
         }
         foreach (TaskStatus::select('id', 'name')->get()->toArray() as $status) {
             $taskStatusesList[$status['id']] = $status['name'];
         }
-        return view('taskPages.edit', compact('task', 'usersList', 'taskStatusesList', 'labels'));
+
+//        dump($selectedLabels);
+//
+//        foreach ($labels as $label) {
+//            //dump($label);
+//            if ($selectedLabels->contains('label_id', $label->id)) {
+//                echo 'asdas';
+//            }
+//        }
+//
+//        exit;
+        return view('taskPages.edit', compact('task', 'usersList', 'taskStatusesList', 'labels', 'selectedLabels'));
     }
 
     /**
