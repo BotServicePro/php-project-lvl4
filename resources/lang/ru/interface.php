@@ -45,6 +45,12 @@ return [
     'login' => 'Вход',
     'register' => 'Регистрация',
     'checkDelete' => 'Точно удалить?',
+    'registerTo' => 'Зарегистрировать',
+
+    'forgotPassword' => 'Забыли пароль?',
+    'rememberMe' => 'Запомнить меня',
+    'password' => 'Пароль',
+    'confirmPassword' => 'Подтверждение',
 
     'custom' => [
         'attribute-name' => [

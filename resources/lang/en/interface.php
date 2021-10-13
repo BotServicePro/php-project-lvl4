@@ -44,7 +44,14 @@ return [
     'logout' => 'Logout',
     'login' => 'Login',
     'register' => 'Register',
+    'registerTo' => 'Register',
     'checkDelete' => 'Sure to delete?',
+
+    'forgotPassword' => 'Forgot password?',
+    'rememberMe' => 'Remember me',
+    'password' => 'Password',
+    'confirmPassword' => 'Confirm password',
+
 
     'custom' => [
         'attribute-name' => [
