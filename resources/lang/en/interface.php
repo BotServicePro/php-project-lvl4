@@ -44,6 +44,7 @@ return [
     'logout' => 'Logout',
     'login' => 'Login',
     'register' => 'Register',
+    'checkDelete' => 'Sure to delete?',
 
     'custom' => [
         'attribute-name' => [

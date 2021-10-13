@@ -44,6 +44,7 @@ return [
     'logout' => 'Выход',
     'login' => 'Вход',
     'register' => 'Регистрация',
+    'checkDelete' => 'Точно удалить?',
 
     'custom' => [
         'attribute-name' => [
