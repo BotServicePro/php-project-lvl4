@@ -294,7 +294,7 @@ class TaskController extends Controller
             LabelTask::where('task_id', '=', $task->id)->delete();
         }
 
-        flash(__('messages.statusSuccessDeleted'))->success();
+        flash(__('messages.taskSuccessDeleted'))->success();
         $task->delete();
         return redirect()->route('tasks.index');
     }
