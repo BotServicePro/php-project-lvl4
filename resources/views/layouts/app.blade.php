@@ -85,13 +85,13 @@
         </div>
     </div>
 </div>
-</body>
 
-<footer class="py-3 mt-5 flex-shrink-0 shadow-lg">
-    <div class="container-lg">
-        <div class="text-center">
-            <a href="https://ru.hexlet.io/u/karakinalex" target="_blank">{{ 'AKarakin - ' . date('Y') }}</a>
-        </div>
+<div class="wrapper flex-grow-1"></div>
+<footer class="py-3 mt-5 shadow-lg">
+    <div class="text-center container-lg">
+        <a href="https://ru.hexlet.io/u/karakinalex" target="_blank">{{ 'AKarakin - ' . date('Y') }}</a>
     </div>
 </footer>
+
+</body>
 </html>
