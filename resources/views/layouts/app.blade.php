@@ -75,11 +75,19 @@
     </nav>
 </header>
 
-{{--@include('flash::message')--}}
 
-@yield('content')
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
+            <div class="p-6 bg-white border-gray-200">
+                @yield('content')
+            </div>
+        </div>
+    </div>
+</div>
 
-<footer class="border-top py-3 mt-5 flex-shrink-0">
+
+<footer class=" py-3 mt-5 flex-shrink-0 shadow-lg">
     <div class="container-lg">
         <div class="text-center">
             <a href="https://ru.hexlet.io/u/karakinalex" target="_blank">{{ 'AKarakin - ' . date('Y') }}</a>
