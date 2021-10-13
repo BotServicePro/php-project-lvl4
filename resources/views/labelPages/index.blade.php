@@ -42,16 +42,12 @@
                     <td>{{ $label['created_at'] }}</td>
                     @if(Auth::check())
                         <td>
-{{--                            <form action="{{ route('labels.destroy', $label['id']) }}" method="DELETE"  rel="nofollow">--}}
-{{--                                @csrf--}}
-{{--                                @method('delete')--}}
-{{--                                <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">{{ __('interface.delete') }}</button>--}}
-{{--                                <a href="{{ route('labels.destroy', $label['id']) }}" data-confirm="Точно удалить?">{{ __('interface.delete') }}</a>--}}
-{{--                            </form>--}}
-                            <a href="{{ route('labels.destroy', $label['id']) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">Удалить</a>
-
-                            |
-                            <a href="{{ route('labels.edit', ['label' => $label['id']]) }}">{{ __('interface.edit') }}</a></td>
+                            <form action="{{ route('labels.destroy', $label->id) }}" method="POST" data-confirm="{{ __('interface.checkDelete') }}" rel="nofollow" style="display: inline;">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="text-danger" rel="nofollow">{{ __('interface.delete') }}</button>
+                            </form> | <a href="{{ route('labels.edit', ['label' => $label['id']]) }}">{{ __('interface.edit') }}</a>
+                        </td>
                     @endif
                 </tr>
             @endforeach

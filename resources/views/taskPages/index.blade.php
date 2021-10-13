@@ -84,8 +84,8 @@
                                 <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" data-confirm="Точно удалить?" rel="nofollow">
                                     @csrf
                                     @method('delete')
-{{--                                    <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">Delete</button>--}}
-                                        <a href="..."  class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">{{ __('interface.delete') }}</a>
+                                    <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">Delete</button>
+{{--                                        <a href="..."  class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">{{ __('interface.delete') }}</a>--}}
                                 </form> |
                             @endif
                             <a href="{{ route('tasks.edit', ['task' => $task->id]) }}">{{ __('interface.edit') }}</a></td>

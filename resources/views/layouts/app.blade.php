@@ -20,7 +20,7 @@
 
 <body class="min-vh-100 d-flex flex-column">
 <header class="flex-shrink-0">
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-expand-md navbar-light bg-white shadow p-3">
         <div class="container">
             <a class="navbar-brand" href="{{ route('index') }}">{{ __('interface.siteName') }}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,14 +85,13 @@
         </div>
     </div>
 </div>
+</body>
 
-
-<footer class=" py-3 mt-5 flex-shrink-0 shadow-lg">
+<footer class="py-3 mt-5 flex-shrink-0 shadow-lg">
     <div class="container-lg">
         <div class="text-center">
             <a href="https://ru.hexlet.io/u/karakinalex" target="_blank">{{ 'AKarakin - ' . date('Y') }}</a>
         </div>
     </div>
 </footer>
-</body>
 </html>
