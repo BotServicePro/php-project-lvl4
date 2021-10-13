@@ -45,7 +45,7 @@
                                 @method('delete')
                                 <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">{{ __('interface.delete') }}</button>
                             </form>
-                            | <a href="/task_statuses/{{ $status->id }}/edit">{{ __('interface.edit') }}</a></td>
+                            | <a href="{{ route('task_statuses.edit', ['task_status' => $status->id]) }}">{{ __('interface.edit') }}</a></td>
                     @endif
                 </tr>
             @endforeach

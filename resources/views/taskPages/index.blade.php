@@ -88,7 +88,7 @@
                                         <a href="..."  class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">{{ __('interface.delete') }}</a>
                                 </form> |
                             @endif
-                            <a href="/tasks/{{ $task->id }}/edit">{{ __('interface.edit') }}</a></td>
+                            <a href="{{ route('tasks.edit', ['task' => $task->id]) }}">{{ __('interface.edit') }}</a></td>
                     @endif
                 </tr>
             @endforeach
