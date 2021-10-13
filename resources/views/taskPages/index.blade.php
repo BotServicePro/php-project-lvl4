@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Задачи')
+@section('title', __('interface.tasks'))
 
 @include('flash::message')
 @if ($errors->any())
@@ -15,7 +15,7 @@
 
 @section('content')
     <main class="container py-4">
-        <h2>Задачи</h2>
+        <h2>{{ __('interface.tasks') }}</h2>
         <br>
 
         <div class="d-flex">
@@ -29,28 +29,28 @@
 
                 <form method="GET" action="{{ route('tasks.index') }}" accept-charset="UTF-8">
                     <select class="mr-2" name="filter[status_id]">
-                        <option value="">Статус</option>
+                        <option value="">{{ __('interface.status') }}</option>
                         @foreach($taskStatusesList as $status)
                             <option value="{{ $status->id }}">{{ $status->name }}</option>
                         @endforeach
                     </select>
                     <select name="filter[created_by_id]">
-                        <option value="">Автор</option>
+                        <option value="">{{ __('interface.author') }}</option>
                         @foreach($usersList as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                         @endforeach
                     </select>
                     <select  name="filter[assigned_to_id]">
-                        <option selected="selected" value="">Исполнитель</option>
+                        <option selected="selected" value="">{{ __('interface.employee') }}</option>
                         @foreach($usersList as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                         @endforeach
                     </select>
-                    <input class="btn btn-outline-primary mr-2" type="submit" value="Применить">
+                    <input class="btn btn-outline-primary mr-2" type="submit" value="{{ __('interface.apply') }}">
                 </form>
             </div>
             @if(Auth::check())
-                <a href="{{ route('tasks.create') }}" class="btn btn-primary ml-auto">Создать задачу</a>
+                <a href="{{ route('tasks.create') }}" class="btn btn-primary ml-auto">{{ __('interface.createTask') }}</a>
             @endif
         </div>
 
@@ -58,13 +58,13 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Статус</th>
-                <th>Имя</th>
-                <th>Автор</th>
-                <th>Исполнитель</th>
-                <th>Дата создания</th>
+                <th>{{ __('interface.status') }}</th>
+                <th>{{ __('interface.name') }}</th>
+                <th>{{ __('interface.author') }}</th>
+                <th>{{ __('interface.employee') }}</th>
+                <th>{{ __('interface.createDate') }}</th>
                 @if(Auth::check())
-                    <th>Действия</th>
+                    <th>{{ __('interface.settings') }}</th>
                 @endif
             </tr>
             </thead>
@@ -84,10 +84,11 @@
                                 <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" data-confirm="Точно удалить?" rel="nofollow">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">Delete</button>
+{{--                                    <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">Delete</button>--}}
+                                        <a href="..."  class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">{{ __('interface.delete') }}</a>
                                 </form> |
                             @endif
-                            <a href="/tasks/{{ $task->id }}/edit">Изменить</a></td>
+                            <a href="/tasks/{{ $task->id }}/edit">{{ __('interface.edit') }}</a></td>
                     @endif
                 </tr>
             @endforeach

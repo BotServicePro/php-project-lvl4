@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Метки')
+@section('title', __('interface.labelLink'))
 
 @include('flash::message')
 @if ($errors->any())
@@ -15,20 +15,20 @@
 
 @section('content')
     <main class="container py-4">
-        <h2>Метки</h2>
+        <h2>{{ __('interface.labels') }}</h2>
         <br>
         @if(Auth::check())
-            <a href="{{ route('labels.create') }}" class="btn btn-primary">Создать метку</a>
+            <a href="{{ route('labels.create') }}" class="btn btn-primary">{{ __('interface.createLabel') }}</a>
         @endif
         <table class="table mt-2">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Имя</th>
-                <th>Описание</th>
-                <th>Дата создания</th>
+                <th>{{ __('interface.name') }}</th>
+                <th>{{ __('interface.description') }}</th>
+                <th>{{ __('interface.createDate') }}</th>
                 @if(Auth::check())
-                    <th>Действия</th>
+                    <th>{{ __('interface.settings') }}</th>
                 @endif
             </tr>
             </thead>
@@ -45,9 +45,9 @@
                             <form action="{{ route('labels.destroy', $label['id']) }}" method="POST" data-confirm="Точно удалить?" rel="nofollow">
                                 @csrf
                                 @method('delete')
-                                <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">Delete</button>
+                                <button type="submit" class="btn btn-outline-danger" data-confirm="Точно удалить?" rel="nofollow">{{ __('interface.delete') }}</button>
                             </form> |
-                            <a href="/labels/{{ $label['id'] }}/edit">Изменить</a></td>
+                            <a href="/labels/{{ $label['id'] }}/edit">{{ __('interface.edit') }}</a></td>
                     @endif
                 </tr>
             @endforeach

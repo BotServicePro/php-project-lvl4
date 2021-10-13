@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Менеджер задач - @yield('title')</title>
+    <title>{{ __('interface.siteName') }} - @yield('title')</title>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -22,7 +22,7 @@
 <header class="flex-shrink-0">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('index') }}">Менеджер задач</a>
+            <a class="navbar-brand" href="{{ route('index') }}">{{ __('interface.siteName') }}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -31,13 +31,13 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link " href="{{ route('tasks.index') }}">Задачи</a>
+                        <a class="nav-link " href="{{ route('tasks.index') }}">{{ __('interface.tasks') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="{{ route('task_statuses.index') }}">Статусы</a>
+                        <a class="nav-link " href="{{ route('task_statuses.index') }}">{{ __('interface.statuses') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="{{ route('labels.index') }}">Метки</a>
+                        <a class="nav-link " href="{{ route('labels.index') }}">{{ __('interface.labels') }}</a>
                     </li>
                 </ul>
 
@@ -54,7 +54,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">Выход</a>
+                                                     document.getElementById('logout-form').submit();">{{ __('interface.logout') }}</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     </form>
@@ -63,10 +63,10 @@
                         </ul>
                     @elseif (!Auth::check())
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Вход</a>
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('interface.login') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">Регистрация</a>
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('interface.register') }}</a>
                         </li>
                     @endif
                 </ul>
