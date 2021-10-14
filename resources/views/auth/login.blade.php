@@ -47,9 +47,9 @@
                     </a>
                 @endif
 
-                <x-button class="ml-3">
+                <button class="ml-3 btn-primary ">
                     {{ __('interface.login') }}
-                </x-button>
+                </button>
             </div>
         </form>
     </x-auth-card>

@@ -46,9 +46,9 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <x-button class="ml-4">
+                <button class="btn btn-outline-primary mr-2">
                     {{ __('interface.registerTo') }}
-                </x-button>
+                </button>
             </div>
         </form>
     </x-auth-card>
