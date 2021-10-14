@@ -43,6 +43,9 @@ return [
 
     'logout' => 'Выход',
     'login' => 'Вход',
+
+    'authLogin' => 'Войти',
+
     'register' => 'Регистрация',
     'checkDelete' => 'Точно удалить?',
     'registerTo' => 'Зарегистрировать',

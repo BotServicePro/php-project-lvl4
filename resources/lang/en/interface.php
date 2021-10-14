@@ -43,6 +43,9 @@ return [
 
     'logout' => 'Logout',
     'login' => 'Login',
+
+    'authLogin' => 'Login',
+
     'register' => 'Register',
     'registerTo' => 'Register',
     'checkDelete' => 'Sure to delete?',
