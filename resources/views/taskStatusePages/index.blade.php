@@ -45,8 +45,27 @@
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="text-danger" rel="nofollow">{{ __('interface.delete') }}</button>
-                            </form>
-                            | <a href="{{ route('task_statuses.edit', ['task_status' => $status->id]) }}">{{ __('interface.edit') }}</a></td>
+{{--                                <a href="{{ route('task_statuses.destroy', $status->id) }}" class="text-danger" data-confirm="{{ __('interface.checkDelete') }}"  rel="nofollow">{{ __('interface.delete') }}</a>--}}
+                        </form>
+
+
+
+
+
+{{--                            <a style="color:black" href="{{ route('task_statuses.destroy', $status->id) }}" onclick="event.preventDefault(); --}}
+{{--                            document.getElementById('delete-form-{{ $status->id }}').submit();">delete</a>--}}
+
+{{--                            <form id="delete-form-{{ $status->id }}" action="{{ route('task_statuses.destroy', $status->id) }}"--}}
+{{--                                  method="DELETE" style="display: none;">--}}
+{{--                                @csrf--}}
+{{--                            </form>--}}
+
+
+
+
+
+                            | <a href="{{ route('task_statuses.edit', ['task_status' => $status->id]) }}">{{ __('interface.edit') }}</a>
+                        </td>
                     @endif
                 </tr>
             @endforeach
