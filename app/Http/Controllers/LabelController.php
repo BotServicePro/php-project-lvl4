@@ -74,7 +74,7 @@ class LabelController extends Controller
      */
     public function show(Label $label)
     {
-        //
+        // не показываем
     }
 
     /**
@@ -125,7 +125,6 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-
         if (LabelTask::where('label_id', '=', $label->id)->count() > 0) {
             flash(__('messages.labelUnsuccessDeleted'))->error();
             return redirect(route('labels.index'));

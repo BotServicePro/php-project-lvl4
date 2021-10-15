@@ -30,7 +30,6 @@ class TaskStatusController extends Controller
     public function index()
     {
         $taskStatus = TaskStatus::paginate(5);
-        // возможно добавить сортировку надо
         return view('taskStatusePages.index', compact('taskStatus'));
     }
 
@@ -128,8 +127,8 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        $allTaskStatusesInUsage = Task::where('status_id', $taskStatus->id)->get()->toArray();
-        if ($allTaskStatusesInUsage === []) {
+        $allTaskStatusesInUsage = Task::where('status_id', $taskStatus->id)->first();
+        if ($allTaskStatusesInUsage === null) {
             $taskStatus->delete();
             flash(__('messages.statusSuccessDeleted'))->success();
             return redirect()->route('task_statuses.index');

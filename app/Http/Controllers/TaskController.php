@@ -62,7 +62,7 @@ class TaskController extends Controller
                     AllowedFilter::exact('status_id'),
                     AllowedFilter::exact('created_by_id'),
                     AllowedFilter::exact('assigned_to_id')])
-                ->paginate(5);
+                ->paginate(10);
             return view('taskPages.index', compact('data', 'taskStatusesList', 'usersList'));
         }
 
@@ -197,16 +197,6 @@ class TaskController extends Controller
             $taskStatusesList[$status['id']] = $status['name'];
         }
 
-//        dump($selectedLabels);
-//
-//        foreach ($labels as $label) {
-//            //dump($label);
-//            if ($selectedLabels->contains('label_id', $label->id)) {
-//                echo 'asdas';
-//            }
-//        }
-//
-//        exit;
         return view('taskPages.edit', compact('task', 'usersList', 'taskStatusesList', 'labels', 'selectedLabels'));
     }
 
