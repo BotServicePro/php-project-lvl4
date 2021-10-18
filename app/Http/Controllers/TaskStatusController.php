@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
 class TaskStatusController extends Controller
 {
     /**
@@ -129,8 +128,9 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        $allTaskStatusesInUsage = Task::where('status_id', $taskStatus->id)->first();
-        if ($allTaskStatusesInUsage === null) {
+        //$allTaskStatusesInUsage = Task::where('status_id', $taskStatus->id)->first();
+        //if ($allTaskStatusesInUsage === null) {
+        if (count($taskStatus->tasks) === 0) {
             $taskStatus->delete();
             flash(__('messages.statusSuccessDeleted'))->success();
             return redirect()->route('task_statuses.index');
