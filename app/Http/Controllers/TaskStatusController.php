@@ -29,6 +29,8 @@ class TaskStatusController extends Controller
      */
     public function index()
     {
+//        dump(TaskStatus::find(3)->tasks);
+//        exit;
         $taskStatus = TaskStatus::paginate(5);
         return view('taskStatusePages.index', compact('taskStatus'));
     }

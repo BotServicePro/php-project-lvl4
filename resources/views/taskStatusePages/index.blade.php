@@ -42,17 +42,17 @@
                     @if(Auth::check())
                         <td>
                             {{-- реализация через ссылку --}}
-{{--                            <form action="{{ route('task_statuses.destroy', $status->id) }}" method="POST" style="display: inline;">--}}
-{{--                                @csrf--}}
-{{--                                @method('delete')--}}
-{{--                                <a href="{{ route('task_statuses.destroy', $status->id) }}" class="text-danger" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete" rel="nofollow">{{ __('interface.delete') }}</a>--}}
-{{--                            </form>--}}
-                            {{-- реализация через кнопку--}}
-                            <form action="{{ route('task_statuses.destroy', $status->id) }}" method="POST" data-confirm="{{ __('interface.checkDelete') }}" rel="nofollow" style="display: inline;">
+                            <form action="{{ route('task_statuses.destroy', $status->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('delete')
-                                <button type="submit" class="text-danger" rel="nofollow">{{ __('interface.delete') }}</button>
+                                <a href="{{ route('task_statuses.destroy', $status->id) }}" class="text-danger" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete" rel="nofollow">{{ __('interface.delete') }}</a>
                             </form>
+                            {{-- реализация через кнопку--}}
+{{--                            <form action="{{ route('task_statuses.destroy', $status->id) }}" method="POST" data-confirm="{{ __('interface.checkDelete') }}" rel="nofollow" style="display: inline;">--}}
+{{--                                @csrf--}}
+{{--                                @method('delete')--}}
+{{--                                <button type="submit" class="text-danger" rel="nofollow">{{ __('interface.delete') }}</button>--}}
+{{--                            </form>--}}
 
                             | <a href="{{ route('task_statuses.edit', ['task_status' => $status->id]) }}">{{ __('interface.edit') }}</a>
                         </td>

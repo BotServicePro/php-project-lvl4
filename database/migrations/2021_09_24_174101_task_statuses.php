@@ -14,7 +14,10 @@ class TaskStatuses extends Migration
     public function up()
     {
         Schema::create('task_statuses', function (Blueprint $table) {
-            $table->id(); // поменять типа когда определимся с базой дальше
+            $table->id();
+
+            $table->foreign('id')->references('id')->on('task_statuses');
+
             $table->string('name')->unique();
             $table->timestamps();
         });
