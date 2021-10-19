@@ -130,6 +130,9 @@ class TaskStatusController extends Controller
     {
         //$allTaskStatusesInUsage = Task::where('status_id', $taskStatus->id)->first();
         //if ($allTaskStatusesInUsage === null) {
+
+//        dump($taskStatus->tasks);
+//        exit;
         if (count($taskStatus->tasks) === 0) {
             $taskStatus->delete();
             flash(__('messages.statusSuccessDeleted'))->success();
