@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\TaskStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TaskStatusController extends Controller
@@ -28,7 +29,7 @@ class TaskStatusController extends Controller
      */
     public function index()
     {
-//        dump(TaskStatus::find(3)->tasks);
+//        dump(TaskStatus::where('id', 1)->exists());
 //        exit;
         $taskStatus = TaskStatus::paginate(5);
         return view('taskStatusePages.index', compact('taskStatus'));
