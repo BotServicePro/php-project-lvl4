@@ -2,8 +2,6 @@
 
 @section('title', __('interface.createTask') )
 
-{{--@include('flash::message')--}}
-
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>

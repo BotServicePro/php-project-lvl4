@@ -2,8 +2,6 @@
 
 @section('title', __('interface.editLabel'))
 
-@include('flash::message')
-
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>

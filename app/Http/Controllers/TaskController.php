@@ -73,7 +73,7 @@ class TaskController extends Controller
                     ->whereColumn('id', 'tasks.status_id'),
                 'executor_name' => User::select('name')
                     ->whereColumn('id', 'tasks.assigned_to_id')
-            ])->paginate(5);
+            ])->paginate(10);
 
         return view('taskPages.index', compact('data', 'taskStatusesList', 'usersList'));
     }
