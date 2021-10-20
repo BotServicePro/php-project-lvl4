@@ -13,10 +13,15 @@ return [
     'statusSuccessAdded' => 'Status has been added',
     'statusSuccessUpdated' => 'Status has been updated',
     'statusSuccessDeleted' => 'Status has been deleted',
+    'statusRequired' => 'This is required field',
+    'statusUnique' => 'This status is already exists',
+
 
     'labelSuccesAdded' => 'Label has been added',
     'labelSuccesUpdated' => 'Label has been updated',
     'labelSuccesDeleted' => 'Label has been deleted',
+    'labelRequired' => 'This is required field',
+    'labelUnique' => 'Label is already exists',
 
     'taskSuccessAdded' => 'Task has been added',
     'taskSuccessUpdated' => 'Task has been edited',

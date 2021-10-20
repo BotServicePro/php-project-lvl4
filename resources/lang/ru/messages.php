@@ -14,9 +14,16 @@ return [
     'statusSuccessUpdated' => 'Статус успешно изменён',
     'statusSuccessDeleted' => 'Статус успешно удалён',
 
+    'statusRequired' => 'Это обязательное поле',
+    'statusUnique' => 'Статус с таким именем уже существует',
+
+
+
     'labelSuccesAdded' => 'Метка успешно создана',
     'labelSuccesUpdated' => 'Метка успешно изменена',
     'labelSuccesDeleted' => 'Метка успешно удалена',
+    'labelRequired' => 'Это обязательное поле',
+    'labelUnique' => 'Метка с таким именем уже существует',
 
     'taskSuccessAdded' => 'Задача успешно создана',
     'taskSuccessUpdated' => 'Задача успешно изменена',

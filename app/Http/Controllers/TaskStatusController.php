@@ -56,7 +56,11 @@ class TaskStatusController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:task_statuses'
-        ]);
+
+        ], $messages = [
+            'required' => __('messages.statusRequired'),
+            'unique' => __('messages.statusUnique'),
+            ]);
 
         if ($validator->fails()) {
             return redirect(route('task_statuses.create'))
@@ -107,10 +111,13 @@ class TaskStatusController extends Controller
         $newStatus = TaskStatus::findOrFail($taskStatus->id);
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:task_statuses'
+        ], $messages = [
+            'required' => __('messages.statusRequired'),
+            'unique' => __('messages.statusUnique'),
         ]);
 
         if ($validator->fails()) {
-            return redirect(route('task_statuses.create'))
+            return redirect(route('task_statuses.edit', ['task_status' => $taskStatus->id]))
                 ->withErrors($validator)
                 ->withInput();
         }

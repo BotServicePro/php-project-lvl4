@@ -3,6 +3,7 @@
 @section('title', __('interface.createStatus'))
 
 @if ($errors->any())
+    {{ dump($errors) }}
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)

@@ -49,6 +49,9 @@ class LabelController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:labels',
             'description' => '',
+        ], $messages = [
+            'required' => __('messages.labelRequired'),
+            'unique' => __('messages.labelUnique'),
         ]);
 
         if ($validator->fails()) {
@@ -102,10 +105,13 @@ class LabelController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:labels',
             'description' => '',
+        ], $messages = [
+            'required' => __('messages.labelRequired'),
+            'unique' => __('messages.labelUnique'),
         ]);
 
         if ($validator->fails()) {
-            return redirect(route('labels.create'))
+            return redirect(route('labels.edit', ['label' => $label->id]))
                 ->withErrors($validator)
                 ->withInput();
         }
