@@ -20,7 +20,8 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-         '/task_statuses/*',
-        '/labels/*'
+        '/task_statuses/*',
+        '/labels/*',
+        '/tasks/*'
     ];
 }
