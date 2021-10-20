@@ -37,7 +37,7 @@
                 <tr>
                     <td><b>{{ $status->id }}</b></td>
                     <td>{{ $status->name }}</td>
-                    <td>{{ $status->created_at->format('d.m.y') }}</td>
+                    <td>{{ $status->created_at->format('d.m.Y') }}</td>
                     @if(Auth::check())
                         <td>
                             {{-- реализация через ссылку --}}

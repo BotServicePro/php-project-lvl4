@@ -69,7 +69,7 @@
                     <td><a href="{{ route('tasks.show', ['task' => $task->id]) }}">{{ $task->name }}</a></td>
                     <td>{{ $task->task_author_name }}</td>
                     <td>{{ $task->executor_name }}</td>
-                    <td>{{ $task->created_at->format('d.m.y') }}</td>
+                    <td>{{ $task->created_at->format('d.m.Y') }}</td>
                     @if(Auth::check())
                         <td>
                             @if($task->created_by_id === Auth::user()->id)
