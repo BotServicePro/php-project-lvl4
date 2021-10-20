@@ -56,7 +56,6 @@ class TaskStatusController extends Controller
             'name' => 'required|unique:task_statuses'
 
         ], $messages = [
-            'required' => __('messages.statusRequired'),
             'unique' => __('messages.statusUnique'),
             ]);
 
