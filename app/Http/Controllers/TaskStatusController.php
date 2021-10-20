@@ -29,8 +29,6 @@ class TaskStatusController extends Controller
      */
     public function index()
     {
-//        dump(TaskStatus::where('id', 1)->exists());
-//        exit;
         $taskStatus = TaskStatus::paginate(5);
         return view('taskStatusePages.index', compact('taskStatus'));
     }
@@ -112,7 +110,6 @@ class TaskStatusController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:task_statuses'
         ], $messages = [
-            'required' => __('messages.statusRequired'),
             'unique' => __('messages.statusUnique'),
         ]);
 

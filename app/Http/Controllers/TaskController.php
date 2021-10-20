@@ -117,6 +117,8 @@ class TaskController extends Controller
             'created_by_id' => '',
             'assigned_to_id' => '',
             'labels' => '',
+        ], $messages = [
+            'unique' => __('messages.taskUnique'),
         ]);
 
         if ($validator->fails()) {
@@ -221,7 +223,10 @@ class TaskController extends Controller
             'assigned_to_id' => '',
             'created_by_id' => '',
             'labels' => ''
-        ]);
+        ], $messages = [
+        'required' => __('messages.taskRequired'),
+        'unique' => __('messages.taskUnique'),
+    ]);
 
         if ($validator->fails()) {
             return redirect(route('tasks.create'))

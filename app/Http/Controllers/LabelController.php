@@ -50,7 +50,6 @@ class LabelController extends Controller
             'name' => 'required|unique:labels',
             'description' => '',
         ], $messages = [
-            'required' => __('messages.labelRequired'),
             'unique' => __('messages.labelUnique'),
         ]);
 

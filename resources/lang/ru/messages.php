@@ -13,20 +13,19 @@ return [
     'statusSuccessAdded' => 'Статус успешно создан',
     'statusSuccessUpdated' => 'Статус успешно изменён',
     'statusSuccessDeleted' => 'Статус успешно удалён',
-    'statusRequired' => 'Это обязательное поле',
     'statusUnique' => 'Статус с таким именем уже существует',
     'statusUnSuccessDeleted' => 'Не удалось удалить статус',
 
     'labelSuccessAdded' => 'Метка успешно создана',
     'labelSuccessUpdated' => 'Метка успешно изменена',
     'labelSuccessDeleted' => 'Метка успешно удалена',
-    'labelRequired' => 'Это обязательное поле',
     'labelUnique' => 'Метка с таким именем уже существует',
     'labelUnsuccessDeleted' => 'Не удалось удалить метку',
 
     'taskSuccessAdded' => 'Задача успешно создана',
     'taskSuccessUpdated' => 'Задача успешно изменена',
     'taskSuccessDeleted' => 'Задача успешно удалена',
+    'taskUnique' => 'Задача с таким именем уже существует',
     'taskUnsuccessDelete' => 'Невозможно удалить созданную другим пользователем',
 
 
