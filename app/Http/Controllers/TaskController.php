@@ -75,6 +75,9 @@ class TaskController extends Controller
                     ->whereColumn('id', 'tasks.assigned_to_id')
             ])->paginate(10);
 
+//        dump($data);
+//        exit;
+
         return view('taskPages.index', compact('data', 'taskStatusesList', 'usersList'));
     }
 
