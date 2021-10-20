@@ -65,7 +65,7 @@ class LabelController extends Controller
         $newLabel->description = $request->description;
         $newLabel->timestamps = Carbon::now();
         $newLabel->save();
-        flash(__('messages.labelSuccesAdded'))->success();
+        flash(__('messages.labelSuccessAdded'))->success();
         return redirect(route('labels.index'));
     }
 
@@ -103,12 +103,13 @@ class LabelController extends Controller
     {
         $newLabel = Label::findOrFail($label->id);
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:labels',
+            'name' => 'required|unique:labels,name,' . $label->id,
             'description' => '',
         ], $messages = [
             'required' => __('messages.labelRequired'),
             'unique' => __('messages.labelUnique'),
         ]);
+
 
         if ($validator->fails()) {
             return redirect(route('labels.edit', ['label' => $label->id]))
@@ -137,7 +138,7 @@ class LabelController extends Controller
         }
 
         $label->delete();
-        flash(__('messages.labelSuccesDeleted'))->success();
+        flash(__('messages.labelSuccessDeleted'))->success();
         return redirect(route('labels.index'));
     }
 }

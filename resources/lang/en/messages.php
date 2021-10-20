@@ -15,21 +15,20 @@ return [
     'statusSuccessDeleted' => 'Status has been deleted',
     'statusRequired' => 'This is required field',
     'statusUnique' => 'This status is already exists',
+    'statusUnSuccessDeleted' => 'Status has not been deleted',
 
 
-    'labelSuccesAdded' => 'Label has been added',
-    'labelSuccesUpdated' => 'Label has been updated',
-    'labelSuccesDeleted' => 'Label has been deleted',
+    'labelSuccessAdded' => 'Label has been added',
+    'labelSuccessUpdated' => 'Label has been updated',
+    'labelSuccessDeleted' => 'Label has been deleted',
     'labelRequired' => 'This is required field',
     'labelUnique' => 'Label is already exists',
+    'labelUnsuccessDeleted' => 'Label has not been deleted',
 
     'taskSuccessAdded' => 'Task has been added',
     'taskSuccessUpdated' => 'Task has been edited',
     'taskSuccessDeleted' => 'Task has been deleted',
-
     'taskUnsuccessDelete' => 'Impossible to delete task created by someone else',
-    'statusUnSuccessDeleted' => 'Status has not been deleted',
-    'labelUnsuccessDeleted' => 'Label has not been deleted',
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
