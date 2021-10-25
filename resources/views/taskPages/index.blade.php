@@ -70,27 +70,16 @@
                     <td>{{ $task->task_author_name }}</td>
                     <td>{{ $task->executor_name }}</td>
                     <td>{{ $task->created_at->format('d.m.Y') }}</td>
-                    @if(Auth::check())
+                    @auth
                         <td>
                             @if($task->created_by_id === Auth::user()->id)
-                                {{-- реализация через ссылку --}}
-                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('delete')
-                                    <a href="{{ route('tasks.destroy', $task->id) }}" class="text-danger" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete" rel="nofollow">{{ __('interface.delete') }}</a>
-                                </form>
-                                {{-- реализация через кнопку--}}
-                                {{--                            <form action="{{ route('task_statuses.destroy', $status->id) }}" method="POST" data-confirm="{{ __('interface.checkDelete') }}" rel="nofollow" style="display: inline;">--}}
-                                {{--                                @csrf--}}
-                                {{--                                @method('delete')--}}
-                                {{--                                <button type="submit" class="text-danger" rel="nofollow">{{ __('interface.delete') }}</button>--}}
-                                {{--                            </form>--}}
-
-                                |
+                                <a class="text-danger" href="{{ route('tasks.destroy', ['task' => $task->id]) }}" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete">
+                                    {{ __('interface.delete') }}
+                                </a> |
                             @endif
                             <a href="{{ route('tasks.edit', ['task' => $task->id]) }}">{{ __('interface.edit') }}</a>
                         </td>
-                    @endif
+                    @endauth
                 </tr>
             @endforeach
             </tbody>

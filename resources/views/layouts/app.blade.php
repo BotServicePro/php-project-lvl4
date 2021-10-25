@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+{{-- Ниже очень важный метатег отвечающий за передачу токена там, где нет форм, (в ссылках) --}}
+    <meta name="csrf-param" content="_token">
     <title>{{ __('interface.siteName') }} - @yield('title')</title>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <!-- Fonts -->
