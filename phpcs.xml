@@ -7,7 +7,11 @@
     <arg name="parallel" value="100"/>
     <arg value="np"/>
     <rule ref="PSR12"/>
-    <arg name="extensions" value="php,md"/>
+
+    <ini name="memory_limit" value="128M"/>
+    <rule ref="PHPCompatibility">
+        <include-pattern>*\.php$</include-pattern><!-- Repeat for any other extensions you use for PHP files. -->
+    </rule>
 
     <file>app</file>
     <file>config</file>
@@ -19,7 +23,6 @@
         <properties>
             <property name="error" value="true"/>
         </properties>
-        <arg name="extensions" value="php,md"/>
     </rule>
 
     <exclude-pattern>tests/Feature/RegistrationTest.php</exclude-pattern>
