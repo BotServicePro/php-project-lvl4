@@ -7,6 +7,7 @@
     <arg name="parallel" value="100"/>
     <arg value="np"/>
     <rule ref="PSR12"/>
+    <arg name="extensions" value="php,md"/>
 
     <file>app</file>
     <file>config</file>
