@@ -18,6 +18,7 @@
         <properties>
             <property name="error" value="true"/>
         </properties>
+        <arg name="extensions" value="php,md"/>
     </rule>
 
     <exclude-pattern>tests/Feature/RegistrationTest.php</exclude-pattern>
