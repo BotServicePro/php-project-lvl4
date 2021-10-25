@@ -88,7 +88,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $task = new Task;
+        $task = new Task();
         $usersList = [];
         $labels = Label::all();
         foreach (User::select('id', 'name')->get()->toArray() as $user) {
@@ -226,7 +226,7 @@ class TaskController extends Controller
         ], $messages = [
         'required' => __('messages.taskRequired'),
         'unique' => __('messages.taskUnique'),
-    ]);
+            ]);
 
         if ($validator->fails()) {
             return redirect(route('tasks.create'))
@@ -244,7 +244,7 @@ class TaskController extends Controller
             if ($request->labels !== null) {
                 // добавляем новые метки
                 foreach ($request->labels as $labelId) {
-                    $newLabel = new LabelTask;
+                    $newLabel = new LabelTask();
                     $newLabel->task_id = $task->id;
                     $newLabel->label_id = $labelId;
                     $newLabel->save();

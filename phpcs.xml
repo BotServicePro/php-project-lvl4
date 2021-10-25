@@ -6,6 +6,7 @@
     <arg name="colors"/>
     <arg name="parallel" value="100"/>
     <arg value="np"/>
+    <rule ref="PSR12"/>
 
     <file>app</file>
     <file>config</file>
@@ -18,6 +19,16 @@
             <property name="error" value="true"/>
         </properties>
     </rule>
+
+    <exclude-pattern>tests/Feature/RegistrationTest.php</exclude-pattern>
+    <exclude-pattern>tests/Feature/PasswordResetTest.php</exclude-pattern>
+    <exclude-pattern>tests/Feature/EmailVerificationTest.php</exclude-pattern>
+    <exclude-pattern>tests/Feature/PasswordConfirmationTest.php</exclude-pattern>
+    <exclude-pattern>app/Http/Requests/Auth/*</exclude-pattern>
+    <exclude-pattern>tests/Unit/ExampleTest.php</exclude-pattern>
+
+    <exclude-pattern>tests/Feature/MainPageTest.php</exclude-pattern>
+    <exclude-pattern>tests/Feature/AuthenticationTest.php</exclude-pattern>
 
     <exclude-pattern>app/Console/Kernel.php</exclude-pattern>
     <exclude-pattern>app/Http/Controllers/Controller.php</exclude-pattern>

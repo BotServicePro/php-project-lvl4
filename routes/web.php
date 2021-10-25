@@ -24,15 +24,10 @@ Route::get('/', function () {
 //// Task statuse routes
 Route::resource('task_statuses', TaskStatusController::class);
 
-//Route::resource('task_statuses', TaskStatusController::class)->middleware(EnsureTokenIsValid::class);
-
-//Route::middleware(EnsureTokenIsValid::class)->group(function () {
-//    Route::resource('task_statuses', TaskStatusController::class);
-//});
-
 // Task routes
 Route::resource('tasks', TaskController::class);
 
 // Label routes
 Route::resource('labels', LabelController::class);
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';

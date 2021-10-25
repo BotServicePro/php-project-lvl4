@@ -40,7 +40,7 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
-        $taskStatus = new TaskStatus;
+        $taskStatus = new TaskStatus();
         return view('taskStatusePages.add', compact('taskStatus'));
     }
 

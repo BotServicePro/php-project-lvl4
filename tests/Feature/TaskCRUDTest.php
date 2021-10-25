@@ -3,14 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\Task;
-
 use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
-
 
 class TaskCRUDTest extends TestCase
 {
