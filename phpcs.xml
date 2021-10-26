@@ -7,11 +7,7 @@
     <arg name="parallel" value="100"/>
     <arg value="np"/>
     <rule ref="PSR12"/>
-
-    <ini name="memory_limit" value="128M"/>
-    <rule ref="PHPCompatibility">
-        <include-pattern>*\.php$</include-pattern><!-- Repeat for any other extensions you use for PHP files. -->
-    </rule>
+    <ini name="memory_limit" value="512M"/>
 
     <file>app</file>
     <file>config</file>
