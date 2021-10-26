@@ -33,7 +33,7 @@ test-coverage:
 	composer phpunit tests -- --coverage-clover build/logs/clover.xml
 
 lint:
-	composer phpcs
+	phpcs -d memory_limit=512M -- --standard=PSR12 app config resources routes tests database --extensions=php
 
 lint-fix:
 	composer phpcbf
