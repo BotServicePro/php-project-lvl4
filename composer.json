@@ -53,10 +53,14 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "phpcs": "phpcs",
         "phpcbf": "phpcbf",
         "phpunit": "phpunit",
-        "test": "phpunit tests"
+        "test": "phpunit tests",
+        "phpcs": [
+            "./vendor/bin/phpcs --config-set default_standard phpcs.xml",
+            "./vendor/bin/phpcs --config-set colors 1",
+            "./vendor/bin/phpcs -s --report=code"
+        ]
     },
     "extra": {
         "laravel": {
