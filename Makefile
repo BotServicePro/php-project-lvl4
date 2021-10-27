@@ -33,7 +33,7 @@ test-coverage:
 	composer phpunit tests -- --coverage-clover build/logs/clover.xml
 
 lint:
-	phpcs
+	composer run-script phpcs
 
 lint-fix:
-	phpcbf
+	composer run-script phpcbf
