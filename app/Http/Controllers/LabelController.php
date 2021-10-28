@@ -124,7 +124,7 @@ class LabelController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Label  $label
-     * @return Illuminate\Http\RedirectResponse
+     * @return \App\Http\Controllers\Illuminate\Http\RedirectResponse
      */
     public function destroy(Label $label)
     {
