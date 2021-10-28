@@ -74,10 +74,6 @@ class TaskController extends Controller
                 'executor_name' => User::select('name')
                     ->whereColumn('id', 'tasks.assigned_to_id')
             ])->paginate(10);
-
-//        dump($data);
-//        exit;
-
         return view('taskPages.index', compact('data', 'taskStatusesList', 'usersList'));
     }
 
@@ -134,7 +130,7 @@ class TaskController extends Controller
             $newTask->description = $request->description;
             $newTask->status_id = $request->status_id;
             $newTask->assigned_to_id = $request->assigned_to_id;
-            $newTask->created_by_id = Auth::user()->id;
+            $newTask->created_by_id = Auth::id();
             $newTask->timestamps = Carbon::now();
             $newTask->save();
 
@@ -154,7 +150,7 @@ class TaskController extends Controller
             flash(__('messages.taskSuccessAdded'))->success();
             return redirect(route('tasks.index'));
         } catch (\Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             /* Transaction failed. */
             flash('Something went wrong')->error();
             return redirect(route('tasks.create'));
@@ -266,7 +262,7 @@ class TaskController extends Controller
             flash(__('messages.taskSuccessUpdated'))->success();
             return redirect(route('tasks.index'));
         } catch (\Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             /* Transaction failed. */
             flash('Something went wrong - ' . $e)->error();
             return redirect(route('tasks.index'));
@@ -282,7 +278,7 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $taskAuthorId = (int) $task->created_by_id;
-        $authorizedUserId = (int) Auth::user()->id;
+        $authorizedUserId = Auth::id();
         if ($taskAuthorId !== $authorizedUserId) {
             flash(__('messages.taskUnsuccessDelete'))->error();
             return redirect(route('tasks.index'));
