@@ -72,11 +72,9 @@ class LabelController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Label  $label
-     * @return \Illuminate\Http\Response
      */
     public function show(Label $label): void
     {
-        // не показываем
     }
 
     /**
@@ -126,7 +124,7 @@ class LabelController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Label  $label
-     * @return \Illuminate\Routing\Redirector
+     * @return Illuminate\Http\RedirectResponse
      */
     public function destroy(Label $label)
     {
