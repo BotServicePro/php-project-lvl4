@@ -17,6 +17,14 @@ class Task extends Model
         'assigned_to_id',
         'labels',
     ];
+    /**
+     * @var mixed
+     */
+    private $getStatusData;
+    /**
+     * @var mixed
+     */
+    private $created_by_id;
 
     public function getAuthorData()
     {

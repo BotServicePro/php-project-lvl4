@@ -27,7 +27,7 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View | \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function index(Request $request)
     {
@@ -84,7 +84,7 @@ class TaskController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -106,7 +106,7 @@ class TaskController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
@@ -149,7 +149,6 @@ class TaskController extends Controller
                 }
             }
 
-
             DB::commit();
             /* Transaction successful. */
             flash(__('messages.taskSuccessAdded'))->success();
@@ -166,7 +165,7 @@ class TaskController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function show(Task $task)
     {
@@ -188,13 +187,15 @@ class TaskController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function edit(Task $task)
     {
         $labels = Label::all();
         $task = Task::findOrFail($task->id);
         $selectedLabels = LabelTask::where('task_id', $task->id)->get();
+        $usersList = [];
+        $taskStatusesList = [];
         foreach (User::select('id', 'name')->get()->toArray() as $user) {
             $usersList[$user['id']] = $user['name'];
         }
@@ -210,7 +211,7 @@ class TaskController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(Request $request, Task $task)
     {
@@ -276,7 +277,7 @@ class TaskController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy(Task $task)
     {
@@ -284,7 +285,7 @@ class TaskController extends Controller
         $authorizedUserId = (int) Auth::user()->id;
         if ($taskAuthorId !== $authorizedUserId) {
             flash(__('messages.taskUnsuccessDelete'))->error();
-            return redirect()->route('tasks.index');
+            return redirect(route('tasks.index'));
         }
 
         // проверяем есть ли у задачи метки
@@ -294,6 +295,6 @@ class TaskController extends Controller
 
         flash(__('messages.taskSuccessDeleted'))->success();
         $task->delete();
-        return redirect()->route('tasks.index');
+        return redirect(route('tasks.index'));
     }
 }

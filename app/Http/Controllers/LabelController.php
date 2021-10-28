@@ -42,7 +42,7 @@ class LabelController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Routing\Redirector
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
@@ -94,7 +94,7 @@ class LabelController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Label  $label
-     * @return \Illuminate\Routing\Redirector
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(Request $request, Label $label)
     {
