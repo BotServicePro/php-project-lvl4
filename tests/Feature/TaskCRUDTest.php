@@ -14,6 +14,8 @@ class TaskCRUDTest extends TestCase
 {
     /** @var int */
     private $id;
+    /** @var string */
+    private $name;
 
     protected function setUp(): void
     {
@@ -56,7 +58,7 @@ class TaskCRUDTest extends TestCase
     }
 
     // авторизация
-    protected function signIn($user = null)
+    protected function signIn($user = null): TaskCRUDTest
     {
         $this->actingAs(User::find(1));
         return $this;

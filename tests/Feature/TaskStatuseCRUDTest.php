@@ -42,7 +42,8 @@ class TaskStatuseCRUDTest extends TestCase
     }
 
     // авторизация
-    protected function signIn($user = null)
+    //protected function signIn($user = null)
+    protected function signIn()
     {
         $user = User::factory()->create();
         $this->actingAs($user);

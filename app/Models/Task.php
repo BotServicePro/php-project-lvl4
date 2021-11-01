@@ -25,6 +25,22 @@ class Task extends Model
      * @var mixed
      */
     private $created_by_id;
+    /**
+     * @var mixed|string
+     */
+    private $name;
+    /**
+     * @var mixed|string
+     */
+    private $description;
+    /**
+     * @var int|mixed
+     */
+    private $assigned_to_id;
+    /**
+     * @var int|mixed
+     */
+    private $status_id;
 
     public function getAuthorData()
     {

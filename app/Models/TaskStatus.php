@@ -12,6 +12,10 @@ class TaskStatus extends Model
     protected $fillable = [
         'name'
     ];
+    /**
+     * @var mixed|string
+     */
+    private $name;
 
 
     /**
