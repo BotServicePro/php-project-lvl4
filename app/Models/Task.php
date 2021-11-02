@@ -41,6 +41,10 @@ class Task extends Model
      * @var int|mixed
      */
     private $status_id;
+    /**
+     * @var mixed
+     */
+    private $id;
 
     public function getAuthorData()
     {

@@ -42,7 +42,7 @@ class TaskCRUDTest extends TestCase
         $taskData->status_id = 1;
         $taskData->save();
 
-        (int) $this->id = Task::find(1)->id;
+        $this->id = $taskData->id;
     }
 
 
@@ -60,7 +60,8 @@ class TaskCRUDTest extends TestCase
     // авторизация
     protected function signIn($user = null): TaskCRUDTest
     {
-        $this->actingAs(User::find(1));
+        $user = User::factory()->create()->first();
+        $this->actingAs($user);
         return $this;
     }
 
