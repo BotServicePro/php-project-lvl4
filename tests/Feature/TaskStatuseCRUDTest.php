@@ -43,14 +43,14 @@ class TaskStatuseCRUDTest extends TestCase
 
     // авторизация
     //protected function signIn($user = null)
-    protected function signIn()
+    protected function signIn(): TaskStatuseCRUDTest
     {
         $user = User::factory()->create();
         $this->actingAs($user);
         return $this;
     }
 
-    public function testTaskStatuseAdd()
+    public function testTaskStatuseAdd(): void
     {
         $response = $this->get(route('task_statuses.create')); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
@@ -73,7 +73,7 @@ class TaskStatuseCRUDTest extends TestCase
         $this->assertDatabaseHas('task_statuses', $taskData);
     }
 
-    public function testTaskStatuseEdit()
+    public function testTaskStatuseEdit(): void
     {
         $response = $this->get(route('task_statuses.edit', ['task_status' => $this->id]));
         $response->assertStatus(403);
@@ -98,7 +98,7 @@ class TaskStatuseCRUDTest extends TestCase
         $this->assertEquals(1, $updatedTaskStatus->id);
     }
 
-    public function testTaskStatuseDelete()
+    public function testTaskStatuseDelete(): void
     {
         $response = $this->delete(route('task_statuses.destroy', ['task_status' => $this->id]));
         $response->assertStatus(403);
