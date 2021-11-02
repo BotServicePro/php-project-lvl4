@@ -58,7 +58,7 @@ class TaskCRUDTest extends TestCase
     }
 
     // авторизация
-    protected function signIn($user = null): TaskCRUDTest
+    protected function signIn(): TaskCRUDTest
     {
         $user = User::factory()->create()->first();
         $this->actingAs($user);

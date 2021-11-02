@@ -59,7 +59,7 @@ class LabelCRUDTest extends TestCase
     }
 
     // авторизация
-    protected function signIn($user = null): LabelCRUDTest
+    protected function signIn(): LabelCRUDTest
     {
         $user = User::factory()->create()->first();
         $this->actingAs($user);
