@@ -50,6 +50,7 @@ class TaskStatusPolicy
         if (Auth::check()) {
             return true;
         }
+        return false;
     }
 
     /**
@@ -64,6 +65,7 @@ class TaskStatusPolicy
         if (Auth::check()) {
             return true;
         }
+        return false;
     }
 
     /**
@@ -78,6 +80,7 @@ class TaskStatusPolicy
         if (Auth::check()) {
             return true;
         }
+        return false;
     }
 
     /**
@@ -92,6 +95,7 @@ class TaskStatusPolicy
         if (Auth::check()) {
             return true;
         }
+        return false;
     }
 
     /**
@@ -106,5 +110,6 @@ class TaskStatusPolicy
         if (Auth::check()) {
             return true;
         }
+        return false;
     }
 }

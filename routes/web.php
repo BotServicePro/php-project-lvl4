@@ -3,7 +3,6 @@
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
-use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +20,7 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
-//// Task statuse routes
+// Task statuse routes
 Route::resource('task_statuses', TaskStatusController::class);
 
 // Task routes

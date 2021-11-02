@@ -63,6 +63,7 @@ class LabelPolicy
         if (Auth::check()) {
             return true;
         }
+        return false;
     }
 
     /**
@@ -77,6 +78,7 @@ class LabelPolicy
         if (Auth::check()) {
             return true;
         }
+        return false;
     }
 
     /**
@@ -91,6 +93,7 @@ class LabelPolicy
         if (Auth::check()) {
             return true;
         }
+        return false;
     }
 
     /**
@@ -105,5 +108,6 @@ class LabelPolicy
         if (Auth::check()) {
             return true;
         }
+        return false;
     }
 }

@@ -55,13 +55,14 @@ class LabelCRUDTest extends TestCase
         $taskLabelData->label_id = 3;
         $taskLabelData->save();
 
-        (int) $this->id = Label::find(1)->id;
+        $this->id = Label::find(1)->id;
     }
 
     // авторизация
-    protected function signIn($user = null)
+    protected function signIn($user = null): LabelCRUDTest
     {
-        $this->actingAs(User::find(1));
+        $user = User::factory()->create()->first();
+        $this->actingAs($user);
         return $this;
     }
 
@@ -76,7 +77,7 @@ class LabelCRUDTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testLabelAdd()
+    public function testLabelAdd(): void
     {
         $response = $this->get(route('labels.create')); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
@@ -101,7 +102,7 @@ class LabelCRUDTest extends TestCase
         $this->assertDatabaseHas('labels', $labelData);
     }
 
-    public function testLabelEdit()
+    public function testLabelEdit(): void
     {
         $response = $this->get(route('labels.edit', ['label' => $this->id])); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
@@ -128,7 +129,7 @@ class LabelCRUDTest extends TestCase
         $this->assertEquals($this->id, $updatedLabel->id);
     }
 
-    public function testLabelDelete()
+    public function testLabelDelete(): void
     {
         $response = $this->delete(route('labels.destroy', ['label' => $this->id]));
         $response->assertStatus(403);
@@ -152,7 +153,7 @@ class LabelCRUDTest extends TestCase
         $this->assertNull($firstLabel);
     }
 
-    public function testLabelShow()
+    public function testLabelShow(): void
     {
         $response = $this->get(route('labels.show', ['label' => 1]));
         $response->assertStatus(403);

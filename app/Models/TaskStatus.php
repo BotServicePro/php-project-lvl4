@@ -21,7 +21,7 @@ class TaskStatus extends Model
     /**
      * Получить задачи статуса.
      */
-    public function tasks()
+    public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Task::class, 'status_id');
     }

@@ -46,15 +46,15 @@ class Task extends Model
      */
     private $id;
 
-    public function getAuthorData()
+    public function getAuthorData(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
-    public function getStatusData()
+    public function getStatusData(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(TaskStatus::class, 'status_id');
     }
-    public function getExecutorData()
+    public function getExecutorData(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to_id');
     }

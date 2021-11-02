@@ -65,7 +65,7 @@ class TaskCRUDTest extends TestCase
         return $this;
     }
 
-    public function testTaskAdd()
+    public function testTaskAdd(): void
     {
         $response = $this->get(route('tasks.create')); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
@@ -92,7 +92,7 @@ class TaskCRUDTest extends TestCase
         $this->assertDatabaseHas('tasks', $taskData);
     }
 
-    public function testTaskEdit()
+    public function testTaskEdit(): void
     {
         $response = $this->get(route('tasks.edit', ['task' => $this->id])); // вход на страницу авторизованным юзером
         $response->assertStatus(403); // в случае если НЕ авторизованы
@@ -124,7 +124,7 @@ class TaskCRUDTest extends TestCase
         $this->assertEquals($taskData['assigned_to_id'], $updatedTask->assigned_to_id);
     }
 
-    public function testTaskDelete()
+    public function testTaskDelete(): void
     {
         $response = $this->delete(route('tasks.destroy', ['task' => $this->id]));
         $response->assertStatus(403);
@@ -139,7 +139,7 @@ class TaskCRUDTest extends TestCase
         $this->assertNull($deletedTask);
     }
 
-    public function testTaskShow()
+    public function testTaskShow(): void
     {
         // возможно придеться дописать тест с использованием фикстур и фейковой страницы
         $response = $this->get(route('tasks.show', ['task' => $this->id]));
