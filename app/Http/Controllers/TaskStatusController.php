@@ -81,7 +81,6 @@ class TaskStatusController extends Controller
      */
     public function show(TaskStatus $taskStatus)
     {
-        // статусы показывать не будем, а так же запретим всем в политиках
     }
 
     /**
