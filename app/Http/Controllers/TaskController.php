@@ -31,8 +31,8 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $usersList = User::All();
-        $taskStatusesList = TaskStatus::All();
+        $usersList = User::all();
+        $taskStatusesList = TaskStatus::all();
 
         // проверяем, если что-то в запросе из фильтра
         if ($request->filter !== null) {
