@@ -9,6 +9,15 @@ class LabelTask extends Model
 {
     use HasFactory;
 
+    /**
+     * @var mixed
+     */
+    private $task_id;
+    /**
+     * @var int|mixed
+     */
+    private $label_id;
+
     public function getLabelName(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Label::class, 'label_id');
