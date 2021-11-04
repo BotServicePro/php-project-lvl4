@@ -92,7 +92,7 @@ class TaskStatuseCRUDTest extends TestCase
         $response = $this->patch(route('task_statuses.update', ['task_status' => $this->id]), $taskData);
         $response->assertSessionHasNoErrors();
 
-        $updatedTaskStatus = TaskStatus::find(1);
+        $updatedTaskStatus = TaskStatus::where('id', 1)->first();
 
         $this->assertEquals($taskData['name'], $updatedTaskStatus->name);
         $this->assertEquals(1, $updatedTaskStatus->id);
