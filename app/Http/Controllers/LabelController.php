@@ -8,6 +8,14 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @property string $description
+ */
+
+/**
+ * @property string $name
+ */
+
 class LabelController extends Controller
 {
     public function __construct()
