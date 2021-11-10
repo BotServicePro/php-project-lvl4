@@ -15,6 +15,11 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
+     * @var mixed|string
+     */
+    private $email;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var string[]
