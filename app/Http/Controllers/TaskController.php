@@ -117,30 +117,47 @@ class TaskController extends Controller
             'unique' => __('messages.taskUnique'),
         ]);
 
+
         if ($validator->fails()) {
             return redirect(route('tasks.create'))
                 ->withErrors($validator)
                 ->withInput();
         }
 
+        $data = $this->validate($request, [
+            'name' => 'required|unique:tasks',
+            'description' => '',
+            'status_id' => 'required',
+            'created_by_id' => '',
+            'assigned_to_id' => '',
+            'labels' => '',
+        ], $messages = [
+            'unique' => __('messages.taskUnique'),
+        ]);
+
         try {
             DB::beginTransaction();
             $newTask = new Task();
-            $newTask->name = $request->name;
-            $newTask->description = $request->description;
-            $newTask->status_id = $request->status_id;
-            $newTask->assigned_to_id = $request->assigned_to_id;
+//            $newTask->name = $request->name;
+//            $newTask->description = $request->description;
+//            $newTask->status_id = $request->status_id;
+//            $newTask->assigned_to_id = $request->assigned_to_id;
+            $newTask->fill($data);
             $newTask->created_by_id = Auth::id();
-            $newTask->timestamps = Carbon::now();
+            //$newTask->timestamps = Carbon::now();
             $newTask->save();
 
             // были ли добавлены метки
             if ($request->labels !== null) {
                 foreach ($request->labels as $labelId) {
                     $newTaskLabel = new LabelTask();
-                    $newTaskLabel->task_id = $newTask->id;
-                    $newTaskLabel->label_id = $labelId;
-                    $newTaskLabel->timestamps = Carbon::now();
+                    $newTaskLabel->fill([
+                        'task_id' => $newTask->id,
+                        'label_id' => $labelId,
+                        ]);
+//                    $newTaskLabel->task_id = $newTask->id;
+//                    $newTaskLabel->label_id = $labelId;
+//                    $newTaskLabel->timestamps = Carbon::now();
                     $newTaskLabel->save();
                 }
             }

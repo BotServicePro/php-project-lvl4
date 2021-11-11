@@ -81,7 +81,7 @@ class TaskStatusController extends Controller
      * @param  \App\Models\TaskStatus  $taskStatus
      * @return \Illuminate\Http\Response
      */
-    public function show(TaskStatus $taskStatus): void
+    public function show(TaskStatus $taskStatus): \Illuminate\Http\Response
     {
     }
 
