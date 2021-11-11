@@ -52,30 +52,24 @@ class TaskStatusController extends Controller
      */
     public function store(Request $request)
     {
-//        $validator = Validator::make($request->all(), [
-//            'name' => 'required|unique:task_statuses'
-//
-//        ], $messages = [
-//            'unique' => __('messages.statusUnique'),
-//            ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:task_statuses'
 
-//        if ($validator->fails()) {
-//            return redirect(route('task_statuses.create'))
-//                ->withErrors($validator)
-//                ->withInput();
-//        }
+        ], $messages = [
+            'unique' => __('messages.statusUnique'),
+            ]);
 
-
+        if ($validator->fails()) {
+            return redirect(route('task_statuses.create'))
+                ->withErrors($validator)
+                ->withInput();
+        }
         $data = $this->validate($request, ['name' => 'required|unique:task_statuses'], $messages = [
             'unique' => __('messages.statusUnique'),
         ]);
 
         $newTaskStatus = new TaskStatus();
-//        $newTaskStatus->name = $request->name;
-//        $newTaskStatus->timestamps = Carbon::now();
-
         $newTaskStatus->fill($data);
-//        exit;
         $newTaskStatus->save();
         flash(__('messages.statusSuccessAdded'))->success();
         return redirect(route('task_statuses.index'));
@@ -87,7 +81,7 @@ class TaskStatusController extends Controller
      * @param  \App\Models\TaskStatus  $taskStatus
      * @return \Illuminate\Http\Response
      */
-    public function show(TaskStatus $taskStatus)
+    public function show(TaskStatus $taskStatus): void
     {
     }
 
