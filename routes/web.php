@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (): \Illuminate\Contracts\View\View {
     return view('index');
 })->name('index');
 
