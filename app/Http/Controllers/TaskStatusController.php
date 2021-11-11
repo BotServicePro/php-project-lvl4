@@ -47,27 +47,15 @@ class TaskStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:task_statuses'
-
-        ], $messages = [
-            'unique' => __('messages.statusUnique'),
-            ]);
-
-        if ($validator->fails()) {
-            return redirect(route('task_statuses.create'))
-                ->withErrors($validator)
-                ->withInput();
-        }
         $data = $this->validate($request, ['name' => 'required|unique:task_statuses'], $messages = [
             'unique' => __('messages.statusUnique'),
         ]);
-
         $newTaskStatus = new TaskStatus();
         $newTaskStatus->fill($data);
         $newTaskStatus->save();
@@ -79,10 +67,11 @@ class TaskStatusController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\TaskStatus  $taskStatus
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function show(TaskStatus $taskStatus): \Illuminate\Http\Response
+    public function show(TaskStatus $taskStatus)
     {
+        return redirect(route('task_statuses.index'));
     }
 
     /**
@@ -107,19 +96,10 @@ class TaskStatusController extends Controller
     public function update(Request $request, TaskStatus $taskStatus)
     {
         $newStatus = TaskStatus::findOrFail($taskStatus->id);
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:task_statuses'
-        ], $messages = [
+        $data = $this->validate($request, ['name' => 'required|unique:task_statuses'], $messages = [
             'unique' => __('messages.statusUnique'),
         ]);
-
-        if ($validator->fails()) {
-            return redirect(route('task_statuses.edit', ['task_status' => $taskStatus->id]))
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $newStatus->name = $request->name;
-        $newStatus->updated_at = Carbon::now();
+        $newStatus->fill($data);
         $newStatus->save();
         flash(__('messages.statusSuccessUpdated'))->success();
         return redirect(route('task_statuses.index'));
@@ -133,11 +113,6 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        //$allTaskStatusesInUsage = Task::where('status_id', $taskStatus->id)->first();
-        //if ($allTaskStatusesInUsage === null) {
-
-//        dump($taskStatus->tasks);
-//        exit;
         if (count($taskStatus->tasks) === 0) {
             $taskStatus->delete();
             flash(__('messages.statusSuccessDeleted'))->success();

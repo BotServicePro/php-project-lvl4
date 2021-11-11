@@ -9,6 +9,11 @@ class LabelTask extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'task_id',
+        'label_id'
+    ];
+
     /**
      * @var mixed
      */

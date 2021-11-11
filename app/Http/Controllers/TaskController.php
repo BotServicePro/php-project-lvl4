@@ -101,36 +101,18 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:tasks',
-            'description' => '',
-            'status_id' => 'required',
-            'created_by_id' => '',
-            'assigned_to_id' => '',
-            'labels' => '',
-        ], $messages = [
-            'unique' => __('messages.taskUnique'),
-        ]);
-
-
-        if ($validator->fails()) {
-            return redirect(route('tasks.create'))
-                ->withErrors($validator)
-                ->withInput();
-        }
-
         $data = $this->validate($request, [
             'name' => 'required|unique:tasks',
             'description' => '',
             'status_id' => 'required',
             'created_by_id' => '',
             'assigned_to_id' => '',
-            'labels' => '',
         ], $messages = [
             'unique' => __('messages.taskUnique'),
         ]);
@@ -138,13 +120,8 @@ class TaskController extends Controller
         try {
             DB::beginTransaction();
             $newTask = new Task();
-//            $newTask->name = $request->name;
-//            $newTask->description = $request->description;
-//            $newTask->status_id = $request->status_id;
-//            $newTask->assigned_to_id = $request->assigned_to_id;
             $newTask->fill($data);
             $newTask->created_by_id = Auth::id();
-            //$newTask->timestamps = Carbon::now();
             $newTask->save();
 
             // были ли добавлены метки
@@ -153,11 +130,8 @@ class TaskController extends Controller
                     $newTaskLabel = new LabelTask();
                     $newTaskLabel->fill([
                         'task_id' => $newTask->id,
-                        'label_id' => $labelId,
-                        ]);
-//                    $newTaskLabel->task_id = $newTask->id;
-//                    $newTaskLabel->label_id = $labelId;
-//                    $newTaskLabel->timestamps = Carbon::now();
+                        'label_id' => $labelId
+                    ]);
                     $newTaskLabel->save();
                 }
             }
@@ -169,7 +143,7 @@ class TaskController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             /* Transaction failed. */
-            flash('Something went wrong')->error();
+            flash('Something went wrong' . $e)->error();
             return redirect(route('tasks.create'));
         }
     }
@@ -229,49 +203,36 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $newTask = Task::findOrFail($task->id);
-        $validator = Validator::make($request->all(), [
+        $data = $this->validate($request, [
             'name' => 'required',
             'description' => '',
             'status_id' => 'required',
-            'updated_at' => Carbon::now(),
-            'assigned_to_id' => '',
             'created_by_id' => '',
-            'labels' => ''
+            'assigned_to_id' => '',
         ], $messages = [
-        'required' => __('messages.taskRequired'),
-        'unique' => __('messages.taskUnique'),
-            ]);
-
-        if ($validator->fails()) {
-            return redirect(route('tasks.create'))
-                ->withErrors($validator)
-                ->withInput();
-        }
+            'required' => __('messages.taskRequired'),
+            'unique' => __('messages.taskUnique'),
+        ]);
 
         try {
             DB::beginTransaction();
-
             // удаляем старые метки
             LabelTask::where('task_id', '=', $task->id)->delete();
-
             // если есть метки то добавляем их
             if ($request->labels !== null) {
                 // добавляем новые метки
                 foreach ($request->labels as $labelId) {
-                    $newLabel = new LabelTask();
-                    $newLabel->task_id = $task->id;
-                    $newLabel->label_id = $labelId;
-                    $newLabel->save();
+                    $newTaskLabel = new LabelTask();
+                    $newTaskLabel->fill([
+                        'task_id' => $newTask->id,
+                        'label_id' => $labelId
+                    ]);
+                    $newTaskLabel->save();
                 }
             }
 
             // обновляем задачу
-            $newTask->name = $request->name;
-            $newTask->description = $request->description;
-            $newTask->created_by_id = $request->created_by_id;
-            $newTask->assigned_to_id = $request->assigned_to_id;
-            $newTask->status_id = $request->status_id;
-            $newTask->updated_at = Carbon::now();
+            $newTask->fill($data);
             $newTask->save();
 
             DB::commit();

@@ -46,23 +46,14 @@ class LabelController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $data = $this->validate($request, [
             'name' => 'required|unique:labels',
             'description' => '',
         ], $messages = [
-            'unique' => __('messages.labelUnique'),
+            'unique' => __('messages.labelUnique')
         ]);
-
-        if ($validator->fails()) {
-            return redirect(route('labels.create'))
-                ->withErrors($validator)
-                ->withInput();
-        }
-
         $newLabel = new Label();
-        $newLabel->name = $request->name;
-        $newLabel->description = $request->description;
-        $newLabel->timestamps = Carbon::now();
+        $newLabel->fill($data);
         $newLabel->save();
         flash(__('messages.labelSuccessAdded'))->success();
         return redirect(route('labels.index'));
