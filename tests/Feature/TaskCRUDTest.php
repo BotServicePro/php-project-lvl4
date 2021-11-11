@@ -55,6 +55,33 @@ class TaskCRUDTest extends TestCase
     {
         $response = $this->get('/tasks');
         $response->assertStatus(200);
+        $response->assertSeeTextInOrder(
+            [
+                'ID',
+                __('interface.status'),
+                __('interface.name'),
+                __('interface.author'),
+                __('interface.employee'),
+                __('interface.createDate'),
+            ],
+            true
+        );
+        $response->assertDontSeeText(
+            [
+            __('interface.createTask'),
+            __('interface.settings')],
+            true
+        );
+
+        $this->signIn();
+
+        $response = $this->get('/tasks');
+        $response->assertSeeTextInOrder(
+            [
+            __('interface.createTask'),
+            __('interface.settings')],
+            true
+        );
     }
 
     // авторизация

@@ -16,6 +16,10 @@ class TaskStatus extends Model
      * @var mixed|string
      */
     private $name;
+    /**
+     * @var mixed|string
+     */
+    private $id;
 
 
     /**

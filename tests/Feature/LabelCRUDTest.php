@@ -75,6 +75,31 @@ class LabelCRUDTest extends TestCase
     {
         $response = $this->get('/labels');
         $response->assertStatus(200);
+
+        $response->assertSeeTextInOrder(
+            [
+                'ID',
+                __('interface.name'),
+                __('interface.description'),
+                __('interface.createDate'),
+                ],
+            true
+        );
+        $response->assertDontSeeText(
+            [
+                __('interface.createLabel'),
+                __('interface.settings')],
+            true
+        );
+
+        $this->signIn();
+        $response = $this->get('/labels');
+        $response->assertSeeTextInOrder(
+            [
+                __('interface.createLabel'),
+                __('interface.settings')],
+            true
+        );
     }
 
     public function testLabelAdd(): void
@@ -86,6 +111,11 @@ class LabelCRUDTest extends TestCase
 
         $response = $this->get(route('labels.create')); // вход на страницу авторизованным юзером
         $response->assertStatus(200);
+        $response->assertSeeTextInOrder(
+            [
+                __('interface.createLabel')],
+            true
+        );
 
         // формируем даные для записи
         $labelData = [
@@ -111,7 +141,11 @@ class LabelCRUDTest extends TestCase
 
         $response = $this->get(route('labels.edit', ['label' => $this->id])); // вход на страницу авторизованным юзером
         $response->assertStatus(200);
-
+        $response->assertSeeTextInOrder(
+            [
+                __('interface.editLabel')],
+            true
+        );
         // формируем даные для записи
         $labelData = [
             'name' => 'ОБНОВЛЁННое название задачи',

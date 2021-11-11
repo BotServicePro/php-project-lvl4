@@ -39,6 +39,31 @@ class TaskStatuseCRUDTest extends TestCase
     {
         $response = $this->get('/task_statuses');
         $response->assertStatus(200);
+
+        $response->assertSeeTextInOrder(
+            [
+                'ID',
+                __('interface.name'),
+                __('interface.createDate'),
+            ],
+            true
+        );
+        $response->assertDontSeeText(
+            [
+                __('interface.createStatus'),
+                __('interface.settings')],
+            true
+        );
+
+        $this->signIn();
+
+        $response = $this->get('/task_statuses');
+        $response->assertSeeTextInOrder(
+            [
+                __('interface.createStatus'),
+                __('interface.settings')],
+            true
+        );
     }
 
     // авторизация
@@ -58,6 +83,14 @@ class TaskStatuseCRUDTest extends TestCase
         $this->signIn();
         $response = $this->get(route('task_statuses.create')); // вход на страницу авторизованным юзером
         $response->assertStatus(200);
+
+
+        $response->assertSeeTextInOrder(
+            [
+                __('interface.createStatus')],
+            true
+        );
+
 
         // формируем даные для записи
         $taskData = ['name' => 'Тестовый статус'];
@@ -79,9 +112,13 @@ class TaskStatuseCRUDTest extends TestCase
         $response->assertStatus(403);
 
         $this->signIn();
-
         $response = $this->get(route('task_statuses.edit', ['task_status' => $this->id]));
         $response->assertStatus(200);
+        $response->assertSeeTextInOrder(
+            [
+                __('interface.editStatus')],
+            true
+        );
 
         // формируем даные для записи
         $taskData = [
