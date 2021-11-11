@@ -21,4 +21,8 @@ class Label extends Model
      * @var mixed|string
      */
     private $description;
+    /**
+     * @var mixed
+     */
+    private $id;
 }

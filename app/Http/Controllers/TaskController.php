@@ -7,7 +7,6 @@ use App\Models\LabelTask;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,14 +18,13 @@ class TaskController extends Controller
 {
     public function __construct()
     {
-        // Метод authorizeResource принимает имя класса модели в качестве своего первого аргумента и
-        // имя параметра маршрута / запроса, который будет содержать идентификатор модели, в качестве второго аргумента
         $this->authorizeResource(Task::class, 'task');
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Contracts\View\View | \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function index(Request $request)
@@ -34,7 +32,6 @@ class TaskController extends Controller
         $usersList = User::all();
         $taskStatusesList = TaskStatus::all();
 
-        // проверяем, если что-то в запросе из фильтра
         if ($request->filter !== null) {
             $validator = Validator::make($request->filter, [
                 'status_id' => 'nullable|int',
@@ -48,7 +45,6 @@ class TaskController extends Controller
                     ->withInput();
             }
 
-            // используем библиотеку laravel-query-builder с дополнительной выборкой
             $data = QueryBuilder::for(Task::class)
                 ->addSelect([
                     'task_author_name' => User::select('name')
@@ -63,6 +59,7 @@ class TaskController extends Controller
                     AllowedFilter::exact('created_by_id'),
                     AllowedFilter::exact('assigned_to_id')])
                 ->paginate(10);
+
             return view('taskPages.index', compact('data', 'taskStatusesList', 'usersList'));
         }
 
@@ -74,6 +71,7 @@ class TaskController extends Controller
                 'executor_name' => User::select('name')
                     ->whereColumn('id', 'tasks.assigned_to_id')
             ])->paginate(10);
+
         return view('taskPages.index', compact('data', 'taskStatusesList', 'usersList'));
     }
 
@@ -87,14 +85,15 @@ class TaskController extends Controller
         $task = new Task();
         $usersList = [];
         $labels = Label::all();
+
         foreach (User::select('id', 'name')->get()->toArray() as $user) {
             $usersList[$user['id']] = $user['name'];
         }
+
         $taskStatusesList = [];
         foreach (TaskStatus::select('id', 'name')->get()->toArray() as $status) {
             $taskStatusesList[$status['id']] = $status['name'];
         }
-
         return view('taskPages.add', compact('task', 'usersList', 'taskStatusesList', 'labels'));
     }
 
@@ -124,7 +123,6 @@ class TaskController extends Controller
             $newTask->created_by_id = Auth::id();
             $newTask->save();
 
-            // были ли добавлены метки
             if ($request->labels !== null) {
                 foreach ($request->labels as $labelId) {
                     $newTaskLabel = new LabelTask();
@@ -137,12 +135,10 @@ class TaskController extends Controller
             }
 
             DB::commit();
-            /* Transaction successful. */
             flash(__('messages.taskSuccessAdded'))->success();
             return redirect(route('tasks.index'));
         } catch (\Exception $e) {
             DB::rollBack();
-            /* Transaction failed. */
             flash('Something went wrong' . $e)->error();
             return redirect(route('tasks.create'));
         }
@@ -158,15 +154,11 @@ class TaskController extends Controller
     {
         $taskData = Task::find($task->id);
         $statusData = $task->getStatusData;
-
-        // дополнительные данные типа label_name можно прикрепить комбинированным сложным запросом,
-        // либо во view в цикле через метод getLabelName определенный в модели LabelTask
         $labelsData =  LabelTask::where('task_id', '=', $task->id)->addSelect([
             'label_name' => Label::select('name')
                 ->whereColumn('id', 'label_tasks.label_id')
         ])->get();
 
-        //$labelsData = LabelTask::where('task_id', '=', $task->id)->get();
         return view('taskPages.show', compact('taskData', 'statusData', 'labelsData'));
     }
 
@@ -183,6 +175,7 @@ class TaskController extends Controller
         $selectedLabels = LabelTask::where('task_id', $task->id)->get();
         $usersList = [];
         $taskStatusesList = [];
+
         foreach (User::select('id', 'name')->get()->toArray() as $user) {
             $usersList[$user['id']] = $user['name'];
         }
@@ -196,9 +189,10 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Task  $task
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Task $task
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, Task $task)
     {
@@ -216,11 +210,8 @@ class TaskController extends Controller
 
         try {
             DB::beginTransaction();
-            // удаляем старые метки
             LabelTask::where('task_id', '=', $task->id)->delete();
-            // если есть метки то добавляем их
             if ($request->labels !== null) {
-                // добавляем новые метки
                 foreach ($request->labels as $labelId) {
                     $newTaskLabel = new LabelTask();
                     $newTaskLabel->fill([
@@ -231,17 +222,13 @@ class TaskController extends Controller
                 }
             }
 
-            // обновляем задачу
             $newTask->fill($data);
             $newTask->save();
-
             DB::commit();
-            /* Transaction successful. */
             flash(__('messages.taskSuccessUpdated'))->success();
             return redirect(route('tasks.index'));
         } catch (\Exception $e) {
             DB::rollBack();
-            /* Transaction failed. */
             flash('Something went wrong - ' . $e)->error();
             return redirect(route('tasks.index'));
         }
@@ -262,8 +249,7 @@ class TaskController extends Controller
             return redirect(route('tasks.index'));
         }
 
-        // проверяем есть ли у задачи метки
-        if (LabelTask::where('task_id', '=', $task->id)->count() > 0) { // если меток больше чем 0
+        if (LabelTask::where('task_id', '=', $task->id)->count() > 0) {
             LabelTask::where('task_id', '=', $task->id)->delete();
         }
 

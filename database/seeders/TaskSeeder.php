@@ -15,15 +15,12 @@ class TaskSeeder extends Seeder
      */
     public function run()
     {
-
-        // сделать через цикл, данные задачи поместить в массив
         $newTask = new Task();
         $newTask->name = 'Самая первая задача';
         $newTask->description = 'Очень важная';
         $newTask->status_id = 1;
         $newTask->assigned_to_id = 1;
         $newTask->created_by_id = 1;
-        $newTask->timestamps = Carbon::now();
         $newTask->save();
 
         $newTask = new Task();
@@ -32,7 +29,6 @@ class TaskSeeder extends Seeder
         $newTask->status_id = 2;
         $newTask->assigned_to_id = 2;
         $newTask->created_by_id = 2;
-        $newTask->timestamps = Carbon::now();
         $newTask->save();
     }
 }

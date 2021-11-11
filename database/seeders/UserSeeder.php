@@ -20,16 +20,12 @@ class UserSeeder extends Seeder
         $newUser->name = 'Alex';
         $newUser->email = 'alex@mail.ru';
         $newUser->password = Hash::make('test');
-        $newUser->created_at = Carbon::now();
-        $newUser->updated_at = Carbon::now();
         $newUser->save();
 
         $newUser = new User();
         $newUser->name = 'SecondUser';
         $newUser->email = 'test@mail.ru';
         $newUser->password = Hash::make('test');
-        $newUser->created_at = Carbon::now();
-        $newUser->updated_at = Carbon::now();
         $newUser->save();
     }
 }

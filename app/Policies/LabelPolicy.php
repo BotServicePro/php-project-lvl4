@@ -19,7 +19,6 @@ class LabelPolicy
      */
     public function viewAny(?User $user)
     {
-        // разрешаем просмотр для всех, в том числе и не авторизованных
         return true;
     }
 
@@ -32,7 +31,6 @@ class LabelPolicy
      */
     public function view(?User $user, Label $label)
     {
-        // просмотр метки не разрешаем никому
         return false;
     }
 
@@ -44,7 +42,6 @@ class LabelPolicy
      */
     public function create(User $user)
     {
-        // создание разрешено только авторизованным
         if (Auth::check()) {
             return true;
         }

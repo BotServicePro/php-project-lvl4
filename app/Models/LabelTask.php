@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LabelTask extends Model
 {
@@ -23,9 +24,8 @@ class LabelTask extends Model
      */
     private $label_id;
 
-    public function getLabelName(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function getLabelName(): BelongsTo
     {
         return $this->belongsTo(Label::class, 'label_id');
-        //return $this->belongsToMany(Label::class, 'label_tasks', 'task_id', 'label_id');
     }
 }

@@ -12,10 +12,9 @@ class LabelController extends Controller
 {
     public function __construct()
     {
-        // Метод authorizeResource принимает имя класса модели в качестве своего первого аргумента и
-        // имя параметра маршрута / запроса, который будет содержать идентификатор модели, в качестве второго аргумента
         $this->authorizeResource(Label::class, 'label');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -41,8 +40,9 @@ class LabelController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
@@ -62,7 +62,7 @@ class LabelController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Label  $label
+     * @param  \App\Models\Label $label
      */
     public function show(Label $label): void
     {
@@ -96,7 +96,6 @@ class LabelController extends Controller
         ], $messages = [
             'unique' => __('messages.labelUnique'),
         ]);
-
 
         if ($validator->fails()) {
             return redirect(route('labels.edit', ['label' => $label->id]))

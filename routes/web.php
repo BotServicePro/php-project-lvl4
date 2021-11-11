@@ -19,14 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function (): \Illuminate\Contracts\View\View {
     return view('index');
 })->name('index');
-
-// Task statuse routes
 Route::resource('task_statuses', TaskStatusController::class);
-
-// Task routes
 Route::resource('tasks', TaskController::class);
-
-// Label routes
 Route::resource('labels', LabelController::class);
-
 require __DIR__ . '/auth.php';

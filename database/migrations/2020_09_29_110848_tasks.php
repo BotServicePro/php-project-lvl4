@@ -17,7 +17,6 @@ class Tasks extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            //$table->foreignId('status_id')->references('id')->on('task_statuses');
             $table->integer('status_id');
             $table->foreignId('created_by_id')->references('id')->on('users');
             $table->integer('assigned_to_id')->nullable();

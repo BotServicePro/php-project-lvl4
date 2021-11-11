@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
 use App\Models\TaskStatus;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class TaskStatusController extends Controller
 {
@@ -17,8 +13,6 @@ class TaskStatusController extends Controller
      */
     public function __construct()
     {
-        // Метод authorizeResource принимает имя класса модели в качестве своего первого аргумента и
-        // имя параметра маршрута / запроса, который будет содержать идентификатор модели, в качестве второго аргумента
         $this->authorizeResource(TaskStatus::class, 'task_status');
     }
 

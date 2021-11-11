@@ -4,14 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TaskStatus extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name'
-    ];
+    protected $fillable = ['name'];
     /**
      * @var mixed|string
      */
@@ -20,12 +19,15 @@ class TaskStatus extends Model
      * @var mixed|string
      */
     private $id;
-
+    /**
+     * @var mixed
+     */
+    private $tasks;
 
     /**
      * Получить задачи статуса.
      */
-    public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function tasks(): HasMany
     {
         return $this->hasMany(Task::class, 'status_id');
     }

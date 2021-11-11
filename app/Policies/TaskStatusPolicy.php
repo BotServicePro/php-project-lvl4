@@ -18,11 +18,8 @@ class TaskStatusPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    // Знак вопроса означает, что значение может быть как объявленного типа User, так и быть равным null
-    // По умолчанию все шлюзы и политики автоматически возвращают false
     public function viewAny(?User $user)
     {
-        // разрешаем просмотр для всех, в том числе и не авторизованных
         return true;
     }
 
@@ -35,7 +32,6 @@ class TaskStatusPolicy
      */
     public function view(User $user, TaskStatus $taskStatus)
     {
-        // запрещаем просмотр конкретного статуса ВСЕМ
         return false;
     }
 
