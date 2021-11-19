@@ -37,7 +37,7 @@ class LabelControllerTest extends TestCase
      *
      * @return void
      */
-    public function testLabelPages()
+    public function testIndex()
     {
         $response = $this->get('/labels');
         $response->assertStatus(200);
@@ -66,7 +66,7 @@ class LabelControllerTest extends TestCase
         );
     }
 
-    public function testLabelAdd(): void
+    public function testCreate(): void
     {
         $response = $this->get(route('labels.create'));
         $response->assertStatus(403);
@@ -88,12 +88,11 @@ class LabelControllerTest extends TestCase
 
         $response = $this->post(route('labels.store'), $labelData);
         $response->assertSessionHasNoErrors();
-
         $response->assertRedirect(route('labels.index'));
         $this->assertDatabaseHas('labels', $labelData);
     }
 
-    public function testLabelEdit(): void
+    public function testEdit(): void
     {
         $response = $this->get(route('labels.edit', ['label' => $this->id]));
         $response->assertStatus(403);
@@ -123,7 +122,7 @@ class LabelControllerTest extends TestCase
         $this->assertEquals($this->id, $updatedLabel->id);
     }
 
-    public function testLabelDelete(): void
+    public function testDestroy(): void
     {
         $label = Label::all()->first();
         $labelNotInUseId = $label->id;
@@ -137,10 +136,8 @@ class LabelControllerTest extends TestCase
         $response->assertRedirect(route('labels.index'));
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseMissing('labels', ['id' => $labelNotInUseId]);
-        $response->assertRedirect(route('labels.index'));
 
-        LabelTask::factory()->create();
-        $labelInUse = LabelTask::all()->first();
+        $labelInUse = LabelTask::factory()->create()->first();
         $labelInUseId = $labelInUse->label_id;
         $response = $this->delete(route('labels.destroy', ['label' => $labelInUseId]));
         $response->assertStatus(302);
@@ -148,7 +145,7 @@ class LabelControllerTest extends TestCase
         $this->assertDatabaseHas('labels', ['id' => $labelInUseId]);
     }
 
-    public function testLabelShow(): void
+    public function testShow(): void
     {
         $response = $this->get(route('labels.show', ['label' => 1]));
         $response->assertStatus(403);
