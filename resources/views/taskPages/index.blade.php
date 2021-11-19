@@ -22,9 +22,9 @@
                     {{ Form::select('filter[status_id]', $taskStatusesList, null, ['placeholder' => __('interface.status')]) }}
                     {{ Form::select('filter[created_by_id]', $usersList, null, ['placeholder' => __('interface.author')]) }}
                     {{ Form::select('filter[assigned_to_id]', $usersList, null, ['placeholder' => __('interface.employee')]) }}
-                <input class="btn btn-outline-primary mr-2" type="submit" value="{{ __('interface.apply') }}"><br>
+                <input class="btn btn-outline-primary mr-2" type="submit" value="{{ __('interface.apply') }}">
                 {!! Form::close() !!}
-
+                <br>
             </div>
             @if(Auth::check())
                 <a href="{{ route('tasks.create') }}" class="btn btn-primary ml-auto">{{ __('interface.createTask') }}</a>
