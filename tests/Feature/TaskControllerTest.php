@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -20,38 +21,20 @@ class TaskControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $totalRecords = 5;
+        User::factory()->count($totalRecords)->create();
+        TaskStatus::factory()->count($totalRecords)->create();
+        Task::factory()->create();
 
-        // ПЕРВОЕ создаем нового юзера
-        User::factory()->create();
-
-        // ВТОРОЕ создаем статус
-        $statusData = new TaskStatus();
-        $statusData->name = 'статус в разработке';
-        $statusData->save();
-
-        $statusData = new TaskStatus();
-        $statusData->name = 'статус завершен';
-        $statusData->save();
-
-        // ТРЕТЬЕ создаем задачу
-        $taskData = new Task();
-        $taskData->name = 'задача';
-        $taskData->description = 'описание';
-        $taskData->created_by_id = 1;
-        $taskData->assigned_to_id = 1;
-        $taskData->status_id = 1;
-        $taskData->save();
-
-        $this->id = $taskData->id;
+        $this->id = Task::find(1)->id;
     }
-
 
     /**
      * A basic feature test example.
      *
      * @return void
      */
-    public function testTaskPages()
+    public function testIndex()
     {
         $response = $this->get('/tasks');
         $response->assertStatus(200);
@@ -92,16 +75,15 @@ class TaskControllerTest extends TestCase
         return $this;
     }
 
-    public function testTaskAdd(): void
+    public function testCreate(): void
     {
-        $response = $this->get(route('tasks.create')); // вход на страницу авторизованным юзером
-        $response->assertStatus(403); // в случае если НЕ авторизованы
+        $response = $this->get(route('tasks.create'));
+        $response->assertStatus(403);
 
         $this->signIn();
-        $response = $this->get(route('tasks.create')); // вход на страницу авторизованным юзером
+        $response = $this->get(route('tasks.create'));
         $response->assertStatus(200);
 
-        // формируем даные для записи
         $taskData = [
             'name' => 'Тестовая задача',
             'description' => 'Описание тестовой задачи',
@@ -110,26 +92,23 @@ class TaskControllerTest extends TestCase
             'assigned_to_id' => 1,
             ];
 
-        // формируем запрос
         $response = $this->post(route('tasks.store'), $taskData);
         $response->assertSessionHasNoErrors();
 
-        // проверяем редирект после успешного добавления нового статуса
         $response->assertRedirect(route('tasks.index'));
         $this->assertDatabaseHas('tasks', $taskData);
     }
 
-    public function testTaskEdit(): void
+    public function testEdit(): void
     {
-        $response = $this->get(route('tasks.edit', ['task' => $this->id])); // вход на страницу авторизованным юзером
-        $response->assertStatus(403); // в случае если НЕ авторизованы
+        $response = $this->get(route('tasks.edit', ['task' => $this->id]));
+        $response->assertStatus(403);
 
         $this->signIn();
 
-        $response = $this->get(route('tasks.edit', ['task' => $this->id])); // вход на страницу авторизованным юзером
+        $response = $this->get(route('tasks.edit', ['task' => $this->id]));
         $response->assertStatus(200);
 
-        // формируем даные для записи
         $taskData = [
             'name' => 'ОБНОВЛЁННое название задачи',
             'description' => 'новое описание',
@@ -138,7 +117,6 @@ class TaskControllerTest extends TestCase
             'assigned_to_id' => 2,
         ];
 
-        // формируем запрос
         $response = $this->patch(route('tasks.update', ['task' => $this->id]), $taskData);
         $response->assertSessionHasNoErrors();
 
@@ -151,25 +129,30 @@ class TaskControllerTest extends TestCase
         $this->assertEquals($taskData['assigned_to_id'], $updatedTask->assigned_to_id);
     }
 
-    public function testTaskDelete(): void
+    public function testDestroy(): void
     {
+        Task::factory()->create();
         $response = $this->delete(route('tasks.destroy', ['task' => $this->id]));
         $response->assertStatus(403);
+        $this->assertDatabaseHas('tasks', ['id' => $this->id]);
 
         $this->signIn();
 
         $response = $this->delete(route('tasks.destroy', ['task' => $this->id]));
         $response->assertStatus(302);
+        $this->assertDatabaseMissing('tasks', ['id' => $this->id]);
         $response->assertRedirect(route('tasks.index'));
-
-        $deletedTask = Task::where('id', 1)->first();
-        $this->assertNull($deletedTask);
+        $response->assertSessionHasNoErrors();
     }
 
-    public function testTaskShow(): void
+    public function testShow(): void
     {
-        // возможно придеться дописать тест с использованием фикстур и фейковой страницы
         $response = $this->get(route('tasks.show', ['task' => $this->id]));
         $response->assertStatus(200);
+        $response->assertSeeTextInOrder(
+            [
+                __('interface.showTask')],
+            true
+        );
     }
 }
