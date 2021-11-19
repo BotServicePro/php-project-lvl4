@@ -10,7 +10,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 
@@ -29,8 +28,8 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $usersList = User::all()->pluck('name', 'id')->toArray();
-        $taskStatusesList = TaskStatus::all()->pluck('name', 'id')->toArray();
+        $usersList = User::all()->pluck('name', 'id');
+        $taskStatusesList = TaskStatus::all()->pluck('name', 'id');
         $data = QueryBuilder::for(Task::class)
             ->addSelect([
                 'task_author_name' => User::select('name')
@@ -57,18 +56,11 @@ class TaskController extends Controller
     public function create()
     {
         $task = new Task();
-        $usersList = [];
+        $usersList = User::all()->pluck('name', 'id');
+        $taskStatusesList = TaskStatus::all()->pluck('name', 'id');
         $labels = Label::all();
 
-        foreach (User::select('id', 'name')->get()->toArray() as $user) {
-            $usersList[$user['id']] = $user['name'];
-        }
-
-        $taskStatusesList = [];
-        foreach (TaskStatus::select('id', 'name')->get()->toArray() as $status) {
-            $taskStatusesList[$status['id']] = $status['name'];
-        }
-        return view('taskPages.add', compact('task', 'usersList', 'taskStatusesList', 'labels'));
+        return view('taskPages.create', compact('task', 'usersList', 'taskStatusesList', 'labels'));
     }
 
     /**
@@ -81,8 +73,8 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $data = $this->validate($request, [
-            'name' => 'required|unique:tasks',
-            'description' => '',
+            'name' => 'required|unique:tasks|max:255',
+            'description' => 'max:1000',
             'status_id' => 'required',
             'created_by_id' => '',
             'assigned_to_id' => '',
@@ -90,32 +82,24 @@ class TaskController extends Controller
             'unique' => __('messages.taskUnique'),
         ]);
 
-        try {
-            DB::beginTransaction();
-            $newTask = new Task();
-            $newTask->fill($data);
-            $newTask->created_by_id = Auth::id();
-            $newTask->save();
+        $newTask = new Task();
+        $newTask->fill($data);
+        $newTask->created_by_id = Auth::id();
+        $newTask->save();
 
-            if ($request->labels !== null) {
-                foreach ($request->labels as $labelId) {
-                    $newTaskLabel = new LabelTask();
-                    $newTaskLabel->fill([
-                        'task_id' => $newTask->id,
-                        'label_id' => $labelId
-                    ]);
-                    $newTaskLabel->save();
-                }
+        if ($request->labels !== null) {
+            foreach ($request->labels as $labelId) {
+                $newTaskLabel = new LabelTask();
+                $newTaskLabel->fill([
+                    'task_id' => $newTask->id,
+                    'label_id' => $labelId
+                ]);
+                $newTaskLabel->save();
             }
-
-            DB::commit();
-            flash(__('messages.taskSuccessAdded'))->success();
-            return redirect(route('tasks.index'));
-        } catch (\Exception $e) {
-            DB::rollBack();
-            flash('Something went wrong' . $e)->error();
-            return redirect(route('tasks.create'));
         }
+
+        flash(__('messages.taskSuccessAdded'))->success();
+        return redirect(route('tasks.index'));
     }
 
     /**
@@ -147,15 +131,8 @@ class TaskController extends Controller
         $labels = Label::all();
         $task = Task::findOrFail($task->id);
         $selectedLabels = LabelTask::where('task_id', $task->id)->get();
-        $usersList = [];
-        $taskStatusesList = [];
-
-        foreach (User::select('id', 'name')->get()->toArray() as $user) {
-            $usersList[$user['id']] = $user['name'];
-        }
-        foreach (TaskStatus::select('id', 'name')->get()->toArray() as $status) {
-            $taskStatusesList[$status['id']] = $status['name'];
-        }
+        $usersList = User::all()->pluck('name', 'id');
+        $taskStatusesList = TaskStatus::all()->pluck('name', 'id');
 
         return view('taskPages.edit', compact('task', 'usersList', 'taskStatusesList', 'labels', 'selectedLabels'));
     }
@@ -172,8 +149,8 @@ class TaskController extends Controller
     {
         $newTask = Task::findOrFail($task->id);
         $data = $this->validate($request, [
-            'name' => 'required',
-            'description' => '',
+            'name' => 'required|max:255',
+            'description' => 'max:1000',
             'status_id' => 'required',
             'created_by_id' => '',
             'assigned_to_id' => '',
