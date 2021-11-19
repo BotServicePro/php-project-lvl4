@@ -45,7 +45,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('assigned_to_id')])
             ->paginate(10);
 
-        return view('pages.index', compact('data', 'taskStatusesList', 'usersList'));
+        return view('task.index', compact('data', 'taskStatusesList', 'usersList'));
     }
 
     /**
@@ -60,7 +60,7 @@ class TaskController extends Controller
         $taskStatusesList = TaskStatus::all()->pluck('name', 'id');
         $labels = Label::all();
 
-        return view('pages.create', compact('task', 'usersList', 'taskStatusesList', 'labels'));
+        return view('task.create', compact('task', 'usersList', 'taskStatusesList', 'labels'));
     }
 
     /**
@@ -117,7 +117,7 @@ class TaskController extends Controller
                 ->whereColumn('id', 'label_tasks.label_id')
         ])->get();
 
-        return view('pages.show', compact('taskData', 'statusData', 'labelsData'));
+        return view('task.show', compact('taskData', 'statusData', 'labelsData'));
     }
 
     /**
@@ -134,7 +134,7 @@ class TaskController extends Controller
         $usersList = User::all()->pluck('name', 'id');
         $taskStatusesList = TaskStatus::all()->pluck('name', 'id');
 
-        return view('pages.edit', compact('task', 'usersList', 'taskStatusesList', 'labels', 'selectedLabels'));
+        return view('task.edit', compact('task', 'usersList', 'taskStatusesList', 'labels', 'selectedLabels'));
     }
 
     /**
