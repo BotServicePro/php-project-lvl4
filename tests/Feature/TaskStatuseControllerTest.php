@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
-class TaskStatuseCRUDTest extends TestCase
+class TaskStatuseControllerTest extends TestCase
 {
     /** @var int */
     private $id;
@@ -68,7 +68,7 @@ class TaskStatuseCRUDTest extends TestCase
 
     // авторизация
     //protected function signIn($user = null)
-    protected function signIn(): TaskStatuseCRUDTest
+    protected function signIn(): TaskStatuseControllerTest
     {
         $user = User::factory()->create();
         $this->actingAs($user);

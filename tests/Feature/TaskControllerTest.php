@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
-class TaskCRUDTest extends TestCase
+class TaskControllerTest extends TestCase
 {
     /** @var int */
     private $id;
@@ -85,7 +85,7 @@ class TaskCRUDTest extends TestCase
     }
 
     // авторизация
-    protected function signIn(): TaskCRUDTest
+    protected function signIn(): TaskControllerTest
     {
         $user = User::factory()->create()->first();
         $this->actingAs($user);
