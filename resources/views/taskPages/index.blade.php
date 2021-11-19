@@ -18,27 +18,13 @@
         <br>
         <div class="d-flex">
             <div>
-                <form method="GET" action="{{ route('tasks.index') }}" accept-charset="UTF-8">
-                    <select class="mr-2" name="filter[status_id]">
-                        <option value="">{{ __('interface.status') }}</option>
-                        @foreach($taskStatusesList as $status)
-                            <option value="{{ $status->id }}">{{ $status->name }}</option>
-                        @endforeach
-                    </select>
-                    <select name="filter[created_by_id]">
-                        <option value="">{{ __('interface.author') }}</option>
-                        @foreach($usersList as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                        @endforeach
-                    </select>
-                    <select  name="filter[assigned_to_id]">
-                        <option selected="selected" value="">{{ __('interface.employee') }}</option>
-                        @foreach($usersList as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                        @endforeach
-                    </select>
-                    <input class="btn btn-outline-primary mr-2" type="submit" value="{{ __('interface.apply') }}">
-                </form>
+                {!! Form::open(['url' => route('tasks.index'), 'method' => 'get']) !!}
+                    {{ Form::select('filter[status_id]', $taskStatusesList, null, ['placeholder' => __('interface.status')]) }}
+                    {{ Form::select('filter[created_by_id]', $usersList, null, ['placeholder' => __('interface.author')]) }}
+                    {{ Form::select('filter[assigned_to_id]', $usersList, null, ['placeholder' => __('interface.employee')]) }}
+                <input class="btn btn-outline-primary mr-2" type="submit" value="{{ __('interface.apply') }}"><br>
+                {!! Form::close() !!}
+
             </div>
             @if(Auth::check())
                 <a href="{{ route('tasks.create') }}" class="btn btn-primary ml-auto">{{ __('interface.createTask') }}</a>

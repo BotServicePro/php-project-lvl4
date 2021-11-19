@@ -29,48 +29,22 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $usersList = User::all();
-        $taskStatusesList = TaskStatus::all();
-
-        if ($request->filter !== null) {
-            $validator = Validator::make($request->filter, [
-                'status_id' => 'nullable|int',
-                'created_by_id' => 'nullable|int',
-                'assigned_to_id' => 'nullable|int',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect(route('tasks.index'))
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            $data = QueryBuilder::for(Task::class)
-                ->addSelect([
-                    'task_author_name' => User::select('name')
-                        ->whereColumn('id', 'tasks.created_by_id'),
-                    'status_name' => TaskStatus::select('name')
-                        ->whereColumn('id', 'tasks.status_id'),
-                    'executor_name' => User::select('name')
-                        ->whereColumn('id', 'tasks.assigned_to_id')
-                ])
-                ->allowedFilters([
-                    AllowedFilter::exact('status_id'),
-                    AllowedFilter::exact('created_by_id'),
-                    AllowedFilter::exact('assigned_to_id')])
-                ->paginate(10);
-
-            return view('taskPages.index', compact('data', 'taskStatusesList', 'usersList'));
-        }
-
-        $data =  Task::addSelect([
+        $usersList = User::all()->pluck('name', 'id')->toArray();
+        $taskStatusesList = TaskStatus::all()->pluck('name', 'id')->toArray();
+        $data = QueryBuilder::for(Task::class)
+            ->addSelect([
                 'task_author_name' => User::select('name')
                     ->whereColumn('id', 'tasks.created_by_id'),
                 'status_name' => TaskStatus::select('name')
                     ->whereColumn('id', 'tasks.status_id'),
                 'executor_name' => User::select('name')
                     ->whereColumn('id', 'tasks.assigned_to_id')
-            ])->paginate(10);
+            ])
+            ->allowedFilters([
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id')])
+            ->paginate(10);
 
         return view('taskPages.index', compact('data', 'taskStatusesList', 'usersList'));
     }
