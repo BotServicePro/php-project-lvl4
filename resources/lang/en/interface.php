@@ -53,8 +53,11 @@ return [
     'forgotPassword' => 'Forgot password?',
     'rememberMe' => 'Remember me',
     'password' => 'Password',
+    'passwordReset' => 'Password reset',
     'confirmPassword' => 'Confirm password',
-
+    'passwordReset2' => 'Send password reset link',
+    'successLogin' => 'Success login',
+    'successLogout' => 'Success logout',
 
     'custom' => [
         'attribute-name' => [

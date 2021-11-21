@@ -53,7 +53,12 @@ return [
     'forgotPassword' => 'Забыли пароль?',
     'rememberMe' => 'Запомнить меня',
     'password' => 'Пароль',
+    'passwordReset' => 'Сброс пароля',
     'confirmPassword' => 'Подтверждение',
+    'passwordReset2' => 'Сбросить пароль',
+    'successLogin' => 'Вы успешно зашли',
+    'successLogout' => 'Вы успешно вышли',
+
 
     'custom' => [
         'attribute-name' => [

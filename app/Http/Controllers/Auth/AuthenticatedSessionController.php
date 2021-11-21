@@ -28,8 +28,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        flash('Вы успешно вошли!')->success();
-
         $request->authenticate();
 
         $request->session()->regenerate();
@@ -50,8 +48,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
-
-        flash('Вы успешно вышли!')->success();
 
         return redirect('/');
     }

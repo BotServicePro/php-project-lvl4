@@ -45,8 +45,6 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        flash('Вы успешно зарегистрировались!')->success();
-
         event(new Registered($user));
 
         Auth::login($user);
