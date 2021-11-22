@@ -20,7 +20,7 @@ class LabelController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View
     {
         $labels = Label::paginate(5);
         return view('label.index', compact('labels'));
@@ -31,7 +31,7 @@ class LabelController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View
     {
         $label = new Label();
         return view('label.create', compact('label'));
@@ -74,7 +74,7 @@ class LabelController extends Controller
      * @param  \App\Models\Label  $label
      * @return \Illuminate\Contracts\View\View
      */
-    public function edit(Label $label)
+    public function edit(Label $label): \Illuminate\Contracts\View\View
     {
         $label = Label::findOrFail($label->id);
         return view('label.edit', compact('label'));
