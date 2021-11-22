@@ -15,8 +15,6 @@ class TaskControllerTest extends TestCase
 {
     /** @var int */
     private $id;
-    /** @var string */
-    private $name;
 
     protected function setUp(): void
     {
@@ -26,7 +24,8 @@ class TaskControllerTest extends TestCase
         TaskStatus::factory()->count($totalRecords)->create();
         Task::factory()->create();
 
-        $this->id = Task::find(1)->id;
+        $task = Task::find(1);
+        $this->id = $task->id;
     }
 
     /**
