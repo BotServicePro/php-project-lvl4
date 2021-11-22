@@ -17,34 +17,7 @@ class Task extends Model
         'assigned_to_id',
         'labels',
     ];
-    /**
-     * @var mixed
-     */
-    private $getStatusData;
-    /**
-     * @var mixed
-     */
-    private $created_by_id;
-    /**
-     * @var mixed|string
-     */
-    private $name;
-    /**
-     * @var mixed|string
-     */
-    private $description;
-    /**
-     * @var int|mixed
-     */
-    private $assigned_to_id;
-    /**
-     * @var int|mixed
-     */
-    private $status_id;
-    /**
-     * @var mixed
-     */
-    private $id;
+
 
     public function getAuthorData(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

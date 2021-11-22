@@ -24,8 +24,7 @@ class TaskControllerTest extends TestCase
         TaskStatus::factory()->count($totalRecords)->create();
         Task::factory()->create();
 
-        $task = Task::find(1);
-        $this->id = $task->id;
+        $this->id = Task::find(1)->id;
     }
 
     /**

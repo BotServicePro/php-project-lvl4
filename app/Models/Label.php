@@ -13,16 +13,4 @@ class Label extends Model
         'name',
         'description',
     ];
-    /**
-     * @var mixed|string
-     */
-    private $name;
-    /**
-     * @var mixed|string
-     */
-    private $description;
-    /**
-     * @var mixed
-     */
-    private $id;
 }

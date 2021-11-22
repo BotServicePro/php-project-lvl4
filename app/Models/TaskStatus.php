@@ -11,18 +11,6 @@ class TaskStatus extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
-    /**
-     * @var mixed|string
-     */
-    private $name;
-    /**
-     * @var mixed|string
-     */
-    private $id;
-    /**
-     * @var mixed
-     */
-    private $tasks;
 
     /**
      * Получить задачи статуса.

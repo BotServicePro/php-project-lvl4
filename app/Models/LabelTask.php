@@ -15,15 +15,6 @@ class LabelTask extends Model
         'label_id'
     ];
 
-    /**
-     * @var mixed
-     */
-    private $task_id;
-    /**
-     * @var int|mixed
-     */
-    private $label_id;
-
     public function getLabelName(): BelongsTo
     {
         return $this->belongsTo(Label::class, 'label_id');
