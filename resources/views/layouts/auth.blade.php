@@ -70,9 +70,10 @@
     </nav>
 </header>
 
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
+<center>
+<div class="py-12 col-md-8">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 col-md-8">
+        <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg col-md-8">
             <div class="p-6 bg-white border-gray-200">
                 @include('flash::message')
                 @yield('content')
@@ -80,6 +81,8 @@
         </div>
     </div>
 </div>
+</center>
+
 
 <div class="wrapper flex-grow-1"></div>
 <footer class="py-3 mt-5 shadow-lg">
