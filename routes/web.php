@@ -16,10 +16,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
 Route::get('/', function (): \Illuminate\Contracts\View\View {
     return view('index');
 })->name('index');
-Route::resource('task_statuses', TaskStatusController::class);
-Route::resource('tasks', TaskController::class);
-Route::resource('labels', LabelController::class);
+Route::resources([
+    'task_statuses' => TaskStatusController::class,
+    'tasks' => TaskController::class,
+    'labels' => LabelController::class,
+]);
+Auth::routes();
