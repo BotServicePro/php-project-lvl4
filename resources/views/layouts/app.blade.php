@@ -74,6 +74,16 @@
         <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
             <div class="p-6 bg-white border-gray-200">
                 @include('flash::message')
+                @if ($errors->any())
+                    <div class="container align-content-center">
+                        <div style="Color: red">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{$error}}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
                 @yield('content')
             </div>
         </div>
