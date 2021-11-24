@@ -159,30 +159,22 @@ class TaskController extends Controller
             'unique' => __('messages.taskUnique'),
         ]);
 
-        try {
-            DB::beginTransaction();
-            LabelTask::where('task_id', '=', $task->id)->delete();
-            if ($request->labels !== null) {
-                foreach ($request->labels as $labelId) {
-                    $newTaskLabel = new LabelTask();
-                    $newTaskLabel->fill([
-                        'task_id' => $newTask->id,
-                        'label_id' => $labelId
-                    ]);
-                    $newTaskLabel->save();
-                }
+        LabelTask::where('task_id', '=', $task->id)->delete();
+        if ($request->labels !== null) {
+            foreach ($request->labels as $labelId) {
+                $newTaskLabel = new LabelTask();
+                $newTaskLabel->fill([
+                    'task_id' => $newTask->id,
+                    'label_id' => $labelId
+                ]);
+                $newTaskLabel->save();
             }
-
-            $newTask->fill($data);
-            $newTask->save();
-            DB::commit();
-            flash(__('messages.taskSuccessUpdated'))->success();
-            return redirect(route('tasks.index'));
-        } catch (\Exception $e) {
-            DB::rollBack();
-            flash('Something went wrong - ' . $e)->error();
-            return redirect(route('tasks.index'));
         }
+
+        $newTask->fill($data);
+        $newTask->save();
+        flash(__('messages.taskSuccessUpdated'))->success();
+        return redirect(route('tasks.index'));
     }
 
     /**

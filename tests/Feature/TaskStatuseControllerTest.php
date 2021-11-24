@@ -99,7 +99,11 @@ class TaskStatuseControllerTest extends TestCase
                 __('interface.editStatus')],
             true
         );
+    }
 
+    public function testUpdate(): void
+    {
+        $this->signIn();
         $taskData = [
             'name' => 'ОБНОВЛЁННЫЙ статус',
         ];

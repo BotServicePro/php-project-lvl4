@@ -2,19 +2,9 @@
 
 @section('title', __('interface.tasks'))
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 @section('content')
     <main class="container py-4">
-        <h2>{{ __('interface.tasks') }}</h2>
+        <h1>{{ __('interface.tasks') }}</h1>
         <br>
         <div class="d-flex">
             <div>

@@ -107,6 +107,17 @@ class TaskControllerTest extends TestCase
         $response = $this->get(route('tasks.edit', ['task' => $this->id]));
         $response->assertStatus(200);
 
+        $response->assertSeeTextInOrder(
+            [
+                __('interface.editTask')],
+            true
+        );
+    }
+
+    public function testUpdate(): void
+    {
+        $this->signIn();
+
         $taskData = [
             'name' => 'ОБНОВЛЁННое название задачи',
             'description' => 'новое описание',

@@ -2,16 +2,6 @@
 
 @section('title', __('interface.editLabel'))
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 @section('content')
     <main class="container py-4">
         <h2>{{ __('interface.editLabel') }}</h2>

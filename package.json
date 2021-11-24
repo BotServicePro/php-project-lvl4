@@ -27,6 +27,7 @@
         "tailwindcss": "^2.0.2"
     },
     "dependencies": {
-        "@rails/ujs": "6.1.4-1"
+        "@rails/ujs": "6.1.4-1",
+        "select2": "*"
     }
 }

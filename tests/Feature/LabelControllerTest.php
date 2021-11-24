@@ -106,6 +106,11 @@ class LabelControllerTest extends TestCase
                 __('interface.editLabel')],
             true
         );
+    }
+
+    public function testUpdate(): void
+    {
+        $this->signIn();
 
         $labelData = [
             'name' => 'ОБНОВЛЁННое название задачи',
@@ -121,7 +126,6 @@ class LabelControllerTest extends TestCase
         $this->assertEquals($labelData['description'], $updatedLabel->description);
         $this->assertEquals($this->id, $updatedLabel->id);
     }
-
     public function testDestroy(): void
     {
         $label = Label::all()->first();

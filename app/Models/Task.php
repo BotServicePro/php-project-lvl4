@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
@@ -19,15 +20,15 @@ class Task extends Model
     ];
 
 
-    public function getAuthorData(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function getAuthorData(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
-    public function getStatusData(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function getStatusData(): BelongsTo
     {
         return $this->belongsTo(TaskStatus::class, 'status_id');
     }
-    public function getExecutorData(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function getExecutorData(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to_id');
     }
