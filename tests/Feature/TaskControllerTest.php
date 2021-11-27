@@ -2,28 +2,27 @@
 
 namespace Tests\Feature;
 
-use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class TaskControllerTest extends TestCase
 {
     /** @var int */
     private $id;
+    /**
+     * @var \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     */
+    private $user;
 
     protected function setUp(): void
     {
         parent::setUp();
         $totalRecords = 5;
-        User::factory()->count($totalRecords)->create();
+        $this->user = User::factory()->create();
         TaskStatus::factory()->count($totalRecords)->create();
         Task::factory()->create();
-
         $this->id = Task::find(1)->id;
     }
 
@@ -36,52 +35,19 @@ class TaskControllerTest extends TestCase
     {
         $response = $this->get('/tasks');
         $response->assertStatus(200);
-        $response->assertSeeTextInOrder(
-            [
-                'ID',
-                __('interface.status'),
-                __('interface.name'),
-                __('interface.author'),
-                __('interface.employee'),
-                __('interface.createDate'),
-            ],
-            true
-        );
-        $response->assertDontSeeText(
-            [
-            __('interface.createTask'),
-            __('interface.settings')],
-            true
-        );
-
-        $this->signIn();
-
-        $response = $this->get('/tasks');
-        $response->assertSeeTextInOrder(
-            [
-            __('interface.createTask'),
-            __('interface.settings')],
-            true
-        );
     }
-
-    // авторизация
-    protected function signIn(): TaskControllerTest
-    {
-        $user = User::factory()->create()->first();
-        $this->actingAs($user);
-        return $this;
-    }
-
-    public function testCreate(): void
+    public function testCreate()
     {
         $response = $this->get(route('tasks.create'));
         $response->assertStatus(403);
 
-        $this->signIn();
+        $this->actingAs($this->user)->get(route('tasks.create'));
         $response = $this->get(route('tasks.create'));
         $response->assertStatus(200);
+    }
 
+    public function testStore(): void
+    {
         $taskData = [
             'name' => 'Тестовая задача',
             'description' => 'Описание тестовой задачи',
@@ -90,7 +56,7 @@ class TaskControllerTest extends TestCase
             'assigned_to_id' => 1,
             ];
 
-        $response = $this->post(route('tasks.store'), $taskData);
+        $response = $this->actingAs($this->user)->post(route('tasks.store'), $taskData);
         $response->assertSessionHasNoErrors();
 
         $response->assertRedirect(route('tasks.index'));
@@ -101,12 +67,8 @@ class TaskControllerTest extends TestCase
     {
         $response = $this->get(route('tasks.edit', ['task' => $this->id]));
         $response->assertStatus(403);
-
-        $this->signIn();
-
-        $response = $this->get(route('tasks.edit', ['task' => $this->id]));
+        $response =  $this->actingAs($this->user)->get(route('tasks.edit', ['task' => $this->id]));
         $response->assertStatus(200);
-
         $response->assertSeeTextInOrder(
             [
                 __('interface.editTask')],
@@ -116,8 +78,6 @@ class TaskControllerTest extends TestCase
 
     public function testUpdate(): void
     {
-        $this->signIn();
-
         $taskData = [
             'name' => 'ОБНОВЛЁННое название задачи',
             'description' => 'новое описание',
@@ -125,12 +85,12 @@ class TaskControllerTest extends TestCase
             'created_by_id' => 1,
             'assigned_to_id' => 2,
         ];
-
         $response = $this->patch(route('tasks.update', ['task' => $this->id]), $taskData);
+        $response->assertStatus(403);
+
+        $response = $this->actingAs($this->user)->patch(route('tasks.update', ['task' => $this->id]), $taskData);
         $response->assertSessionHasNoErrors();
-
         $updatedTask = Task::find(1);
-
         $this->assertEquals($taskData['name'], $updatedTask->name);
         $this->assertEquals($taskData['description'], $updatedTask->description);
         $this->assertEquals($taskData['status_id'], $updatedTask->status_id);
@@ -145,9 +105,7 @@ class TaskControllerTest extends TestCase
         $response->assertStatus(403);
         $this->assertDatabaseHas('tasks', ['id' => $this->id]);
 
-        $this->signIn();
-
-        $response = $this->delete(route('tasks.destroy', ['task' => $this->id]));
+        $response = $this->actingAs($this->user)->delete(route('tasks.destroy', ['task' => $this->id]));
         $response->assertStatus(302);
         $this->assertDatabaseMissing('tasks', ['id' => $this->id]);
         $response->assertRedirect(route('tasks.index'));
