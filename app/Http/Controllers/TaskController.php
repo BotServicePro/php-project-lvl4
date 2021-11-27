@@ -58,7 +58,6 @@ class TaskController extends Controller
         $usersList = User::all()->pluck('name', 'id');
         $taskStatusesList = TaskStatus::all()->pluck('name', 'id');
         $labels = Label::all();
-
         return view('task.create', compact('task', 'usersList', 'taskStatusesList', 'labels'));
     }
 
@@ -75,7 +74,6 @@ class TaskController extends Controller
             'name' => 'required|unique:tasks|max:255',
             'description' => 'max:1000',
             'status_id' => 'required',
-            'created_by_id' => 'int',
             'assigned_to_id' => 'nullable',
         ], $messages = [
             'unique' => __('messages.taskUnique'),
@@ -142,7 +140,6 @@ class TaskController extends Controller
             'name' => 'required|max:255',
             'description' => 'max:1000',
             'status_id' => 'required',
-            'created_by_id' => 'int',
             'assigned_to_id' => 'nullable',
         ], $messages = [
             'required' => __('messages.taskRequired'),
@@ -174,19 +171,9 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        $taskAuthorId = (int) $task->created_by_id;
-        $authorizedUserId = Auth::id();
-        if ($taskAuthorId !== $authorizedUserId) {
-            flash(__('messages.taskUnsuccessDelete'))->error();
-            return redirect(route('tasks.index'));
-        }
-
-        if (LabelTask::where('task_id', '=', $task->id)->count() > 0) {
-            LabelTask::where('task_id', '=', $task->id)->delete();
-        }
-
-        flash(__('messages.taskSuccessDeleted'))->success();
+        $task->getLabelData()->detach();
         $task->delete();
+        flash(__('messages.taskSuccessDeleted'))->success();
         return redirect(route('tasks.index'));
     }
 }
