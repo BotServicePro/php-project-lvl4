@@ -9,7 +9,6 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 
@@ -76,8 +75,8 @@ class TaskController extends Controller
             'name' => 'required|unique:tasks|max:255',
             'description' => 'max:1000',
             'status_id' => 'required',
-            'created_by_id' => '',
-            'assigned_to_id' => '',
+            'created_by_id' => 'int',
+            'assigned_to_id' => 'nullable',
         ], $messages = [
             'unique' => __('messages.taskUnique'),
         ]);
@@ -87,17 +86,15 @@ class TaskController extends Controller
         $newTask->created_by_id = Auth::id();
         $newTask->save();
 
-        if ($request->labels !== null) {
-            foreach ($request->labels as $labelId) {
-                $newTaskLabel = new LabelTask();
-                $newTaskLabel->fill([
-                    'task_id' => $newTask->id,
-                    'label_id' => $labelId
-                ]);
-                $newTaskLabel->save();
-            }
-        }
-
+        $labelsCollection =  collect($request->labels) ?? [];
+        $labelsCollection->filter(function ($label) use ($newTask) {
+            $newTaskLabel = new LabelTask();
+            $newTaskLabel->fill([
+                'task_id' => $newTask->id,
+                'label_id' => $label
+            ]);
+            $newTaskLabel->save();
+        });
         flash(__('messages.taskSuccessAdded'))->success();
         return redirect(route('tasks.index'));
     }
@@ -110,14 +107,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $taskData = Task::find($task->id);
-        $statusData = $task->getStatusData;
-        $labelsData =  LabelTask::where('task_id', '=', $task->id)->addSelect([
-            'label_name' => Label::select('name')
-                ->whereColumn('id', 'label_tasks.label_id')
-        ])->get();
-
-        return view('task.show', compact('taskData', 'statusData', 'labelsData'));
+        return view('task.show', compact('task'));
     }
 
     /**
@@ -152,24 +142,23 @@ class TaskController extends Controller
             'name' => 'required|max:255',
             'description' => 'max:1000',
             'status_id' => 'required',
-            'created_by_id' => '',
-            'assigned_to_id' => '',
+            'created_by_id' => 'int',
+            'assigned_to_id' => 'nullable',
         ], $messages = [
             'required' => __('messages.taskRequired'),
             'unique' => __('messages.taskUnique'),
         ]);
 
         LabelTask::where('task_id', '=', $task->id)->delete();
-        if ($request->labels !== null) {
-            foreach ($request->labels as $labelId) {
-                $newTaskLabel = new LabelTask();
-                $newTaskLabel->fill([
-                    'task_id' => $newTask->id,
-                    'label_id' => $labelId
-                ]);
-                $newTaskLabel->save();
-            }
-        }
+        $labelsCollection =  collect($request->labels) ?? [];
+        $labelsCollection->filter(function ($label) use ($newTask) {
+            $newTaskLabel = new LabelTask();
+            $newTaskLabel->fill([
+                'task_id' => $newTask->id,
+                'label_id' => $label
+            ]);
+            $newTaskLabel->save();
+        });
 
         $newTask->fill($data);
         $newTask->save();
