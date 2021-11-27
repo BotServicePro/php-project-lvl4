@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Task extends Model
 {
@@ -31,5 +32,9 @@ class Task extends Model
     public function getExecutorData(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to_id');
+    }
+    public function getLabelData(): BelongsToMany
+    {
+        return $this->belongsToMany(Label::class, 'label_tasks', 'task_id', 'label_id');
     }
 }
