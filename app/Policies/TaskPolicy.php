@@ -42,10 +42,7 @@ class TaskPolicy
      */
     public function create(User $user)
     {
-        if (Auth::check()) {
-            return true;
-        }
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -57,10 +54,7 @@ class TaskPolicy
      */
     public function update(User $user, Task $task)
     {
-        if (Auth::check()) {
-            return true;
-        }
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -72,10 +66,7 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task)
     {
-        if (Auth::check()) {
-            return true;
-        }
-        return false;
+        return $user->is($task->getAuthorData);
     }
 
     /**
@@ -87,10 +78,7 @@ class TaskPolicy
      */
     public function restore(User $user, Task $task)
     {
-        if (Auth::check()) {
-            return true;
-        }
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -102,9 +90,6 @@ class TaskPolicy
      */
     public function forceDelete(User $user, Task $task)
     {
-        if (Auth::check()) {
-            return true;
-        }
-        return false;
+        return $user->is($task->getAuthorData);
     }
 }
