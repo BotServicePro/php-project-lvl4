@@ -6,14 +6,14 @@
     <main class="container py-4">
         <h2>{{ __('interface.editTask') }}</h2>
         {{ Form::token() }}
-        {{ Form::model($task, ['url' => "tasks/{$task['id']}", 'method' => 'PATCH']) }}
+        {{ Form::model($task, ['url' => "tasks/{$task->id}", 'method' => 'PATCH']) }}
         {{ Form::label('name', __('interface.name')) }}<font style="color: #e3342f">*</font><br>
-        {{ Form::text('name', $task['name']) }}<br><br>
+        {{ Form::text('name', $task->name) }}<br><br>
 
-        {{ Form::hidden('created_by_id', $task['created_by_id']) }}
+        {{ Form::hidden('created_by_id', $task->created_by_id) }}
 
         {{ Form::label('description', __('interface.description')) }}<br>
-        {{ Form::textarea('description', $task['description']) }}<br><br>
+        {{ Form::textarea('description', $task->description) }}<br><br>
 
         {{ Form::label('status_id', __('interface.status')) }}<font style="color: #e3342f">*</font><br>
         {{  Form::select('status_id', $taskStatusesList, null, ['placeholder' => '---']) }}<br><br>
