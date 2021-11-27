@@ -14,10 +14,15 @@ class TaskStatuseControllerTest extends TestCase
 {
     /** @var int */
     private $id;
+    /**
+     * @var \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     */
+    private $user;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->user = User::factory()->create();
         TaskStatus::factory()->count(4)->create();
         $this->id = TaskStatus::find(1)->id;
     }
@@ -31,37 +36,6 @@ class TaskStatuseControllerTest extends TestCase
     {
         $response = $this->get('/task_statuses');
         $response->assertStatus(200);
-        $response->assertSeeTextInOrder(
-            [
-                'ID',
-                __('interface.name'),
-                __('interface.createDate'),
-            ],
-            true
-        );
-        $response->assertDontSeeText(
-            [
-                __('interface.createStatus'),
-                __('interface.settings')],
-            true
-        );
-
-        $this->signIn();
-
-        $response = $this->get('/task_statuses');
-        $response->assertSeeTextInOrder(
-            [
-                __('interface.createStatus'),
-                __('interface.settings')],
-            true
-        );
-    }
-
-    protected function signIn(): TaskStatuseControllerTest
-    {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-        return $this;
     }
 
     public function testCreate(): void
@@ -69,8 +43,7 @@ class TaskStatuseControllerTest extends TestCase
         $response = $this->get(route('task_statuses.create'));
         $response->assertStatus(403);
 
-        $this->signIn();
-        $response = $this->get(route('task_statuses.create'));
+        $response = $this->actingAs($this->user)->get(route('task_statuses.create'));
         $response->assertStatus(200);
 
         $response->assertSeeTextInOrder(
@@ -78,9 +51,12 @@ class TaskStatuseControllerTest extends TestCase
                 __('interface.createStatus')],
             true
         );
+    }
 
+    public function testStore(): void
+    {
         $taskData = ['name' => 'Тестовый статус'];
-        $response = $this->post(route('task_statuses.store'), $taskData);
+        $response = $this->actingAs($this->user)->post(route('task_statuses.store'), $taskData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('task_statuses.index'));
         $this->assertDatabaseHas('task_statuses', $taskData);
@@ -91,8 +67,7 @@ class TaskStatuseControllerTest extends TestCase
         $response = $this->get(route('task_statuses.edit', ['task_status' => $this->id]));
         $response->assertStatus(403);
 
-        $this->signIn();
-        $response = $this->get(route('task_statuses.edit', ['task_status' => $this->id]));
+        $response = $this->actingAs($this->user)->get(route('task_statuses.edit', ['task_status' => $this->id]));
         $response->assertStatus(200);
         $response->assertSeeTextInOrder(
             [
@@ -103,12 +78,11 @@ class TaskStatuseControllerTest extends TestCase
 
     public function testUpdate(): void
     {
-        $this->signIn();
         $taskData = [
             'name' => 'ОБНОВЛЁННЫЙ статус',
         ];
 
-        $response = $this->patch(route('task_statuses.update', ['task_status' => $this->id]), $taskData);
+        $response = $this->actingAs($this->user)->patch(route('task_statuses.update', ['task_status' => $this->id]), $taskData);
         $response->assertSessionHasNoErrors();
 
         $updatedTaskStatus = TaskStatus::where('id', 1)->first();
@@ -122,9 +96,7 @@ class TaskStatuseControllerTest extends TestCase
         $response->assertStatus(403);
         $this->assertDatabaseHas('task_statuses', ['id' => $this->id]);
 
-        $this->signIn();
-
-        $response = $this->delete(route('task_statuses.destroy', ['task_status' => $this->id]));
+        $response = $this->actingAs($this->user)->delete(route('task_statuses.destroy', ['task_status' => $this->id]));
         $this->assertDatabaseMissing('task_statuses', ['id' => $this->id]);
         $response->assertStatus(302);
         $response->assertRedirect(route('task_statuses.index'));
