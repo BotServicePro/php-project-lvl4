@@ -76,7 +76,6 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-        $taskStatus = TaskStatus::findOrFail($taskStatus->id);
         return view('taskStatuse.edit', compact('taskStatus'));
     }
 
