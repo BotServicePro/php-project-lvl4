@@ -4,29 +4,29 @@
 
 @section('content')
     <main class="container py-4">
-        <h2>{{ __('interface.showTask') }}: {{ $taskData->name }}
+        <h2>{{ __('interface.showTask') }}: {{ $task->name }}
             @if(Auth::check())
-            [<a href="/tasks/{{ $taskData->id }}/edit"><font style="color: #e3342f">{{ __('interface.edit') }}</font></a>]
+            [<a href="/tasks/{{ $task->id }}/edit"><font style="color: #e3342f">{{ __('interface.edit') }}</font></a>]
             @endif
         </h2>
         <br>
         <div>
-            {{ __('interface.name') }}: {{ $taskData->name }}
+            {{ __('interface.name') }}: {{ $task->name }}
         </div>
         <br>
         <div>
-            {{ __('interface.description') }}: {{ $taskData->description }}
+            {{ __('interface.description') }}: {{ $task->description }}
         </div>
         <br>
         <div>
-            {{ __('interface.status') }}: {{ $statusData->name }}
+            {{ __('interface.status') }}: {{ $task->getStatusData->name }}
         </div>
         <br>
         <div>
             {{ __('interface.labels') }}:
             <ul>
-                @foreach($labelsData as $label)
-                    <li>{{ $label->label_name }}</li>
+                @foreach($task->getLabelData as $label)
+                    <li>{{ $label->name }}</li>
                 @endforeach
             </ul>
         </div>
