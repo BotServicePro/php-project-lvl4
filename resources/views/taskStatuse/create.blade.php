@@ -7,11 +7,11 @@
         <h2>{{ __('interface.createStatus') }}</h2>
         {{ Form::token() }}
         {{ Form::model($taskStatus, ['url' => route('task_statuses.store'), 'method' => 'POST']) }}
-        {{ Form::label('name', __('interface.name')) }}<font style="color: #e3342f">*</font><br>
-        {{ Form::text('name') }}
-        <br>
-        <br>
-        {{ Form::submit(__('interface.create'), ['class' => 'btn btn-outline-primary mr-2']) }}<br>
+
+        {{ Form::component('labelName', 'components.form.name', ['name']) }}
+        {{ Form::labelName('name') }}
+
+        {{ Form::submit(__('interface.create'), ['class' => 'btn btn-outline-primary mr-2']) }}
     </main>
 @endsection
 

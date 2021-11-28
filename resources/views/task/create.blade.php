@@ -7,11 +7,12 @@
         <h2>{{ __('interface.createTask') }}</h2>
         {{ Form::token() }}
         {{ Form::model($task, ['url' => route('tasks.store'), 'method' => 'POST']) }}
-        {{ Form::label('name', __('interface.name')) }}<font style="color: #e3342f">*</font><br>
-        {{ Form::text('name') }}<br><br>
 
-        {{ Form::label('description', __('interface.description')) }}<br>
-        {{ Form::textarea('description') }}<br>
+        {{ Form::component('labelName', 'components.form.name', ['name']) }}
+        {{ Form::labelName('name') }}
+
+        {{ Form::component('labelDescription', 'components.form.description', ['description']) }}
+        {{ Form::labelDescription('description') }}
 
         {{ Form::label('status_id', __('interface.status')) }}<font style="color: #e3342f">*</font><br>
         {{  Form::select('status_id', $taskStatusesList, null, ['placeholder' => '---']) }}<br><br>
