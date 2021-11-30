@@ -7,10 +7,16 @@ use App\Models\LabelTask;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
+use Exception;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use function PHPUnit\Framework\throwException;
 
 class TaskController extends Controller
 {
@@ -23,7 +29,7 @@ class TaskController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\View\View | \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return View | RedirectResponse|Redirector
      */
     public function index(Request $request)
     {
@@ -50,9 +56,9 @@ class TaskController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         $task = new Task();
         $usersList = User::all()->pluck('name', 'id');
@@ -64,9 +70,10 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     * @throws \Illuminate\Validation\ValidationException
+     * @param Request $request
+     * @return RedirectResponse|Redirector
+     * @throws ValidationException
+     * @throws Exception
      */
     public function store(Request $request)
     {
@@ -79,6 +86,9 @@ class TaskController extends Controller
             'unique' => __('messages.taskUnique'),
         ]);
 
+        if (!Auth::check()) {
+            throw new Exception('Not authorised');
+        }
         $newTask = new Task();
         $newTask->fill($data);
         $newTask->created_by_id = Auth::id();
@@ -100,10 +110,10 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Contracts\View\View
+     * @param Task $task
+     * @return View
      */
-    public function show(Task $task)
+    public function show(Task $task): View
     {
         return view('task.show', compact('task'));
     }
@@ -111,13 +121,12 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Contracts\View\View
+     * @param Task $task
+     * @return View
      */
-    public function edit(Task $task)
+    public function edit(Task $task): View
     {
         $labels = Label::all();
-        $task = Task::findOrFail($task->id);
         $selectedLabels = LabelTask::where('task_id', $task->id)->get();
         $usersList = User::all()->pluck('name', 'id');
         $taskStatusesList = TaskStatus::all()->pluck('name', 'id');
@@ -128,10 +137,10 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Task $task
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     * @throws \Illuminate\Validation\ValidationException
+     * @param Request $request
+     * @param Task $task
+     * @return RedirectResponse|Redirector
+     * @throws ValidationException
      */
     public function update(Request $request, Task $task)
     {
@@ -166,8 +175,8 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param Task $task
+     * @return RedirectResponse|Redirector
      */
     public function destroy(Task $task)
     {
