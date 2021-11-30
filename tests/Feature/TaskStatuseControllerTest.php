@@ -42,7 +42,6 @@ class TaskStatuseControllerTest extends TestCase
     {
         $response = $this->get(route('task_statuses.create'));
         $response->assertStatus(403);
-
         $response = $this->actingAs($this->user)->get(route('task_statuses.create'));
         $response->assertStatus(200);
 

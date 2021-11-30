@@ -44,7 +44,6 @@ class LabelControllerTest extends TestCase
     {
         $response = $this->get(route('labels.create'));
         $response->assertStatus(403);
-
         $response = $this->actingAs($this->user)->get(route('labels.create'));
         $response->assertStatus(200);
         $response->assertSeeTextInOrder(
