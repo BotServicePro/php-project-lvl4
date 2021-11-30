@@ -27,7 +27,7 @@ class TaskFactory extends Factory
             'name' => $this->faker->name(),
             'description' => $this->faker->text(rand(10, 100)),
             'status_id' => TaskStatus::all()->pluck('id')->random(),
-            'created_by_id' => 1,
+            'created_by_id' => User::all()->pluck('id')->random() ?? null,
             'assigned_to_id' => User::all()->pluck('id')->random() ?? null
         ];
     }
