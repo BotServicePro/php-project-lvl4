@@ -60,11 +60,6 @@ class TaskControllerTest extends TestCase
         $response->assertStatus(403);
         $response =  $this->actingAs($this->user)->get(route('tasks.edit', ['task' => $this->id]));
         $response->assertStatus(200);
-        $response->assertSeeTextInOrder(
-            [
-                __('interface.editTask')],
-            true
-        );
     }
 
     public function testUpdate(): void
@@ -75,12 +70,7 @@ class TaskControllerTest extends TestCase
 
         $response = $this->actingAs($this->user)->patch(route('tasks.update', ['task' => $this->id]), $taskData);
         $response->assertSessionHasNoErrors();
-        $updatedTask = Task::find(1);
-        $this->assertEquals($taskData['name'], $updatedTask->name);
-        $this->assertEquals($taskData['description'], $updatedTask->description);
-        $this->assertEquals($taskData['status_id'], $updatedTask->status_id);
-        $this->assertEquals($this->id, $updatedTask->id);
-        $this->assertEquals($taskData['assigned_to_id'], $updatedTask->assigned_to_id);
+        $this->assertDatabaseHas('tasks', $taskData);
     }
 
     public function testDestroy(): void
