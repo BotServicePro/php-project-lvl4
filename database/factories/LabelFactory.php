@@ -23,6 +23,7 @@ class LabelFactory extends Factory
     {
         return [
             'name' => $this->faker->text(rand(5, 15)),
+            'description' => $this->faker->text(rand(20, 50)),
         ];
     }
 }
