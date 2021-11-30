@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Validation\ValidationException;
 
 class TaskStatusController extends Controller
 {
@@ -19,7 +23,7 @@ class TaskStatusController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function index()
     {
@@ -30,7 +34,7 @@ class TaskStatusController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function create()
     {
@@ -41,9 +45,9 @@ class TaskStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     * @throws \Illuminate\Validation\ValidationException
+     * @param Request $request
+     * @return RedirectResponse|Redirector
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
@@ -58,23 +62,12 @@ class TaskStatusController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TaskStatus  $taskStatus
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function show(TaskStatus $taskStatus)
-    {
-        return redirect(route('task_statuses.index'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TaskStatus  $taskStatus
-     * @return \Illuminate\Contracts\View\View
+     * @param TaskStatus $taskStatus
+     * @return View
      */
-    public function edit(TaskStatus $taskStatus)
+    public function edit(TaskStatus $taskStatus): View
     {
         return view('taskStatuse.edit', compact('taskStatus'));
     }
@@ -82,9 +75,10 @@ class TaskStatusController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TaskStatus  $taskStatus
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param Request $request
+     * @param TaskStatus $taskStatus
+     * @return RedirectResponse|Redirector
+     * @throws ValidationException
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
@@ -101,8 +95,8 @@ class TaskStatusController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TaskStatus  $taskStatus
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param TaskStatus $taskStatus
+     * @return RedirectResponse|Redirector
      */
     public function destroy(TaskStatus $taskStatus)
     {
