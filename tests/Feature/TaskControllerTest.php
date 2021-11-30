@@ -46,14 +46,7 @@ class TaskControllerTest extends TestCase
 
     public function testStore(): void
     {
-        $taskData = [
-            'name' => 'Тестовая задача',
-            'description' => 'Описание тестовой задачи',
-            'status_id' => 1,
-            'created_by_id' => 1,
-            'assigned_to_id' => 1,
-            ];
-
+        $taskData = Task::factory()->make()->toArray();
         $response = $this->actingAs($this->user)->post(route('tasks.store'), $taskData);
         $response->assertSessionHasNoErrors();
 
@@ -76,13 +69,7 @@ class TaskControllerTest extends TestCase
 
     public function testUpdate(): void
     {
-        $taskData = [
-            'name' => 'ОБНОВЛЁННое название задачи',
-            'description' => 'новое описание',
-            'status_id' => 2,
-            'created_by_id' => 1,
-            'assigned_to_id' => 2,
-        ];
+        $taskData = Task::factory()->make()->toArray();
         $response = $this->patch(route('tasks.update', ['task' => $this->id]), $taskData);
         $response->assertStatus(403);
 
@@ -98,7 +85,6 @@ class TaskControllerTest extends TestCase
 
     public function testDestroy(): void
     {
-        Task::factory()->create();
         $response = $this->delete(route('tasks.destroy', ['task' => $this->id]));
         $response->assertStatus(403);
         $this->assertDatabaseHas('tasks', ['id' => $this->id]);
