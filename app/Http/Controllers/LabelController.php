@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Label;
 use App\Models\LabelTask;
-use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Redirector;
+use Illuminate\Validation\ValidationException;
 
 class LabelController extends Controller
 {
@@ -18,9 +20,9 @@ class LabelController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function index(): \Illuminate\Contracts\View\View
+    public function index(): View
     {
         $labels = Label::paginate(5);
         return view('label.index', compact('labels'));
@@ -29,9 +31,9 @@ class LabelController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function create(): \Illuminate\Contracts\View\View
+    public function create(): View
     {
         $label = new Label();
         return view('label.create', compact('label'));
@@ -40,9 +42,9 @@ class LabelController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     * @throws \Illuminate\Validation\ValidationException
+     * @param Request $request
+     * @return RedirectResponse|Redirector
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
@@ -60,21 +62,12 @@ class LabelController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Label $label
-     */
-    public function show(Label $label): void
-    {
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Label  $label
-     * @return \Illuminate\Contracts\View\View
+     * @param Label $label
+     * @return View
      */
-    public function edit(Label $label): \Illuminate\Contracts\View\View
+    public function edit(Label $label): View
     {
         return view('label.edit', compact('label'));
     }
@@ -82,28 +75,20 @@ class LabelController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Label  $label
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param Request $request
+     * @param Label $label
+     * @return RedirectResponse|Redirector
      */
     public function update(Request $request, Label $label)
     {
         $newLabel = Label::findOrFail($label->id);
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:labels,name,' . $label->id,
-            'description' => '',
-        ], $messages = [
+        $data = $this->validate($request, [
+            'name' => 'required|unique:labels',
+            'description' => 'nullable',
+            ], $messages = [
             'unique' => __('messages.labelUnique'),
         ]);
-
-        if ($validator->fails()) {
-            return redirect(route('labels.edit', ['label' => $label->id]))
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $newLabel->name = $request->name;
-        $newLabel->description = $request->description;
-        $newLabel->updated_at = Carbon::now();
+        $newLabel->fill($data);
         $newLabel->save();
         flash(__('messages.labelSuccessUpdated'))->success();
         return redirect(route('labels.index'));
@@ -112,8 +97,8 @@ class LabelController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Label  $label
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param Label $label
+     * @return RedirectResponse|Redirector
      */
     public function destroy(Label $label)
     {
