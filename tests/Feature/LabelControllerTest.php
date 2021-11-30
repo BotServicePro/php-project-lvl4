@@ -36,7 +36,7 @@ class LabelControllerTest extends TestCase
      */
     public function testIndex()
     {
-        $response = $this->get('/labels');
+        $response = $this->get(route('labels.index'));
         $response->assertStatus(200);
     }
 

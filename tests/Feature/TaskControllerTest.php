@@ -33,7 +33,7 @@ class TaskControllerTest extends TestCase
      */
     public function testIndex()
     {
-        $response = $this->get('/tasks');
+        $response = $this->get(route('tasks.index'));
         $response->assertStatus(200);
     }
     public function testCreate()
