@@ -66,11 +66,6 @@ class TaskStatuseControllerTest extends TestCase
         $response->assertStatus(403);
         $response = $this->actingAs($this->user)->get(route('task_statuses.edit', ['task_status' => $this->id]));
         $response->assertStatus(200);
-        $response->assertSeeTextInOrder(
-            [
-                __('interface.editStatus')],
-            true
-        );
     }
 
     public function testUpdate(): void
@@ -80,9 +75,7 @@ class TaskStatuseControllerTest extends TestCase
             'task_status' => $this->id
         ]), $taskData);
         $response->assertSessionHasNoErrors();
-        $updatedTaskStatus = TaskStatus::where('id', 1)->first();
-        $this->assertEquals($taskData['name'], $updatedTaskStatus->name);
-        $this->assertEquals(1, $updatedTaskStatus->id);
+        $this->assertDatabaseHas('task_statuses', $taskData);
     }
 
     public function testDestroy(): void
