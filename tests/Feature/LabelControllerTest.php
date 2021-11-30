@@ -81,10 +81,7 @@ class LabelControllerTest extends TestCase
         $labelData = Label::factory()->make()->toArray();
         $response = $this->actingAs($this->user)->patch(route('labels.update', ['label' => $this->id]), $labelData);
         $response->assertSessionHasNoErrors();
-        $updatedLabel = Label::find(1);
-        $this->assertEquals($labelData['name'], $updatedLabel->name);
-        $this->assertEquals($labelData['description'], $updatedLabel->description);
-        $this->assertEquals($this->id, $updatedLabel->id);
+        $this->assertDatabaseHas('labels', $labelData);
     }
     public function testDestroy(): void
     {
