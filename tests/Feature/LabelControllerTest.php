@@ -23,7 +23,7 @@ class LabelControllerTest extends TestCase
         parent::setUp();
         $totalRecords = 5;
         $this->user = User::factory()->create();
-        Label::factory()->count($totalRecords)->create();
+        Label::factory()->create();
         TaskStatus::factory()->count($totalRecords)->create();
         Task::factory()->create();
         $this->id = Label::find(1)->id;
@@ -55,11 +55,7 @@ class LabelControllerTest extends TestCase
 
     public function testStore(): void
     {
-        $labelData = [
-            'name' => 'Тестовая метка',
-            'description' => 'Описание тестовой метки',
-        ];
-
+        $labelData = Label::factory()->make()->toArray();
         $response = $this->actingAs($this->user)->post(route('labels.store'), $labelData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
@@ -82,24 +78,18 @@ class LabelControllerTest extends TestCase
 
     public function testUpdate(): void
     {
-        $labelData = [
-            'name' => 'ОБНОВЛЁННое название задачи',
-            'description' => 'новое описание',
-        ];
-
+        $labelData = Label::factory()->make()->toArray();
         $response = $this->actingAs($this->user)->patch(route('labels.update', ['label' => $this->id]), $labelData);
         $response->assertSessionHasNoErrors();
-
         $updatedLabel = Label::find(1);
-
         $this->assertEquals($labelData['name'], $updatedLabel->name);
         $this->assertEquals($labelData['description'], $updatedLabel->description);
         $this->assertEquals($this->id, $updatedLabel->id);
     }
     public function testDestroy(): void
     {
-        $label = Label::all()->first();
-        $labelNotInUseId = $label->id;
+        $newLabelNotInUse = Label::factory()->create();
+        $labelNotInUseId = $newLabelNotInUse->id;
         $response = $this->delete(route('labels.destroy', ['label' => $labelNotInUseId]));
         $response->assertStatus(403);
 
