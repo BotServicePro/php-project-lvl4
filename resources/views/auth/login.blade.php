@@ -3,37 +3,43 @@
 @section('title', __('interface.login') )
 
 @section('content')
+<div class="card">
     <div class="card-header">{{ __('interface.login') }}</div>
-    <br>
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-        <div>
-            <label>{{ __('Email') }}</label>
-            <input id="email" class="block mt-1 w-full rounded" type="email" name="email" :value="old('email')" required autofocus />
-        </div>
-        <div class="mt-4">
-            <label>{{ __('interface.password') }}</label>
-            <input id="password" class="block mt-1 w-full rounded"
-                   type="password"
-                   name="password"
-                   required autocomplete="current-password" />
-        </div>
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                <span class="ml-2 text-sm text-gray-600">{{ __('interface.rememberMe') }}</span>
-            </label>
-        </div>
+    <div class="card-body align-content-center ">
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div class="form-group row">
+                <label for="email" class="col-md-4 col-form-label text-end">{{ __('Email') }}</label>
+                <div class="col-md-6 mb-3">
+                    <input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus />
+                </div>
+            </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                    {{ __('interface.forgotPassword') }}
-                </a>
-            @endif
-            <button class="ml-3 btn btn-primary">
-                {{ __('interface.authLogin') }}
-            </button>
-        </div>
-    </form>
+            <div class="form-group row mb-2">
+                <label for="password" class="col-md-4 col-form-label text-end">{{ __('interface.password') }}</label>
+                <div class="col-md-6">
+                    <input id="password" type="password" class="form-control " name="password" required="" autocomplete="current-password">
+                </div>
+            </div>
+
+            <div class="form-group row mb-3">
+                <div class="col-md-6 offset-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="remember" id="remember">
+                        <label class="form-check-label" for="remember">{{ __('interface.rememberMe') }}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row mb-0">
+                <div class="col-md-8 offset-md-4">
+                    <button type="submit" class="btn btn-primary">{{ __('interface.authLogin') }}</button>
+                    @if (Route::has('password.request'))
+                        <a class="btn btn-link" href="{{ route('password.request') }}">{{ __('interface.forgotPassword') }}</a>
+                    @endif
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
