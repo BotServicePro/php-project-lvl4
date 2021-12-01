@@ -12,7 +12,7 @@ use Tests\TestCase;
 class TaskControllerTest extends TestCase
 {
     /** @var int */
-    public $id;
+    private $id;
     /**
      * @var Collection|Model
      */

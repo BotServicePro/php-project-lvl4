@@ -11,7 +11,7 @@ use Tests\TestCase;
 class TaskStatuseControllerTest extends TestCase
 {
     /** @var int */
-    public $id;
+    private $id;
     /**
      * @var Collection|Model
      */
@@ -22,7 +22,7 @@ class TaskStatuseControllerTest extends TestCase
         parent::setUp();
         $this->user = User::factory()->create();
         TaskStatus::factory()->count(4)->create();
-        $this->id = TaskStatus::find(1)->id;
+        $this->id = TaskStatus::find(1)->id ?? null;
     }
 
     /**
