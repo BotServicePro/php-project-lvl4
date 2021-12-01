@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
 
 class TaskControllerTest extends TestCase
@@ -12,7 +14,7 @@ class TaskControllerTest extends TestCase
     /** @var int */
     private $id;
     /**
-     * @var \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @var Collection|Model
      */
     private $user;
 

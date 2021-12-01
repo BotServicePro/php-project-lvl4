@@ -2,20 +2,18 @@
 
 namespace Tests\Feature;
 
-use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
 
 class TaskStatuseControllerTest extends TestCase
 {
     /** @var int */
-    private $id;
+    protected $id;
     /**
-     * @var \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @var Collection|Model
      */
     private $user;
 
