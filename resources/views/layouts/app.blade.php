@@ -68,15 +68,24 @@
         </div>
     </nav>
 </header>
-
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
-            <div class="p-6 bg-white border-gray-200">
-                @include('flash::message')
-                @yield('content')
+<div class="container py-3 mt-5 shadow-lg rounded">
+    <div class="container">
+        <div class="row justify-content-center">
+    @include('flash::message')
+    @if ($errors->any())
+        <div class="container align-content-center">
+            <div style="Color: red">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{$error}}</li>
+                    @endforeach
+                </ul>
             </div>
         </div>
+
+    @endif
+    @yield('content')
+    </div>
     </div>
 </div>
 
