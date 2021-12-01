@@ -34,7 +34,7 @@ class TaskController extends Controller
     {
         $usersList = User::all()->pluck('name', 'id');
         $taskStatusesList = TaskStatus::all()->pluck('name', 'id');
-        $data = QueryBuilder::for(Task::class)
+        $tasks = QueryBuilder::for(Task::class)
             ->addSelect([
                 'task_author_name' => User::select('name')
                     ->whereColumn('id', 'tasks.created_by_id'),
@@ -49,7 +49,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('assigned_to_id')])
             ->paginate(10);
 
-        return view('task.index', compact('data', 'taskStatusesList', 'usersList'));
+        return view('task.index', compact('tasks', 'taskStatusesList', 'usersList'));
     }
 
     /**
@@ -85,12 +85,14 @@ class TaskController extends Controller
             'unique' => __('messages.taskUnique'),
         ]);
 
-        if (!Auth::check()) {
-            throw new Exception('Not authorised');
+        $user = Auth::user();
+        if (!isset($user)) {
+            throw new \Exception('User is not authenticated');
         }
+
         $newTask = new Task();
         $newTask->fill($data);
-        $newTask->created_by_id = Auth::id();
+        $newTask->created_by_id = $user->id;
         $newTask->save();
 
         $labelsCollection =  collect($request->labels) ?? [];
