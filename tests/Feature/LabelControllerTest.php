@@ -14,11 +14,13 @@ use Tests\TestCase;
 class LabelControllerTest extends TestCase
 {
     /** @var int */
-    private $id;
+    public $id;
     /**
      * @var Collection|Model
      */
     private $user;
+    /** @var int */
+    public $label_id;
 
     protected function setUp(): void
     {

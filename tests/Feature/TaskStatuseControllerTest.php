@@ -11,7 +11,7 @@ use Tests\TestCase;
 class TaskStatuseControllerTest extends TestCase
 {
     /** @var int */
-    protected $id;
+    public $id;
     /**
      * @var Collection|Model
      */
