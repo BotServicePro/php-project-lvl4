@@ -22,11 +22,6 @@
         {{ Form::label('assigned_to_id', __('interface.employee')) }}<br>
         {{  Form::select('assigned_to_id', $usersList, null, ['placeholder' => '---']) }}<br><br>
 
-        <script>
-            $(document).ready(function() {
-                $('.js-example-basic-multiple').select2();
-            });
-        </script>
         <label>{{ __('interface.labels') }}</label><br>
         <select class="js-example-basic-multiple" name="labels[]" multiple="multiple">
             @foreach ($labels as $label)
