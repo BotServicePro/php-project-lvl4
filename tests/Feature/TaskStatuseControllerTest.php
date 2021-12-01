@@ -22,7 +22,7 @@ class TaskStatuseControllerTest extends TestCase
         parent::setUp();
         $this->user = User::factory()->create();
         TaskStatus::factory()->count(4)->create();
-        $this->id = TaskStatus::find(1)->id ?? null;
+        $this->id = TaskStatus::find(1)->id;
     }
 
     /**
