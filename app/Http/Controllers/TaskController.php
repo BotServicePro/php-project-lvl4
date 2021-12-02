@@ -88,10 +88,10 @@ class TaskController extends Controller
 
         $newTask = new Task();
         $newTask->fill($data);
-        $newTask->created_by_id = Auth::user()->id;
+        $newTask->created_by_id = Auth::id();
         $newTask->save();
 
-        $labelsCollection = collect($request->labels) ?? [];
+        $labelsCollection = collect($request->labels) ?: [];
         $labelsCollection->filter(function ($label) use ($newTask) {
             $newTaskLabel = new LabelTask();
             $newTaskLabel->fill([
@@ -153,7 +153,7 @@ class TaskController extends Controller
         ]);
 
         LabelTask::where('task_id', '=', $task->id)->delete();
-        $labelsCollection =  collect($request->labels) ?? [];
+        $labelsCollection =  collect($request->labels) ?: [];
         $labelsCollection->filter(function ($label) use ($newTask) {
             $newTaskLabel = new LabelTask();
             $newTaskLabel->fill([
