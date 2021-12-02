@@ -100,7 +100,7 @@ class LabelControllerTest extends TestCase
 
         $label = Label::factory()->create();
         $labelInUse = LabelTask::factory()->create();
-        $response = $this->delete(route('labels.destroy', ['label' => $labelInUse->getId()]));
+        $response = $this->delete(route('labels.destroy', ['label' => $labelInUse->id]));
         $response->assertStatus(302);
         $response->assertRedirect(route('labels.index'));
         $this->assertDatabaseHas('labels', ['id' => $label->id]);
@@ -111,7 +111,7 @@ class LabelControllerTest extends TestCase
         $response = $this->get(route('labels.show', ['label' => 1]));
         $response->assertStatus(403);
         $label = Label::factory()->create();
-        $response = $this->get(route('labels.show', ['label' => $label->getId()]));
+        $response = $this->get(route('labels.show', ['label' => $label->id]));
         $response->assertStatus(403);
     }
 }

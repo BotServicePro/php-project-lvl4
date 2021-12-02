@@ -19,8 +19,4 @@ class Label extends Model
     {
         return $this->belongsToMany(Label::class, 'label_tasks', 'label_id');
     }
-    public function getId()
-    {
-        return $this->id;
-    }
 }
