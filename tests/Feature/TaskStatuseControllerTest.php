@@ -13,8 +13,6 @@ class TaskStatuseControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @var int */
-    private $id;
     /**
      * @var Collection|Model
      */
