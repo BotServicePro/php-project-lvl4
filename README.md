@@ -28,7 +28,7 @@ cd php-project-lvl4
 make start
 make migrate
 ```
-Demo data:
+### Demo data:
 ```
 php artisan db:seed TaskStatuseSeeder
 php artisan db:seed LabelSeeder
