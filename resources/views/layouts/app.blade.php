@@ -16,6 +16,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        .resizable-content {
+            min-height: 50px;
+            min-width: 50px;
+            resize: both;
+        }
+    </style>
 </head>
 
 <body class="min-vh-100 d-flex flex-column">

@@ -23,7 +23,7 @@
         {{  Form::select('assigned_to_id', $usersList, null, ['placeholder' => '---']) }}<br><br>
 
         <label>{{ __('interface.labels') }}</label><br>
-        <select class="js-example-basic-multiple" name="labels[]" multiple="multiple">
+        <select class="resizable-content" name="labels[]" multiple="multiple">
             @foreach ($labels as $label)
                 <option value="{{ $label->id }}">{{ $label->name }}</option>
             @endforeach
