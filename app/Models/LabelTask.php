@@ -19,4 +19,9 @@ class LabelTask extends Model
     {
         return $this->belongsTo(Label::class, 'label_id');
     }
+
+    public function getId()
+    {
+        return $this->label_id;
+    }
 }
