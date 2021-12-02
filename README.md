@@ -27,9 +27,11 @@ git clone https://github.com/AlexeyShobanov/php-project-lvl4.git
 cd php-project-lvl4
 make start
 make migrate
+```
+Demo data:
+```
 php artisan db:seed TaskStatuseSeeder
 php artisan db:seed LabelSeeder
 php artisan db:seed UserSeeder
 php artisan db:seed TaskSeeder
 ```
-
