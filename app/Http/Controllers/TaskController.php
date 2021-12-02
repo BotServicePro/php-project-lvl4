@@ -29,9 +29,9 @@ class TaskController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return View | RedirectResponse|Redirector
+     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $usersList = User::pluck('name', 'id');
         $taskStatusesList = TaskStatus::pluck('name', 'id');
