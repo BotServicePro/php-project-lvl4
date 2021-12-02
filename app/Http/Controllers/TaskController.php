@@ -32,8 +32,8 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $usersList = User::all()->where('name', 'id');
-        $taskStatusesList = TaskStatus::all()->where('name', 'id');
+        $usersList = User::pluck('name', 'id');
+        $taskStatusesList = TaskStatus::pluck('name', 'id');
         $tasks = QueryBuilder::for(Task::class)
             ->addSelect([
                 'task_author_name' => User::select('name')
@@ -60,8 +60,8 @@ class TaskController extends Controller
     public function create(): View
     {
         $task = new Task();
-        $usersList = User::all()->where('name', 'id');
-        $taskStatusesList = TaskStatus::all()->where('name', 'id');
+        $usersList = User::pluck('name', 'id');
+        $taskStatusesList = TaskStatus::pluck('name', 'id');
         $labels = Label::all();
         return view('task.create', compact('task', 'usersList', 'taskStatusesList', 'labels'));
     }
@@ -90,7 +90,7 @@ class TaskController extends Controller
         $newTask->created_by_id = Auth::user()->id;
         $newTask->save();
 
-        $labelsCollection =  collect($request->labels) ?? [];
+        $labelsCollection = collect($request->labels) ?? [];
         $labelsCollection->filter(function ($label) use ($newTask) {
             $newTaskLabel = new LabelTask();
             $newTaskLabel->fill([
@@ -124,8 +124,8 @@ class TaskController extends Controller
     {
         $labels = Label::all();
         $selectedLabels = LabelTask::where('task_id', $task->id)->get();
-        $usersList = User::all()->where('name', 'id');
-        $taskStatusesList = TaskStatus::all()->where('name', 'id');
+        $usersList = User::pluck('name', 'id');
+        $taskStatusesList = TaskStatus::pluck('name', 'id');
 
         return view('task.edit', compact('task', 'usersList', 'taskStatusesList', 'labels', 'selectedLabels'));
     }
