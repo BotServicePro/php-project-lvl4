@@ -7,9 +7,12 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TaskStatuseControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @var int */
     private $id;
     /**
@@ -21,8 +24,6 @@ class TaskStatuseControllerTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        TaskStatus::factory()->count(4)->create();
-        $this->id = TaskStatus::find(1)->id;
     }
 
     /**
@@ -60,29 +61,33 @@ class TaskStatuseControllerTest extends TestCase
 
     public function testEdit(): void
     {
-        $response = $this->get(route('task_statuses.edit', ['task_status' => $this->id]));
+        $taskStatus = TaskStatus::factory()->create();
+        $response = $this->get(route('task_statuses.edit', ['task_status' => $taskStatus->id]));
         $response->assertStatus(403);
-        $response = $this->actingAs($this->user)->get(route('task_statuses.edit', ['task_status' => $this->id]));
+        $response = $this->actingAs($this->user)->get(route('task_statuses.edit', ['task_status' => $taskStatus->id]));
         $response->assertStatus(200);
     }
 
     public function testUpdate(): void
     {
-        $taskData = TaskStatus::factory()->make()->toArray();
+        $taskStatus = TaskStatus::factory()->create();
+        $newTaskData = TaskStatus::factory()->make()->toArray();
         $response = $this->actingAs($this->user)->patch(route('task_statuses.update', [
-            'task_status' => $this->id
-        ]), $taskData);
+            'task_status' => $taskStatus->id
+        ]), $newTaskData);
         $response->assertSessionHasNoErrors();
-        $this->assertDatabaseHas('task_statuses', $taskData);
+        $this->assertDatabaseHas('task_statuses', $newTaskData);
     }
 
     public function testDestroy(): void
     {
-        $response = $this->delete(route('task_statuses.destroy', ['task_status' => $this->id]));
+        $taskStatus = TaskStatus::factory()->create();
+        $response = $this->delete(route('task_statuses.destroy', ['task_status' => $taskStatus->id]));
         $response->assertStatus(403);
-        $this->assertDatabaseHas('task_statuses', ['id' => $this->id]);
-        $response = $this->actingAs($this->user)->delete(route('task_statuses.destroy', ['task_status' => $this->id]));
-        $this->assertDatabaseMissing('task_statuses', ['id' => $this->id]);
+        $this->assertDatabaseHas('task_statuses', ['id' => $taskStatus->id]);
+        $response = $this->actingAs($this->user)
+            ->delete(route('task_statuses.destroy', ['task_status' => $taskStatus->id]));
+        $this->assertDatabaseMissing('task_statuses', ['id' => $taskStatus->id]);
         $response->assertStatus(302);
         $response->assertRedirect(route('task_statuses.index'));
     }
