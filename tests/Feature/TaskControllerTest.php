@@ -8,11 +8,12 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TaskControllerTest extends TestCase
 {
-    /** @var int */
-    private $id;
+    use RefreshDatabase;
+
     /**
      * @var Collection|Model
      */
@@ -21,11 +22,8 @@ class TaskControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $totalRecords = 5;
         $this->user = User::factory()->create();
-        TaskStatus::factory()->count($totalRecords)->create();
-        Task::factory()->create();
-        $this->id = Task::find(1)->id;
+        TaskStatus::factory()->create();
     }
 
     /**
@@ -51,46 +49,49 @@ class TaskControllerTest extends TestCase
         $taskData = Task::factory()->make()->toArray();
         $response = $this->actingAs($this->user)->post(route('tasks.store'), $taskData);
         $response->assertSessionHasNoErrors();
-
         $response->assertRedirect(route('tasks.index'));
         $this->assertDatabaseHas('tasks', $taskData);
     }
 
     public function testEdit(): void
     {
-        $response = $this->get(route('tasks.edit', ['task' => $this->id]));
+        $task = Task::factory()->create();
+        $response = $this->get(route('tasks.edit', ['task' => $task->id]));
         $response->assertStatus(403);
-        $response =  $this->actingAs($this->user)->get(route('tasks.edit', ['task' => $this->id]));
+        $response =  $this->actingAs($this->user)->get(route('tasks.edit', ['task' => $task->id]));
         $response->assertStatus(200);
     }
 
     public function testUpdate(): void
     {
-        $taskData = Task::factory()->make()->toArray();
-        $response = $this->patch(route('tasks.update', ['task' => $this->id]), $taskData);
+        $task = Task::factory()->create();
+        $newTaskData = Task::factory()->make()->toArray();
+        $response = $this->patch(route('tasks.update', ['task' => $task->id]), $newTaskData);
         $response->assertStatus(403);
 
-        $response = $this->actingAs($this->user)->patch(route('tasks.update', ['task' => $this->id]), $taskData);
+        $response = $this->actingAs($this->user)->patch(route('tasks.update', ['task' => $task->id]), $newTaskData);
         $response->assertSessionHasNoErrors();
-        $this->assertDatabaseHas('tasks', $taskData);
+        $this->assertDatabaseHas('tasks', $newTaskData);
     }
 
     public function testDestroy(): void
     {
-        $response = $this->delete(route('tasks.destroy', ['task' => $this->id]));
+        $task = Task::factory()->create();
+        $response = $this->delete(route('tasks.destroy', ['task' => $task->id]));
         $response->assertStatus(403);
-        $this->assertDatabaseHas('tasks', ['id' => $this->id]);
+        $this->assertDatabaseHas('tasks', ['id' => $task->id]);
 
-        $response = $this->actingAs($this->user)->delete(route('tasks.destroy', ['task' => $this->id]));
+        $response = $this->actingAs($this->user)->delete(route('tasks.destroy', ['task' => $task->id]));
         $response->assertStatus(302);
-        $this->assertDatabaseMissing('tasks', ['id' => $this->id]);
+        $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
         $response->assertRedirect(route('tasks.index'));
         $response->assertSessionHasNoErrors();
     }
 
     public function testShow(): void
     {
-        $response = $this->get(route('tasks.show', ['task' => $this->id]));
+        $task = Task::factory()->create();
+        $response = $this->get(route('tasks.show', ['task' => $task->id]));
         $response->assertStatus(200);
         $response->assertSeeTextInOrder(
             [
