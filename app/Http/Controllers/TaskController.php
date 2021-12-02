@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
-use Illuminate\Database\Eloquent\Builder;
 
 class TaskController extends Controller
 {
@@ -36,6 +35,10 @@ class TaskController extends Controller
         $usersList = User::pluck('name', 'id');
         $taskStatusesList = TaskStatus::pluck('name', 'id');
         $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters([
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id')])
             ->addSelect([
                 'task_author_name' => User::select('name')
                     ->whereColumn('id', 'tasks.created_by_id'),
@@ -44,10 +47,6 @@ class TaskController extends Controller
                 'executor_name' => User::select('name')
                     ->whereColumn('id', 'tasks.assigned_to_id')
             ])
-            ->allowedFilters([
-                AllowedFilter::exact('status_id'),
-                AllowedFilter::exact('created_by_id'),
-                AllowedFilter::exact('assigned_to_id')])
             ->paginate(10);
 
         return view('task.index', compact('tasks', 'taskStatusesList', 'usersList'));
