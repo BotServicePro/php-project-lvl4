@@ -7,12 +7,12 @@ window._ = require('lodash');
  */
 
 try {
+    require('bootstrap');
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
     $(document).ready(function () {
         $('.js-example-basic-multiple').select2();
     });
-    require('bootstrap');
 } catch (e) {
 }
 

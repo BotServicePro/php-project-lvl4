@@ -85,14 +85,9 @@ class TaskController extends Controller
             'unique' => __('messages.taskUnique'),
         ]);
 
-        $user = Auth::user();
-        if (!isset($user)) {
-            throw new \Exception('User is not authenticated');
-        }
-
         $newTask = new Task();
         $newTask->fill($data);
-        $newTask->created_by_id = $user->id;
+        $newTask->created_by_id = Auth::user()->id;
         $newTask->save();
 
         $labelsCollection =  collect($request->labels) ?? [];
