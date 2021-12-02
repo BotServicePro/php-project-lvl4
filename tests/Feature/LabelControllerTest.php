@@ -9,12 +9,13 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
-    /** @var int */
-    private $id;
+    use RefreshDatabase;
+
     /**
      * @var Collection|Model
      */
@@ -23,12 +24,9 @@ class LabelControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $totalRecords = 5;
         $this->user = User::factory()->create();
-        Label::factory()->create();
-        TaskStatus::factory()->count($totalRecords)->create();
+        TaskStatus::factory()->create();
         Task::factory()->create();
-        $this->id = Label::find(1)->id;
     }
 
     /**
@@ -66,10 +64,10 @@ class LabelControllerTest extends TestCase
 
     public function testEdit(): void
     {
-        $response = $this->get(route('labels.edit', ['label' => $this->id]));
+        $label = Label::factory()->create();
+        $response = $this->get(route('labels.edit', ['label' => $label->id]));
         $response->assertStatus(403);
-
-        $response = $this->actingAs($this->user)->get(route('labels.edit', ['label' => $this->id]));
+        $response = $this->actingAs($this->user)->get(route('labels.edit', ['label' => $label->id]));
         $response->assertStatus(200);
         $response->assertSeeTextInOrder(
             [
@@ -80,11 +78,13 @@ class LabelControllerTest extends TestCase
 
     public function testUpdate(): void
     {
-        $labelData = Label::factory()->make()->toArray();
-        $response = $this->actingAs($this->user)->patch(route('labels.update', ['label' => $this->id]), $labelData);
+        $label = Label::factory()->create();
+        $newLabelData = Label::factory()->make()->toArray();
+        $response = $this->actingAs($this->user)->patch(route('labels.update', ['label' => $label->id]), $newLabelData);
         $response->assertSessionHasNoErrors();
-        $this->assertDatabaseHas('labels', $labelData);
+        $this->assertDatabaseHas('labels', $newLabelData);
     }
+
     public function testDestroy(): void
     {
         $newLabelNotInUse = Label::factory()->create();
@@ -98,17 +98,20 @@ class LabelControllerTest extends TestCase
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseMissing('labels', ['id' => $labelNotInUseId]);
 
-        $labelInUse = LabelTask::factory()->create()->first();
-        $labelInUseId = $labelInUse->label_id;
-        $response = $this->delete(route('labels.destroy', ['label' => $labelInUseId]));
+        $label = Label::factory()->create();
+        $labelInUse = LabelTask::factory()->create();
+        $response = $this->delete(route('labels.destroy', ['label' => $labelInUse->getId()]));
         $response->assertStatus(302);
         $response->assertRedirect(route('labels.index'));
-        $this->assertDatabaseHas('labels', ['id' => $labelInUseId]);
+        $this->assertDatabaseHas('labels', ['id' => $label->id]);
     }
 
     public function testShow(): void
     {
         $response = $this->get(route('labels.show', ['label' => 1]));
+        $response->assertStatus(403);
+        $label = Label::factory()->create();
+        $response = $this->get(route('labels.show', ['label' => $label->getId()]));
         $response->assertStatus(403);
     }
 }
