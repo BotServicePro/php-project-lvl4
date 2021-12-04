@@ -19,13 +19,13 @@
         </div>
         <br>
         <div>
-            {{ __('interface.status') }}: {{ $task->getStatusData->name }}
+            {{ __('interface.status') }}: {{ $task->getStatus->name }}
         </div>
         <br>
         <div>
             {{ __('interface.labels') }}:
             <ul>
-                @foreach($task->getLabelData as $label)
+                @foreach($task->getLabel as $label)
                     <li>{{ $label->name }}</li>
                 @endforeach
             </ul>

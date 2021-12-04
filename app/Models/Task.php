@@ -24,15 +24,15 @@ class Task extends Model
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
-    public function getStatusData(): BelongsTo
+    public function getStatus(): BelongsTo
     {
         return $this->belongsTo(TaskStatus::class, 'status_id');
     }
-    public function getExecutorData(): BelongsTo
+    public function getExecutor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to_id');
     }
-    public function getLabelData(): BelongsToMany
+    public function getLabel(): BelongsToMany
     {
         return $this->belongsToMany(Label::class, 'label_tasks', 'task_id', 'label_id');
     }
