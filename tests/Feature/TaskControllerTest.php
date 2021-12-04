@@ -93,10 +93,5 @@ class TaskControllerTest extends TestCase
         $task = Task::factory()->create();
         $response = $this->get(route('tasks.show', ['task' => $task->id]));
         $response->assertOk();
-        $response->assertSeeTextInOrder(
-            [
-                __('interface.showTask')],
-            true
-        );
     }
 }

@@ -44,11 +44,6 @@ class LabelControllerTest extends TestCase
         $response->assertStatus(403);
         $response = $this->actingAs($this->user)->get(route('labels.create'));
         $response->assertStatus(200);
-        $response->assertSeeTextInOrder(
-            [
-                __('interface.createLabel')],
-            true
-        );
     }
 
     public function testStore(): void
@@ -67,11 +62,6 @@ class LabelControllerTest extends TestCase
         $response->assertStatus(403);
         $response = $this->actingAs($this->user)->get(route('labels.edit', ['label' => $label->id]));
         $response->assertOk();
-        $response->assertSeeTextInOrder(
-            [
-                __('interface.editLabel')],
-            true
-        );
     }
 
     public function testUpdate(): void

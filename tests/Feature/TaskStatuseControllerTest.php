@@ -41,11 +41,6 @@ class TaskStatuseControllerTest extends TestCase
         $response->assertStatus(403);
         $response = $this->actingAs($this->user)->get(route('task_statuses.create'));
         $response->assertOk();
-        $response->assertSeeTextInOrder(
-            [
-                __('interface.createStatus')],
-            true
-        );
     }
 
     public function testStore(): void
