@@ -5,10 +5,10 @@
 @section('content')
     <main class="container py-4">
         <h2>{{ __('interface.statuses') }}</h2>
-        @if(Auth::check())
+        @auth
             <a href="{{ route('task_statuses.create') }}" class="btn btn-primary">{{ __('interface.createStatus') }}</a>
             <br>
-        @endif
+        @endauth
         <br>
         <table class="table table-bordered border-radius">
             <thead>
