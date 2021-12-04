@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +14,7 @@ class TaskControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @var Collection|Model
+     * @var Model
      */
     private $user;
 
@@ -31,12 +30,12 @@ class TaskControllerTest extends TestCase
      *
      * @return void
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         $response = $this->get(route('tasks.index'));
         $response->assertOk();
     }
-    public function testCreate()
+    public function testCreate(): void
     {
         $response = $this->get(route('tasks.create'));
         $response->assertStatus(403);
