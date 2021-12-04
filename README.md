@@ -21,7 +21,6 @@ Also used Eloquent requests. Forms was made with LaravelCollective forms.
 <li> <a href="https://devcenter.heroku.com/articles/heroku-cli#download-and-install">Heroku CLI</a>
 
 ### Installation:
-
 ```
 git clone https://github.com/AlexeyShobanov/php-project-lvl4.git
 cd php-project-lvl4
