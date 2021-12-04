@@ -14,6 +14,6 @@ class MainPageTest extends TestCase
     public function testMainIndex()
     {
         $response = $this->get('/');
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 }

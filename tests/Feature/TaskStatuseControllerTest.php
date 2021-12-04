@@ -32,7 +32,7 @@ class TaskStatuseControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->get(route('task_statuses.index'));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function testCreate(): void
@@ -40,7 +40,7 @@ class TaskStatuseControllerTest extends TestCase
         $response = $this->get(route('task_statuses.create'));
         $response->assertStatus(403);
         $response = $this->actingAs($this->user)->get(route('task_statuses.create'));
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSeeTextInOrder(
             [
                 __('interface.createStatus')],
@@ -63,7 +63,7 @@ class TaskStatuseControllerTest extends TestCase
         $response = $this->get(route('task_statuses.edit', ['task_status' => $taskStatus->id]));
         $response->assertStatus(403);
         $response = $this->actingAs($this->user)->get(route('task_statuses.edit', ['task_status' => $taskStatus->id]));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function testUpdate(): void

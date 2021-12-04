@@ -35,7 +35,7 @@ class LabelControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->get(route('labels.index'));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function testCreate()
@@ -66,7 +66,7 @@ class LabelControllerTest extends TestCase
         $response = $this->get(route('labels.edit', ['label' => $label->id]));
         $response->assertStatus(403);
         $response = $this->actingAs($this->user)->get(route('labels.edit', ['label' => $label->id]));
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSeeTextInOrder(
             [
                 __('interface.editLabel')],

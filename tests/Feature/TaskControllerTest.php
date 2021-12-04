@@ -34,14 +34,14 @@ class TaskControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->get(route('tasks.index'));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
     public function testCreate()
     {
         $response = $this->get(route('tasks.create'));
         $response->assertStatus(403);
         $response = $this->actingAs($this->user)->get(route('tasks.create'));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function testStore(): void
@@ -59,7 +59,7 @@ class TaskControllerTest extends TestCase
         $response = $this->get(route('tasks.edit', ['task' => $task->id]));
         $response->assertStatus(403);
         $response =  $this->actingAs($this->user)->get(route('tasks.edit', ['task' => $task->id]));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function testUpdate(): void
@@ -92,7 +92,7 @@ class TaskControllerTest extends TestCase
     {
         $task = Task::factory()->create();
         $response = $this->get(route('tasks.show', ['task' => $task->id]));
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSeeTextInOrder(
             [
                 __('interface.showTask')],
