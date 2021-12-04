@@ -15,9 +15,9 @@
                     {{ Form::submit(__('interface.apply'), ['class' => 'btn btn-outline-primary mr-2']) }}
                 {!! Form::close() !!}
             </div>
-            @if(Auth::check())
+            @auth
                 <a href="{{ route('tasks.create') }}" class="btn btn-primary ml-auto">{{ __('interface.createTask') }}</a>
-            @endif
+            @endauth
         </div>
         <br>
 
@@ -30,9 +30,9 @@
                 <th>{{ __('interface.author') }}</th>
                 <th>{{ __('interface.employee') }}</th>
                 <th>{{ __('interface.createDate') }}</th>
-                @if(Auth::check())
+                @auth
                     <th>{{ __('interface.settings') }}</th>
-                @endif
+                @endauth
             </tr>
             </thead>
 

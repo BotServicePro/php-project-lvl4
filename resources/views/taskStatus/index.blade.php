@@ -16,9 +16,9 @@
                 <th>ID</th>
                 <th>{{ __('interface.name') }}</th>
                 <th>{{ __('interface.createDate') }}</th>
-                @if(Auth::check())
+                @auth
                     <th>{{ __('interface.settings') }}</th>
-                @endif
+                @endauth
             </tr>
             </thead>
 
