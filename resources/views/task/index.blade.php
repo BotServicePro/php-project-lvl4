@@ -47,11 +47,11 @@
                     <td>{{ $task->created_at->format('d.m.Y') }}</td>
                     @auth
                         <td>
-                            @if($task->created_by_id === Auth::user()->id)
+                            @can('delete', $task)
                                 <a class="text-danger" href="{{ route('tasks.destroy', ['task' => $task->id]) }}" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete">
                                     {{ __('interface.delete') }}
                                 </a> |
-                            @endif
+                            @endcan
                             <a href="{{ route('tasks.edit', ['task' => $task->id]) }}">{{ __('interface.edit') }}</a>
                         </td>
                     @endauth
