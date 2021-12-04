@@ -7,7 +7,6 @@ use App\Models\LabelTask;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -17,7 +16,7 @@ class LabelControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @var Collection|Model
+     * @var Model
      */
     private $user;
 
@@ -32,13 +31,13 @@ class LabelControllerTest extends TestCase
      *
      * @return void
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         $response = $this->get(route('labels.index'));
         $response->assertOk();
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $response = $this->get(route('labels.create'));
         $response->assertStatus(403);
