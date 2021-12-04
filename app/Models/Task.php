@@ -20,7 +20,7 @@ class Task extends Model
     ];
 
 
-    public function getAuthorData(): BelongsTo
+    public function getAuthor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
