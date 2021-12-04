@@ -28,7 +28,7 @@ class TaskStatusController extends Controller
     public function index()
     {
         $taskStatus = TaskStatus::paginate(5);
-        return view('taskStatuse.index', compact('taskStatus'));
+        return view('taskStatus.index', compact('taskStatus'));
     }
 
     /**
@@ -39,7 +39,7 @@ class TaskStatusController extends Controller
     public function create()
     {
         $taskStatus = new TaskStatus();
-        return view('taskStatuse.create', compact('taskStatus'));
+        return view('taskStatus.create', compact('taskStatus'));
     }
 
     /**
@@ -69,7 +69,7 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus): View
     {
-        return view('taskStatuse.edit', compact('taskStatus'));
+        return view('taskStatus.edit', compact('taskStatus'));
     }
 
     /**
