@@ -7,7 +7,6 @@ use App\Models\LabelTask;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,9 +14,6 @@ class LabelControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @var Model
-     */
     private $user;
 
     protected function setUp(): void
