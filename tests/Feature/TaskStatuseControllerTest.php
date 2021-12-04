@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\TaskStatus;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,7 +13,7 @@ class TaskStatuseControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @var Collection|Model
+     * @var Model
      */
     private $user;
 
@@ -29,7 +28,7 @@ class TaskStatuseControllerTest extends TestCase
      *
      * @return void
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         $response = $this->get(route('task_statuses.index'));
         $response->assertOk();
