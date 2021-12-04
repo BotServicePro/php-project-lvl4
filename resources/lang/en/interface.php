@@ -14,7 +14,12 @@ return [
     'tasks' => 'Tasks',
     'statuses' => 'Statuses',
     'labels' => 'Labels',
-    'label' => 'Lable',
+    'label' => 'Label',
+
+
+    'H1MainIndex' => 'Hello from Hexlet!',
+    'LeadMainIndex' => 'Practical coding courses',
+    'linkButtonMainIndex' => 'Learn more',
 
 
     'status' => 'Status',

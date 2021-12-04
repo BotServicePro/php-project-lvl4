@@ -59,6 +59,10 @@ return [
     'successLogin' => 'Вы успешно зашли',
     'successLogout' => 'Вы успешно вышли',
 
+    'H1MainIndex' => 'Привет от Хекслета!',
+    'LeadMainIndex' => 'Практические курсы по программированию',
+    'linkButtonMainIndex' => 'Узнать больше',
+
 
     'custom' => [
         'attribute-name' => [
