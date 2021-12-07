@@ -6,7 +6,7 @@
     <main class="container py-4">
         <h2>{{ __('interface.editStatus') }}</h2>
         {{ Form::token() }}
-        {{ Form::model($taskStatus, ['url' => "task_statuses/{$taskStatus->id}", 'method' => 'PATCH']) }}
+        {{ Form::model($taskStatus, ['url' => route('task_statuses.update', ['task_status'=> $taskStatus->id]), 'method' => 'PATCH']) }}
 
         {{ Form::component('labelName', 'components.form.name', ['name']) }}
         {{ Form::labelName($taskStatus->name) }}
