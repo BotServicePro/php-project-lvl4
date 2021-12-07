@@ -35,8 +35,6 @@ class LabelControllerTest extends TestCase
 
     public function testCreate(): void
     {
-        $response = $this->get(route('labels.create'));
-        $response->assertStatus(403);
         $response = $this->actingAs($this->user)->get(route('labels.create'));
         $response->assertOk();
     }
@@ -69,33 +67,18 @@ class LabelControllerTest extends TestCase
     public function testDestroy(): void
     {
         $label = Label::factory()->create();
-        $labelNotInUseId = $label->id;
-        $response = $this->delete(route('labels.destroy', ['label' => $labelNotInUseId]));
-        $response->assertStatus(403);
-
-        $response = $this->actingAs($this->user)->delete(route('labels.destroy', ['label' => $labelNotInUseId]));
-        $response->assertStatus(302);
-        $response->assertRedirect(route('labels.index'));
+        $response = $this->actingAs($this->user)
+            ->delete(route('labels.destroy', $label->id));
         $response->assertSessionHasNoErrors();
-        $this->assertDatabaseMissing('labels', ['id' => $labelNotInUseId]);
+        $response->assertRedirect();
 
-        $newLabel = Label::factory()->create();
-        TaskStatus::factory()->create();
-        Task::factory()->create();
-        LabelTask::factory()->create();
-
-        $response = $this->delete(route('labels.destroy', ['label' => $newLabel->id]));
-        $response->assertStatus(302);
-        $response->assertRedirect(route('labels.index'));
-        $this->assertDatabaseHas('labels', ['id' => $newLabel->id]);
+        $this->assertDatabaseMissing('labels', ['id' => $label->id]);
     }
 
     public function testShow(): void
     {
-        $response = $this->get(route('labels.show', ['label' => 1]));
-        $response->assertStatus(403);
         $label = Label::factory()->create();
         $response = $this->get(route('labels.show', ['label' => $label->id]));
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 }

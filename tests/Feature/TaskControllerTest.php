@@ -33,8 +33,6 @@ class TaskControllerTest extends TestCase
     }
     public function testCreate(): void
     {
-        $response = $this->get(route('tasks.create'));
-        $response->assertStatus(403);
         $response = $this->actingAs($this->user)->get(route('tasks.create'));
         $response->assertOk();
     }
@@ -59,9 +57,6 @@ class TaskControllerTest extends TestCase
     {
         $task = Task::factory()->create();
         $newTaskData = Task::factory()->make()->toArray();
-        $response = $this->patch(route('tasks.update', ['task' => $task->id]), $newTaskData);
-        $response->assertStatus(403);
-
         $response = $this->actingAs($this->user)->patch(route('tasks.update', ['task' => $task->id]), $newTaskData);
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseHas('tasks', $newTaskData);
@@ -70,12 +65,7 @@ class TaskControllerTest extends TestCase
     public function testDestroy(): void
     {
         $task = Task::factory()->create();
-        $response = $this->delete(route('tasks.destroy', ['task' => $task->id]));
-        $response->assertStatus(403);
-        $this->assertDatabaseHas('tasks', ['id' => $task->id]);
-
         $response = $this->actingAs($this->user)->delete(route('tasks.destroy', ['task' => $task->id]));
-        $response->assertStatus(302);
         $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
         $response->assertRedirect(route('tasks.index'));
         $response->assertSessionHasNoErrors();
