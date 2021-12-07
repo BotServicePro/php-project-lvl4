@@ -51,8 +51,6 @@ class TaskControllerTest extends TestCase
     public function testEdit(): void
     {
         $task = Task::factory()->create();
-        $response = $this->get(route('tasks.edit', ['task' => $task->id]));
-        $response->assertStatus(403);
         $response =  $this->actingAs($this->user)->get(route('tasks.edit', ['task' => $task->id]));
         $response->assertOk();
     }

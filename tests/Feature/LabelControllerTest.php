@@ -53,8 +53,6 @@ class LabelControllerTest extends TestCase
     public function testEdit(): void
     {
         $label = Label::factory()->create();
-        $response = $this->get(route('labels.edit', ['label' => $label->id]));
-        $response->assertStatus(403);
         $response = $this->actingAs($this->user)->get(route('labels.edit', ['label' => $label->id]));
         $response->assertOk();
     }
