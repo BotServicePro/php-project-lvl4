@@ -6,7 +6,7 @@
     <main class="container py-4">
         <h2>{{ __('interface.editLabel') }}</h2>
         {{ Form::token() }}
-        {{ Form::model($label, ['url' => route('labels.update', ['label' => $label->id]), 'method' => 'PATCH']) }}
+        {{ Form::model($label, ['url' => route('labels.update', $label), 'method' => 'PATCH']) }}
 
 
         {{ Form::component('labelName', 'components.form.name', ['name']) }}

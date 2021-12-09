@@ -32,10 +32,10 @@
                     <td>{{ $label['created_at']->format('d.m.Y') }}</td>
                     @can('view', $label)
                         <td>
-                            <a class="text-danger" href="{{ route('labels.destroy', $label['id']) }}" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete">
+                            <a class="text-danger" href="{{ route('labels.destroy', $label) }}" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete">
                                 {{ __('interface.delete') }}
                             </a> |
-                            <a href="{{ route('labels.edit', $label['id']) }}">
+                            <a href="{{ route('labels.edit', $label) }}">
                                 {{ __('interface.edit') }}
                             </a>
                         </td>

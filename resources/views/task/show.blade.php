@@ -6,7 +6,7 @@
     <main class="container py-4">
         <h2>{{ __('interface.showTask') }}: {{ $task->name }}
             @auth
-            <a href="{{ route('tasks.edit', ['task' => $task->id]) }}" class="btn btn-primary btn-sm bg-danger rounded" role="button">{{ __('interface.edit') }}</a>
+            <a href="{{ route('tasks.edit', $task) }}" class="btn btn-primary btn-sm bg-danger rounded" role="button">{{ __('interface.edit') }}</a>
             @endauth
         </h2>
         <br>

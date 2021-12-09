@@ -41,18 +41,18 @@
                 <tr>
                     <td><b>{{ $task->id }}</b></td>
                     <td>{{ $task->status_name }}</td>
-                    <td><a href="{{ route('tasks.show', ['task' => $task->id]) }}">{{ $task->name }}</a></td>
+                    <td><a href="{{ route('tasks.show', $task) }}">{{ $task->name }}</a></td>
                     <td>{{ $task->task_author_name }}</td>
                     <td>{{ $task->executor_name }}</td>
                     <td>{{ $task->created_at->format('d.m.Y') }}</td>
                     @auth
                         <td>
                             @can('delete', $task)
-                                <a class="text-danger" href="{{ route('tasks.destroy', ['task' => $task->id]) }}" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete">
+                                <a class="text-danger" href="{{ route('tasks.destroy', $task) }}" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete">
                                     {{ __('interface.delete') }}
                                 </a> |
                             @endcan
-                            <a href="{{ route('tasks.edit', ['task' => $task->id]) }}">{{ __('interface.edit') }}</a>
+                            <a href="{{ route('tasks.edit', $task) }}">{{ __('interface.edit') }}</a>
                         </td>
                     @endauth
                 </tr>
