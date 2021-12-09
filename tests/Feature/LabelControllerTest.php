@@ -3,9 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Label;
-use App\Models\LabelTask;
-use App\Models\Task;
-use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -51,7 +48,7 @@ class LabelControllerTest extends TestCase
     public function testEdit(): void
     {
         $label = Label::factory()->create();
-        $response = $this->actingAs($this->user)->get(route('labels.edit', ['label' => $label->id]));
+        $response = $this->actingAs($this->user)->get(route('labels.edit', $label));
         $response->assertOk();
     }
 
@@ -59,7 +56,7 @@ class LabelControllerTest extends TestCase
     {
         $label = Label::factory()->create();
         $newLabelData = Label::factory()->make()->toArray();
-        $response = $this->actingAs($this->user)->patch(route('labels.update', ['label' => $label->id]), $newLabelData);
+        $response = $this->actingAs($this->user)->patch(route('labels.update', $label), $newLabelData);
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseHas('labels', $newLabelData);
     }
@@ -68,7 +65,7 @@ class LabelControllerTest extends TestCase
     {
         $label = Label::factory()->create();
         $response = $this->actingAs($this->user)
-            ->delete(route('labels.destroy', $label->id));
+            ->delete(route('labels.destroy', $label));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
@@ -78,7 +75,7 @@ class LabelControllerTest extends TestCase
     public function testShow(): void
     {
         $label = Label::factory()->create();
-        $response = $this->get(route('labels.show', ['label' => $label->id]));
+        $response = $this->get(route('labels.show', $label));
         $response->assertForbidden();
     }
 }
