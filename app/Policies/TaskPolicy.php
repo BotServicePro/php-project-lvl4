@@ -67,7 +67,7 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task)
     {
-        return $task->getAuthor->is($user);
+        return $task->author->is($user);
     }
 
     /**
@@ -91,6 +91,6 @@ class TaskPolicy
      */
     public function forceDelete(User $user, Task $task)
     {
-        return $task->getAuthor->is($user);
+        return $task->author->is($user);
     }
 }
