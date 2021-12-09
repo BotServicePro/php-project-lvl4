@@ -81,15 +81,14 @@ class LabelController extends Controller
      */
     public function update(Request $request, Label $label)
     {
-        $newLabel = Label::findOrFail($label->id);
         $data = $this->validate($request, [
             'name' => 'required|unique:labels',
             'description' => 'nullable',
             ], $messages = [
             'unique' => __('messages.labelUnique'),
         ]);
-        $newLabel->fill($data);
-        $newLabel->save();
+        $label->fill($data);
+        $label->save();
         flash(__('messages.labelSuccessUpdated'))->success();
         return redirect(route('labels.index'));
     }

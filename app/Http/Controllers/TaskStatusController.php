@@ -82,12 +82,11 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
-        $newStatus = TaskStatus::findOrFail($taskStatus->id);
         $data = $this->validate($request, ['name' => 'required|unique:task_statuses'], $messages = [
             'unique' => __('messages.statusUnique'),
         ]);
-        $newStatus->fill($data);
-        $newStatus->save();
+        $taskStatus->fill($data);
+        $taskStatus->save();
         flash(__('messages.statusSuccessUpdated'))->success();
         return redirect(route('task_statuses.index'));
     }

@@ -140,7 +140,6 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $newTask = Task::findOrFail($task->id);
         $data = $this->validate($request, [
             'name' => 'required|max:255',
             'description' => 'max:1000',
@@ -153,17 +152,17 @@ class TaskController extends Controller
 
         LabelTask::where('task_id', '=', $task->id)->delete();
         $labelsCollection =  collect($request->labels);
-        $labelsCollection->filter(function ($label) use ($newTask) {
+        $labelsCollection->filter(function ($label) use ($task) {
             $newTaskLabel = new LabelTask();
             $newTaskLabel->fill([
-                'task_id' => $newTask->id,
+                'task_id' => $task->id,
                 'label_id' => $label
             ]);
             $newTaskLabel->save();
         });
 
-        $newTask->fill($data);
-        $newTask->save();
+        $task->fill($data);
+        $task->save();
         flash(__('messages.taskSuccessUpdated'))->success();
         return redirect(route('tasks.index'));
     }
