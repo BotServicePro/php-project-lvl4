@@ -28,7 +28,7 @@
                     <td><b>{{ $status->id }}</b></td>
                     <td>{{ $status->name }}</td>
                     <td>{{ $status->created_at->format('d.m.Y') }}</td>
-                    @auth
+                    @can('view', $status)
                         <td>
                             <a class="text-danger" href="{{ route('task_statuses.destroy', $status) }}" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete">
                                 {{ __('interface.delete') }}
@@ -37,7 +37,7 @@
                                 {{ __('interface.edit') }}
                             </a>
                         </td>
-                    @endauth
+                    @endcan
                 </tr>
             @endforeach
             </tbody>
