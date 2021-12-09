@@ -32,10 +32,7 @@ class LabelPolicy
      */
     public function view(?User $user, Label $label)
     {
-        if (Auth::check()) {
-            return true;
-        }
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -46,10 +43,7 @@ class LabelPolicy
      */
     public function create(User $user)
     {
-        if (Auth::check()) {
-            return true;
-        }
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -61,10 +55,7 @@ class LabelPolicy
      */
     public function update(User $user, Label $label)
     {
-        if (Auth::check()) {
-            return true;
-        }
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -76,10 +67,7 @@ class LabelPolicy
      */
     public function delete(User $user, Label $label)
     {
-        if (Auth::check()) {
-            return true;
-        }
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -91,10 +79,7 @@ class LabelPolicy
      */
     public function restore(User $user, Label $label)
     {
-        if (Auth::check()) {
-            return true;
-        }
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -106,9 +91,6 @@ class LabelPolicy
      */
     public function forceDelete(User $user, Label $label)
     {
-        if (Auth::check()) {
-            return true;
-        }
-        return false;
+        return Auth::check();
     }
 }
