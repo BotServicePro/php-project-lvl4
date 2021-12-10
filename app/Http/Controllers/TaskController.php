@@ -90,15 +90,7 @@ class TaskController extends Controller
         $newTask->created_by_id = Auth::id();
         $newTask->save();
 
-        $labelsCollection = collect($request->labels);
-        $labelsCollection->filter(function ($label) use ($newTask) {
-            $newTaskLabel = new LabelTask();
-            $newTaskLabel->fill([
-                'task_id' => $newTask->id,
-                'label_id' => $label
-            ]);
-            $newTaskLabel->save();
-        });
+        $newTask->label()->sync($request->labels);
         flash(__('messages.taskSuccessAdded'))->success();
         return redirect(route('tasks.index'));
     }
@@ -123,7 +115,7 @@ class TaskController extends Controller
     public function edit(Task $task): View
     {
         $labels = Label::all();
-        $selectedLabels = LabelTask::where('task_id', $task->id)->get();
+        $selectedLabels = $task->label()->get();
         $usersList = User::pluck('name', 'id');
         $taskStatusesList = TaskStatus::pluck('name', 'id');
 
@@ -150,17 +142,7 @@ class TaskController extends Controller
             'unique' => __('messages.taskUnique'),
         ]);
 
-        LabelTask::where('task_id', '=', $task->id)->delete();
-        $labelsCollection =  collect($request->labels);
-        $labelsCollection->filter(function ($label) use ($task) {
-            $newTaskLabel = new LabelTask();
-            $newTaskLabel->fill([
-                'task_id' => $task->id,
-                'label_id' => $label
-            ]);
-            $newTaskLabel->save();
-        });
-
+        $task->label()->sync($request->labels);
         $task->fill($data);
         $task->save();
         flash(__('messages.taskSuccessUpdated'))->success();
