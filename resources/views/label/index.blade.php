@@ -5,10 +5,10 @@
 @section('content')
     <main class="container py-4">
         <h2>{{ __('interface.labels') }}</h2>
-        @if(Auth::check())
+        @auth
             <a href="{{ route('labels.create') }}" class="btn btn-primary">{{ __('interface.createLabel') }}</a>
             <br>
-        @endif
+        @endauth
         <br>
         <table class="table table-bordered">
             <thead>
@@ -17,9 +17,9 @@
                 <th>{{ __('interface.name') }}</th>
                 <th>{{ __('interface.description') }}</th>
                 <th>{{ __('interface.createDate') }}</th>
-                @if(Auth::check())
+                @auth
                     <th>{{ __('interface.settings') }}</th>
-                @endif
+                @endauth
             </tr>
             </thead>
 
