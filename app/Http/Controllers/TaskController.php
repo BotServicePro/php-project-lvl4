@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Label;
-use App\Models\LabelTask;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -81,7 +80,7 @@ class TaskController extends Controller
             'description' => 'max:1000',
             'status_id' => 'required',
             'assigned_to_id' => 'nullable',
-        ], $messages = [
+        ], [
             'unique' => __('messages.taskUnique'),
         ]);
 
@@ -137,7 +136,7 @@ class TaskController extends Controller
             'description' => 'max:1000',
             'status_id' => 'required',
             'assigned_to_id' => 'nullable',
-        ], $messages = [
+        ], [
             'required' => __('messages.taskRequired'),
             'unique' => __('messages.taskUnique'),
         ]);

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Label;
-use App\Models\LabelTask;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -51,7 +50,7 @@ class LabelController extends Controller
         $data = $this->validate($request, [
             'name' => 'required|unique:labels',
             'description' => '',
-        ], $messages = [
+        ], [
             'unique' => __('messages.labelUnique')
         ]);
         $newLabel = new Label();
@@ -84,7 +83,7 @@ class LabelController extends Controller
         $data = $this->validate($request, [
             'name' => 'required|unique:labels',
             'description' => 'nullable',
-            ], $messages = [
+            ], [
             'unique' => __('messages.labelUnique'),
         ]);
         $label->fill($data);

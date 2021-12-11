@@ -51,7 +51,7 @@ class TaskStatusController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $this->validate($request, ['name' => 'required|unique:task_statuses'], $messages = [
+        $data = $this->validate($request, ['name' => 'required|unique:task_statuses'], [
             'unique' => __('messages.statusUnique'),
         ]);
         $newTaskStatus = new TaskStatus();
@@ -82,7 +82,7 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
-        $data = $this->validate($request, ['name' => 'required|unique:task_statuses'], $messages = [
+        $data = $this->validate($request, ['name' => 'required|unique:task_statuses'], [
             'unique' => __('messages.statusUnique'),
         ]);
         $taskStatus->fill($data);
