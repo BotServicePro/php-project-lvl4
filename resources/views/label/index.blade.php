@@ -5,7 +5,7 @@
 @section('content')
     <main class="container py-4">
         <h2>{{ __('interface.labels') }}</h2>
-        @auth
+        @can('view', $labels->first())
             <a href="{{ route('labels.create') }}" class="btn btn-primary">{{ __('interface.createLabel') }}</a>
             <br>
         @endauth
@@ -17,7 +17,7 @@
                 <th>{{ __('interface.name') }}</th>
                 <th>{{ __('interface.description') }}</th>
                 <th>{{ __('interface.createDate') }}</th>
-                @auth
+                @can('update', $labels->first())
                     <th>{{ __('interface.settings') }}</th>
                 @endauth
             </tr>

@@ -15,9 +15,9 @@
                     {{ Form::submit(__('interface.apply'), ['class' => 'btn btn-outline-primary mr-2']) }}
                 {!! Form::close() !!}
             </div>
-            @auth
+            @can('create', $tasks->first())
                 <a href="{{ route('tasks.create') }}" class="btn btn-primary ml-auto">{{ __('interface.createTask') }}</a>
-            @endauth
+            @endcan
         </div>
         <br>
 
@@ -30,9 +30,9 @@
                 <th>{{ __('interface.author') }}</th>
                 <th>{{ __('interface.employee') }}</th>
                 <th>{{ __('interface.createDate') }}</th>
-                @auth
+                @can('create', $tasks->first())
                     <th>{{ __('interface.settings') }}</th>
-                @endauth
+                @endcan
             </tr>
             </thead>
 
@@ -45,7 +45,7 @@
                     <td>{{ $task->task_author_name }}</td>
                     <td>{{ $task->executor_name }}</td>
                     <td>{{ $task->created_at->format('d.m.Y') }}</td>
-                    @auth
+                    @can('create', $tasks->first())
                         <td>
                             @can('delete', $task)
                                 <a class="text-danger" href="{{ route('tasks.destroy', $task) }}" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete">
@@ -54,7 +54,7 @@
                             @endcan
                             <a href="{{ route('tasks.edit', $task) }}">{{ __('interface.edit') }}</a>
                         </td>
-                    @endauth
+                    @endcan
                 </tr>
             @endforeach
             </tbody>

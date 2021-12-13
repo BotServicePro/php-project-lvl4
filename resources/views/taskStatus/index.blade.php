@@ -5,10 +5,10 @@
 @section('content')
     <main class="container py-4">
         <h2>{{ __('interface.statuses') }}</h2>
-        @auth
+        @can('view', $taskStatus->first())
             <a href="{{ route('task_statuses.create') }}" class="btn btn-primary">{{ __('interface.createStatus') }}</a>
             <br>
-        @endauth
+        @endcan
         <br>
         <table class="table table-bordered border-radius">
             <thead>
@@ -16,9 +16,9 @@
                 <th>ID</th>
                 <th>{{ __('interface.name') }}</th>
                 <th>{{ __('interface.createDate') }}</th>
-                @auth
+                @can('view', $taskStatus->first())
                     <th>{{ __('interface.settings') }}</th>
-                @endauth
+                @endcan
             </tr>
             </thead>
 
