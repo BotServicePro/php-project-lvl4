@@ -15,7 +15,7 @@ class Tasks extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('description')->nullable();
             $table->integer('status_id');
             $table->foreignId('created_by_id')->references('id')->on('users');
