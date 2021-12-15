@@ -5,10 +5,10 @@
 @section('content')
     <main class="container py-4">
         <h2>{{ __('interface.labels') }}</h2>
-        @can('view', $labels->first())
+        @can('create', \App\Models\Label::class)
             <a href="{{ route('labels.create') }}" class="btn btn-primary">{{ __('interface.createLabel') }}</a>
             <br>
-        @endauth
+        @endcan
         <br>
         <table class="table table-bordered">
             <thead>
@@ -17,9 +17,9 @@
                 <th>{{ __('interface.name') }}</th>
                 <th>{{ __('interface.description') }}</th>
                 <th>{{ __('interface.createDate') }}</th>
-                @can('update', $labels->first())
+                @can('create', \App\Models\Label::class)
                     <th>{{ __('interface.settings') }}</th>
-                @endauth
+                @endcan
             </tr>
             </thead>
 

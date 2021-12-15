@@ -5,7 +5,7 @@
 @section('content')
     <main class="container py-4">
         <h2>{{ __('interface.statuses') }}</h2>
-        @can('view', $taskStatus->first())
+        @can('create', \App\Models\TaskStatus::class)
             <a href="{{ route('task_statuses.create') }}" class="btn btn-primary">{{ __('interface.createStatus') }}</a>
             <br>
         @endcan
@@ -16,7 +16,7 @@
                 <th>ID</th>
                 <th>{{ __('interface.name') }}</th>
                 <th>{{ __('interface.createDate') }}</th>
-                @can('view', $taskStatus->first())
+                @can('create', \App\Models\TaskStatus::class)
                     <th>{{ __('interface.settings') }}</th>
                 @endcan
             </tr>

@@ -15,7 +15,7 @@
                     {{ Form::submit(__('interface.apply'), ['class' => 'btn btn-outline-primary mr-2']) }}
                 {!! Form::close() !!}
             </div>
-            @can('create', $tasks->first())
+            @can('create', \App\Models\Task::class)
                 <a href="{{ route('tasks.create') }}" class="btn btn-primary ml-auto">{{ __('interface.createTask') }}</a>
             @endcan
         </div>
@@ -30,7 +30,7 @@
                 <th>{{ __('interface.author') }}</th>
                 <th>{{ __('interface.employee') }}</th>
                 <th>{{ __('interface.createDate') }}</th>
-                @can('create', $tasks->first())
+                @can('create', \App\Models\Task::class)
                     <th>{{ __('interface.settings') }}</th>
                 @endcan
             </tr>
@@ -45,7 +45,7 @@
                     <td>{{ $task->task_author_name }}</td>
                     <td>{{ $task->executor_name }}</td>
                     <td>{{ $task->created_at->format('d.m.Y') }}</td>
-                    @can('create', $tasks->first())
+                    @can('create', \App\Models\Task::class)
                         <td>
                             @can(['update', 'delete'], $task)
                                 <a class="text-danger" href="{{ route('tasks.destroy', $task) }}" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete">
