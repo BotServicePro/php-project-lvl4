@@ -15,7 +15,7 @@ class Label extends Model
         'description',
     ];
 
-    public function getLabelDataInUsage(): BelongsToMany
+    public function tasks(): BelongsToMany
     {
         return $this->belongsToMany(Label::class, 'label_tasks', 'label_id');
     }
