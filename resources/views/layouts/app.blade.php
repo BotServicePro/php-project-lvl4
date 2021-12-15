@@ -81,7 +81,7 @@
     @include('flash::message')
     @if ($errors->any())
         <div class="container align-content-center">
-            <div style="Color: red">
+            <div class="alert alert-danger" role="alert">
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{$error}}</li>
@@ -99,7 +99,9 @@
 <div class="wrapper flex-grow-1"></div>
 <footer class="py-3 mt-5 shadow-lg">
     <div class="text-center container-lg">
-        <a href="https://ru.hexlet.io/u/karakinalex" target="_blank">{{ 'AKarakin - ' . date('Y') }}</a>
+        <a href="https://ru.hexlet.io/u/karakinalex" target="_blank">AKarakin</a>
+        <br>
+        2021 - {{ date('Y') }}
     </div>
 </footer>
 
