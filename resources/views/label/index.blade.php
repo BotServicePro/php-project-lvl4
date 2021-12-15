@@ -30,7 +30,7 @@
                     <td>{{ $label['name'] }}</td>
                     <td>{{ $label['description'] }}</td>
                     <td>{{ $label['created_at']->format('d.m.Y') }}</td>
-                    @can('view', $label)
+                    @can(['delete', 'update'], $label)
                         <td>
                             <a class="text-danger" href="{{ route('labels.destroy', $label) }}" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete">
                                 {{ __('interface.delete') }}

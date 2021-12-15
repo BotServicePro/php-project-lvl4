@@ -47,7 +47,7 @@
                     <td>{{ $task->created_at->format('d.m.Y') }}</td>
                     @can('create', $tasks->first())
                         <td>
-                            @can('delete', $task)
+                            @can(['update', 'delete'], $task)
                                 <a class="text-danger" href="{{ route('tasks.destroy', $task) }}" data-confirm="{{ __('interface.checkDelete') }}" data-method="delete">
                                     {{ __('interface.delete') }}
                                 </a> |
