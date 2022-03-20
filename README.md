@@ -22,7 +22,7 @@ Also used Eloquent requests. Forms was made with LaravelCollective forms.
 
 ### Installation:
 ```
-git clone https://github.com/AlexeyShobanov/php-project-lvl4.git
+git clone https://github.com/BotServicePro/php-project-lvl4.git
 cd php-project-lvl4
 make start
 make migrate
