@@ -1,6 +1,5 @@
 [![Actions Status](https://github.com/BotServicePro/php-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/BotServicePro/php-project-lvl4/actions) <a href="https://codeclimate.com/github/BotServicePro/php-project-lvl4/maintainability"><img src="https://api.codeclimate.com/v1/badges/ddcccc91bc76aa67f182/maintainability" /></a>
 <a href="https://codeclimate.com/github/BotServicePro/php-project-lvl4/test_coverage"><img src="https://api.codeclimate.com/v1/badges/ddcccc91bc76aa67f182/test_coverage" /></a>
-[![Heroku App Status](http://heroku-shields.herokuapp.com/karakin-php-project-lvl4)](https://karakin-php-project-lvl4.herokuapp.com)
 
 ## Laravel Task Manager is my fourth project from Hexlet!
 
@@ -8,8 +7,6 @@
 Task Manager application is a simple project, which allows you to create/read/update/delete tasks,
 labels/tags for tasks, change executors data, check task statuses. In this project is shown how to use auth policies, o2m/m2m ORM relations, db seeders.
 Also used Eloquent requests. Forms was made with LaravelCollective forms.
-
-### <a href="http://karakin-php-project-lvl4.herokuapp.com/">Demo</a>
 
 ### Requrements:
 <li> PHP ^7.3
